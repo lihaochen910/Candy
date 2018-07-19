@@ -2,7 +2,7 @@ import sys
 import logging
 import os
 import SocketServer
-import SimpleSocket
+# import SimpleSocket
 import socket
 import threading
 
@@ -81,6 +81,6 @@ def setRemoteArgumentCallback(callback):
 def sendRemoteMsg( msg ):
     PORT = _CANDY_INSTANCE_PORT
     HOST = '127.0.0.1'
-    response = SimpleSocket.send_to_server( HOST, PORT, msg )
+    response = send_to_server( HOST, PORT, msg )
     return response
     
