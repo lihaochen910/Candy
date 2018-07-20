@@ -1,13 +1,16 @@
 import traceback
 
+
 def printTraceBack():
-	traceback.print_stack()
+    traceback.print_stack()
+
 
 def generateGUID():
-	import uuid
-	return uuid.uuid1().hex
+    import uuid
+    return uuid.uuid1().hex
 
-def getMainModulePath( path = None ):
+
+def getMainModulePath(path=None):
     import sys, os, platform
     import os.path
 
@@ -28,13 +31,12 @@ def getMainModulePath( path = None ):
             return os.path.dirname(mainfile)
         else:
             import __main__
-            if hasattr(__main__, "__gii_path__"):
-                return __main__.__gii_path__
+            if hasattr(__main__, "__candy_path__"):
+                return __main__.__candy_path__
             else:
                 mainfile = os.path.realpath(__main__.__file__)
                 return os.path.dirname(mainfile)
 
-
-	base = _getMainModulePath()
-	if not path: return base
-	return base + '/' + path
+    base = _getMainModulePath()
+    if not path: return base
+    return base + '/' + path

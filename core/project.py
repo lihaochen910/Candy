@@ -40,9 +40,9 @@ _default_config = {
 
 ##----------------------------------------------------------------##
 def _fixPath( path ):
-		path = path.replace( '\\', '/' ) #for windows
-		if path.startswith('./'): path = path[2:]
-		return path	
+	path = path.replace( '\\', '/' ) #for windows
+	if path.startswith('./'): path = path[2:]
+	return path
 
 ##----------------------------------------------------------------##
 def _makePath( base, path ):
@@ -256,7 +256,7 @@ class Project(object):
 		logging.info( 'saving current project' )
 		signals.emitNow('project.presave', self)
 		#save project info & config
-		jsonHelper.trySaveJSON( self.info,   self.getBasePath( _CANDY_INFO_FILE ), 'project info' )
+		jsonHelper.trySaveJSON( self.info, self.getBasePath( _CANDY_INFO_FILE ), 'project info' )
 
 		#save asset & cache
 		self.assetLibrary.save()

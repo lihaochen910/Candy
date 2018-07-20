@@ -11,7 +11,7 @@ import signals
 
 from cache import CacheManager
 
-from util import TagMatch
+# from util import TagMatch
 
 CANDY_ASSET_INDEX_PATH = 'asset_table.json'
 CANDY_ASSET_META_DIR   = '.assetmeta'
@@ -483,12 +483,12 @@ class AssetNode(object):
 	def showInBrowser(self):
 		path = self.getAbsFilePath()
 		if path:
-			AssetUtils.showFileInBrowser(path)
+			showFileInBrowser(path)
 
 	def openInSystem(self):
 		path = self.getAbsFilePath()
 		if path:
-			AssetUtils.openFileInOS(path)
+			openFileInOS(path)
 
 	def deleteFile( self ):
 		manager = self.getManager()
