@@ -70,7 +70,10 @@ class MOAIRuntime( EditorModule ):
 		aku = getAKU()
 		self.GLContextReady = False
 
-		aku.resetContext()
+		print 'start resetContext()'
+		# aku.resetContext()
+		aku.createContext()
+		print 'resetContext() ok'
 		aku.setInputConfigurationName('CANDY')
 
 		#inject python env
@@ -85,6 +88,7 @@ class MOAIRuntime( EditorModule ):
 		_G['GII_PROJECT_SCRIPT_LIB_PATH']  = self.getProject().getScriptLibPath()
 
 		logging.info( 'loading moai lua runtime' )
+		print('loading moai lua runtime')
 		aku.runScript(
 			self.getApp().getPath( 'moai/MOAIInterfaces.lua' )
 			)
@@ -103,7 +107,8 @@ class MOAIRuntime( EditorModule ):
 		self.paused        = False
 		self.GLContextInitializer = None
 		
-		# getAKU().setFuncOpenWindow( self.onOpenWindow )		
+		# getAKU().setFuncOpenWindow( self.onOpenWindow )
+		print('MOAIRuntime initContext() ok.')
 
 	def initGLContext( self ):
 		if self.GLContextReady: return True
@@ -301,6 +306,7 @@ class MOAIRuntime( EditorModule ):
 		# scriptInit = self.getProject().getScriptPath( 'init.lua' )
 		# if os.path.exists( scriptInit ):
 		# 	getAKU().runScript( scriptInit )
+		print('MOAIRuntime onLoad()')
 
 	def onUnload(self):
 		# self.cleanLuaReferences()

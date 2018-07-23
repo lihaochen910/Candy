@@ -1,1 +1,2 @@
+import MOAIRuntime
 import GamePreview
