@@ -4,6 +4,7 @@ import os.path
 import time
 
 from res import *
+from project import Project
 
 import signals
 
@@ -37,7 +38,8 @@ class EditorModule( ResHolder ):
 		return self._dependency or []
 
 	def getBaseDependency( self ):
-		return [ 'candy' ]
+		# return [ 'candy' ]
+		return []
 
 	def getActualDependency( self ):
 		return self.getDependency() + self.getBaseDependency()
@@ -68,8 +70,7 @@ class EditorModule( ResHolder ):
 		return self._app.doCommand( fullname, *args, **kwargs )
 
 	def getProject( self ):
-		pass
-		# return Project.get()
+		return Project.get()
 
 	def getAssetLibrary( self ):
 		return self.getProject().getAssetLibrary()
@@ -230,6 +231,7 @@ class EditorModuleManager(object):
 			m1.dependent.append( m )
 
 		t0 = time.clock()
+		print 'start loading module', m.getName()
 		m.load()
 		# print 'loading module', m.getName(), ( time.clock() - t0 ) * 1000
 		m.loading=False
