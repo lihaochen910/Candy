@@ -4,7 +4,7 @@ from PyQt4.QtCore import QEventLoop, QEvent, QObject
 from core import *
 
 from qt.controls.Window    import MainWindow
-from QtEditorModule            import QtEditorModule
+from QtEditorModule        import QtEditorModule
 from qt.dialogs            import *
 
 _QT_SETTING_FILE = 'qt.ini'
@@ -41,6 +41,7 @@ class QtSupport( QtEditorModule ):
 		try:
 			# styleSheetName = 'dark.qss'
 			styleSheetName = 'QtDarkOrange.qss'
+			# styleSheetName = 'gii.qss'
 			self.qtApp.setStyleSheet(
 					open( self.getApp().getPath( 'resources/theme/' + styleSheetName ) ).read()
 				)
@@ -62,12 +63,12 @@ class QtSupport( QtEditorModule ):
 		self.mainWindow = QtMainWindow(None)
 		self.mainWindow.setBaseSize( 800, 600 )
 		self.mainWindow.resize( 800, 600 )
-		self.mainWindow.setWindowTitle( 'GII - Asset Editor' )
+		self.mainWindow.setWindowTitle( 'Candy - Asset Editor' )
 
 		self.mainWindow.setFixedSize(0,0)
 		self.mainWindow.show()
 		self.mainWindow.raise_() #bring app to front
-		# self.mainWindow.hide()
+		self.mainWindow.hide()
 		self.mainWindow.module = self
 
 		self.sharedMenuBar = QtGui.QMenuBar( None )
