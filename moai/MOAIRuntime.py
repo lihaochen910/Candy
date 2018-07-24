@@ -70,28 +70,30 @@ class MOAIRuntime( EditorModule ):
 		aku = getAKU()
 		self.GLContextReady = False
 
-		print 'start resetContext()'
 		# aku.resetContext()
 		aku.createContext()
-		print 'resetContext() ok'
+
 		aku.setInputConfigurationName('CANDY')
 
 		#inject python env
 		lua = aku.getLuaRuntime()
 		_G._setTarget( lua.globals() )
-		# _G['GII_PYTHON_BRIDGE']            = bridge
-		_G['GII_DATA_PATH']                = self.getApp().getPath('data')
+		# _G['CANDY_PYTHON_BRIDGE']            = bridge
+		_G['CANDY_DATA_PATH']                = self.getApp().getPath('data')
 
-		_G['GII_LIB_LUA_PATH']              = self.getApp().getPath('lib/lua')
-		_G['GII_PROJECT_ENV_LUA_PATH']     = self.getProject().getEnvLibPath( 'lua' )
-		_G['GII_PROJECT_ASSET_PATH']       = self.getProject().getAssetPath()
-		_G['GII_PROJECT_SCRIPT_LIB_PATH']  = self.getProject().getScriptLibPath()
+		_G['CANDY_LIB_LUA_PATH']              = self.getApp().getPath('lib/lua')
+		_G['CANDY_PROJECT_ENV_LUA_PATH']     = self.getProject().getEnvLibPath( 'lua' )
+		_G['CANDY_PROJECT_ASSET_PATH']       = self.getProject().getAssetPath()
+		_G['CANDY_PROJECT_SCRIPT_LIB_PATH']  = self.getProject().getScriptLibPath()
 
 		logging.info( 'loading moai lua runtime' )
-		print('loading moai lua runtime')
 		aku.runScript(
 			self.getApp().getPath( 'moai/MOAIInterfaces.lua' )
-			)
+		)
+
+		aku.runScript(
+			self.getApp().getPath( 'moai/lua/RenderContext.lua' )
+		)
 
 		# aku.runScript(
 		# 	self.getApp().getPath( 'lib/lua/init.lua' )
@@ -306,7 +308,6 @@ class MOAIRuntime( EditorModule ):
 		# scriptInit = self.getProject().getScriptPath( 'init.lua' )
 		# if os.path.exists( scriptInit ):
 		# 	getAKU().runScript( scriptInit )
-		print('MOAIRuntime onLoad()')
 
 	def onUnload(self):
 		# self.cleanLuaReferences()
