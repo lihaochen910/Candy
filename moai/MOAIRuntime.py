@@ -301,7 +301,7 @@ class MOAIRuntime( EditorModule ):
 	#----------
 	def onLoad(self):
 		self.AKUReady = False
-		signals.tryConnect ( 'console.exec', self.execConsole )
+		# signals.tryConnect ( 'console.exec', self.execConsole )
 		self.initContext()
 		self.setWorkingDirectory( self.getProject().getPath() )
 		self.initGLContext()

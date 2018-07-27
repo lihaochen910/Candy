@@ -231,7 +231,7 @@ class EditorModuleManager(object):
 			m1.dependent.append( m )
 
 		t0 = time.clock()
-		print 'start loading module', m.getName()
+		# print 'start loading module', m.getName()
 		m.load()
 		# print 'loading module', m.getName(), ( time.clock() - t0 ) * 1000
 		m.loading=False

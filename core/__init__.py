@@ -11,6 +11,8 @@ from Command        import RemoteCommand, RemoteCommand, RemoteCommandRegistry
 from EditorModule   import EditorModule
 from EditorApp      import app
 
+from helpers import *
+
 def getProjectPath( path = None ):
 	return Project.get().getBasePath( path )
 

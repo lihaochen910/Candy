@@ -2,8 +2,8 @@ import logging
 
 from core                import signals, app, RemoteCommand
 
-from MOAIRuntime    import getAKU
-from MOAICanvasBase import MOAICanvasBase
+from moai.MOAIRuntime import getAKU
+from moai.MOAICanvasBase import MOAICanvasBase
 # from gii.moai.MOAIEditCanvas import MOAIEditCanvas
 
 # from gii.qt.dialogs          import ProcessDialog
@@ -11,7 +11,7 @@ from MOAICanvasBase import MOAICanvasBase
 from PyQt4                   import QtCore, QtGui
 from PyQt4.QtCore            import Qt
 
-from SceneEditor             import SceneEditorModule
+from sceneEditor.SceneEditor import SceneEditorModule
 # import ExternRun
 
 ##----------------------------------------------------------------##
@@ -137,7 +137,7 @@ class GamePreview( SceneEditorModule ):
 		# 		label = 'Selection'
 		# 		)
 		# 	)
-
+		#
 		# self.addTool(	'game_preview_tools/stop',
 		# 	widget = SceneToolButton( 'scene_view_translation',
 		# 		icon = 'tools/translation',
