@@ -8,7 +8,7 @@ from qt import TopEditorModule
 from qt.TopEditorModule import SubEditorModule
 
 
-# import FileWatcher
+from util import FileWatcher
 # from SearchView       import requestSearchView, registerSearchEnumerator
 
 
