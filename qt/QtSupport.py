@@ -37,7 +37,7 @@ class QtSupport( QtEditorModule ):
 		# setup styles
 		# QtGui.QApplication.setStyle(QtGui.QStyleFactory.create('Windows'))
 		QtCore.QDir.setSearchPaths( 'theme', [ self.getApp().getPath( 'resources/theme' ) ] )
-		QtGui.QFontDatabase.addApplicationFont( self.getApp().getPath( 'resources/MyriadPro-Regular.ttf' ) )
+		# QtGui.QFontDatabase.addApplicationFont( self.getApp().getPath( 'resources/MyriadPro-Regular.ttf' ) )
 		try:
 			# styleSheetName = 'dark.qss'
 			styleSheetName = 'QtDarkOrange.qss'
@@ -66,9 +66,9 @@ class QtSupport( QtEditorModule ):
 		self.mainWindow.setWindowTitle( 'Candy - Asset Editor' )
 
 		self.mainWindow.setFixedSize(0,0)
-		self.mainWindow.show()
-		self.mainWindow.raise_() #bring app to front
-		self.mainWindow.hide()
+		# self.mainWindow.show()
+		# self.mainWindow.raise_() #bring app to front
+		# self.mainWindow.hide()
 		self.mainWindow.module = self
 
 		self.sharedMenuBar = QtGui.QMenuBar( None )
