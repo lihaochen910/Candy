@@ -34,7 +34,7 @@ class AssetEditor(TopEditorModule):
 
 	def onSetupMainWindow(self, window):
 		self.mainToolBar = self.addToolBar('asset', self.mainWindow.requestToolBar('main'))
-		window.setMenuWidget(self.getQtSupport().getSharedMenubar())
+		# window.setMenuWidget(self.getQtSupport().getSharedMenubar())
 		####
 		self.addMenu('main/asset', {'label': '&Asset'})
 		self.addMenuItem(
@@ -55,8 +55,9 @@ class AssetEditor(TopEditorModule):
 	# registerSearchEnumerator( assetFolderSearchEnumerator )
 
 	def postStart(self):
-		self.mainWindow.show()
-		self.mainWindow.raise_()
+		# self.mainWindow.show()
+		# self.mainWindow.raise_()
+		pass
 
 	def checkProjectScan(self):
 		lib = self.getAssetLibrary()
