@@ -53,6 +53,7 @@ class GamePreview( SceneEditorModule ):
 
 	def onOpenWindow(self, title, w,h):
 		logging.info('opening MOAI window: %s @ (%d,%d)' % ( str(title), w, h ) )
+		print('opening MOAI window: %s @ (%d,%d)' % ( str(title), w, h ))
 		#no argument accepted here, just use full window
 		# self.getRuntime().initGLContext()
 		from qt.controls.GLWidget import GLWidget
@@ -93,9 +94,9 @@ class GamePreview( SceneEditorModule ):
 		signals.connect( 'app.activate',   self.onAppActivate )
 		signals.connect( 'app.deactivate', self.onAppDeactivate )
 		
-		signals.connect( 'debug.enter',    self.onDebugEnter )
-		signals.connect( 'debug.exit',     self.onDebugExit )
-		signals.connect( 'debug.stop',     self.onDebugStop )
+		# signals.connect( 'debug.enter',    self.onDebugEnter )
+		# signals.connect( 'debug.exit',     self.onDebugExit )
+		# signals.connect( 'debug.stop',     self.onDebugStop )
 		
 		# signals.connect( 'game.pause',     self.onGamePause )
 		# signals.connect( 'game.resume',    self.onGameResume )
@@ -123,7 +124,7 @@ class GamePreview( SceneEditorModule ):
 		# self.labelScreen = label
 		# self.addTool( 'game_preview/----' )
 		# self.addTool( 'game_preview/toggle_stay_top', label = 'Stay Top', type = 'check' )
-		self.addTool( 'game_preview/switch_screen_profile', label = 'Screen Profile' )
+		# self.addTool( 'game_preview/switch_screen_profile', label = 'Screen Profile' )
 		self.onMoaiReset()
 
 		##----------------------------------------------------------------##
@@ -187,6 +188,7 @@ class GamePreview( SceneEditorModule ):
 		if runtime.updateAKU():
 			self.canvas.forceUpdateGL()
 
+
 	def resizeView(self, w,h):
 		self.viewWidth  = w
 		self.viewHeight = h
@@ -200,7 +202,7 @@ class GamePreview( SceneEditorModule ):
 		getAKU().setViewSize( w, h )
 		# runtime.setBufferSize( w, h )
 		runtime.changeRenderContext( 'game', w, h )
-		runtime.renderAKU()		
+		runtime.renderAKU()
 
 	def onMoaiReset( self ):
 		runtime = self.getRuntime()
@@ -242,10 +244,10 @@ class GamePreview( SceneEditorModule ):
 		self.canvas.startRefreshTimer( self.activeFPS )
 		self.canvas.interceptShortcut = True
 		self.getApp().setMinimalMainLoopBudget()
-		jhook = self.getModule( 'joystick_hook' )
-		if jhook:
-			jhook.refreshJoysticks()
-			jhook.setInputDevice( runtime.getInputDevice('device') )
+		# jhook = self.getModule( 'joystick_hook' )
+		# if jhook:
+		# 	jhook.refreshJoysticks()
+		# 	jhook.setInputDevice( runtime.getInputDevice('device') )
 
 		self.enableMenu( 'main/preview/pause_game', True )
 		self.enableMenu( 'main/preview/stop_game',  True )
@@ -261,12 +263,39 @@ class GamePreview( SceneEditorModule ):
 			signals.emitNow( 'preview.resume' )
 			self.updateTimer = self.window.startTimer( 60, self.updateView )
 
+			getAKU().setFuncOpenWindow(self.onOpenWindow)
+
 		self.window.setWindowTitle( 'Game Preview [ RUNNING ]')
 		self.qtool.setStyleSheet('QToolBar{ border-top: 1px solid rgb(0, 120, 0); }')
 		self.paused = False
 		runtime.resume()
 		self.setFocus()
 		logging.info('game preview started')
+
+		entryScript = self.getProject().getScriptLibPath('main.lua')
+		import os
+		if os.path.exists(entryScript):
+			getAKU().runScript(entryScript)
+
+	def pausePreview(self):
+		if self.paused: return
+		self.canvas.setInputDevice(None)
+		# jhook = self.getModule('joystick_hook')
+		# if jhook: jhook.setInputDevice(None)
+
+		self.getApp().resetMainLoopBudget()
+
+		signals.emitNow('preview.pause')
+		logging.info('pause game preview')
+		self.enableMenu('main/preview/start_game', True)
+		self.enableMenu('main/preview/pause_game', False)
+
+		self.window.setWindowTitle('Game Preview[ Paused ]')
+		self.qtool.setStyleSheet('QToolBar{ border-top: 1px solid rgb(255, 0, 0); }')
+
+		self.paused = True
+		self.getRuntime().pause()
+		self.canvas.startRefreshTimer( self.nonActiveFPS )
 
 	def stopPreview( self ):
 		if self.paused is None: return
@@ -298,7 +327,6 @@ class GamePreview( SceneEditorModule ):
 		pass
 		# ExternRun.runGame( parent_window = self.getMainWindow() )
 
-
 	def runSceneExternal( self ):
 		#TODO: use a modal window to indicate external host state
 		scnEditor = self.getModule( 'scenegraph_editor' )
@@ -306,25 +334,7 @@ class GamePreview( SceneEditorModule ):
 			path = scnEditor.activeSceneNode.getNodePath()
 			# ExternRun.runScene( path, parent_window = self.getMainWindow() )
 
-	def pausePreview( self ):
-		if self.paused: return
-		self.canvas.setInputDevice( None )
-		jhook = self.getModule( 'joystick_hook' )
-		if jhook: jhook.setInputDevice( None )
 
-		self.getApp().resetMainLoopBudget()
-
-		signals.emitNow( 'preview.pause' )
-		logging.info('pause game preview')
-		self.enableMenu( 'main/preview/start_game', True )
-		self.enableMenu( 'main/preview/pause_game',  False )
-		
-		self.window.setWindowTitle( 'Game Preview[ Paused ]')
-		self.qtool.setStyleSheet('QToolBar{ border-top: 1px solid rgb(255, 0, 0); }')
-
-		self.paused = True
-		self.getRuntime().pause()
-		self.canvas.startRefreshTimer( self.nonActiveFPS )
 
 	def onAppActivate(self):
 		if self.waitActivate:
