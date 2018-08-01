@@ -115,6 +115,8 @@ class GamePreview( SceneEditorModule ):
 				{'name':'pause_on_leave', 'label':'Pause On Leave', 'type':'check', 'checked':self.getConfig('pause_on_leave')},
 				# '----',
 				# {'name':'reset_moai',     'label':'RESET MOAI', 'shortcut':'Ctrl+Shift+R'}
+				'----',
+				{'name': 'toggle_game_preview_window', 'label': 'Show Game Preview', 'shortcut': 'f4'},
 			], self)
 
 		# label = QtGui.QLabel()
@@ -300,8 +302,7 @@ class GamePreview( SceneEditorModule ):
 	def stopPreview( self ):
 		if self.paused is None: return
 		logging.info('stop game preview')
-		self.canvas.setInputDevice( None )
-		self.canvas.interceptShortcut = False
+
 		jhook = self.getModule( 'joystick_hook' )
 		if jhook: jhook.setInputDevice( None )
 		
@@ -386,6 +387,10 @@ class GamePreview( SceneEditorModule ):
 			
 		elif name == 'start_external_game':
 			self.runGameExternal()
+
+		elif name == 'toggle_game_preview_window':
+			self.window.show()
+			# QtGui.QDockWidget().show()
 
 	def onTool( self, tool ):
 		name = tool.name
