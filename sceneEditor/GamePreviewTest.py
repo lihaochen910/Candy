@@ -115,7 +115,7 @@ class GamePreviewTest(SceneEditorModule):
 		self.enableMenu('main/run/stop_game', False)
 		self.enableMenu('main/run/next_frame', False)
 
-		self.getRuntime().addDefaultInputDevice("run")
+		self.onMoaiReset()
 
 	def onStart(self):
 		pass
@@ -147,7 +147,7 @@ class GamePreviewTest(SceneEditorModule):
 		h = self.viewHeight
 		runtime = self.getRuntime()
 		getAKU().setViewSize(w, h)
-		runtime.changeRenderContext('game test', w, h)
+		runtime.changeRenderContext('game', w, h)
 		runtime.renderAKU()
 
 	def onSetFocus(self):
@@ -160,7 +160,7 @@ class GamePreviewTest(SceneEditorModule):
 
 	def startPreview(self):
 		if self.paused == False: return
-		self.canvas.setInputDevice(self.getRuntime().getInputDevice('run'))
+		self.canvas.setInputDevice(self.getRuntime().getInputDevice('device'))
 		self.canvas.startTick()
 		self.getApp().setMinimalMainLoopBudget()
 
@@ -226,7 +226,15 @@ class GamePreviewTest(SceneEditorModule):
 
 		self.paused = None
 		self.canvas.stopTick()
+
+		self.getRuntime().reset()
+		self.onMoaiReset()
 		logging.info('game preview stopped')
+
+	def onMoaiReset(self):
+		runtime = self.getRuntime()
+		runtime.createRenderContext('game')
+		runtime.addDefaultInputDevice('device')
 
 	def onAppActivate(self):
 		if self.waitActivate:
