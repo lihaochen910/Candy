@@ -70,8 +70,7 @@ class MOAIRuntime( EditorModule ):
 		aku = getAKU()
 		self.GLContextReady = False
 
-		# aku.resetContext()
-		aku.createContext()
+		aku.resetContext()
 
 		aku.setInputConfigurationName('CANDY')
 
@@ -90,6 +89,8 @@ class MOAIRuntime( EditorModule ):
 		aku.runScript(
 			self.getApp().getPath( 'moai/MOAIInterfaces.lua' )
 		)
+
+		# print(self.getApp().getPath( 'moai/MOAIInterfaces.lua' ))
 
 		aku.runScript(
 			self.getApp().getPath( 'moai/lua/RenderContext.lua' )
@@ -218,9 +219,9 @@ class MOAIRuntime( EditorModule ):
 	def resume(self):
 		self.pause(False)
 	
-	def execConsole(self,command):
+	def execConsole(self, command):
 		self.runString(command)
-		
+
 	def updateAKU(self):
 		if not self.AKUReady: return False
 		if self.paused: return False	
@@ -301,11 +302,12 @@ class MOAIRuntime( EditorModule ):
 	#----------
 	def onLoad(self):
 		self.AKUReady = False
-		# signals.tryConnect ( 'console.exec', self.execConsole )
+		signals.tryConnect ( 'console.exec', self.execConsole )
 		self.initContext()
 		self.setWorkingDirectory( self.getProject().getPath() )
 		self.initGLContext()
-		# scriptInit = self.getProject().getScriptPath( 'init.lua' )
+		# scriptInit = self.getProject().getScriptLibPath( 'init.lua' )
+		# import os
 		# if os.path.exists( scriptInit ):
 		# 	getAKU().runScript( scriptInit )
 
