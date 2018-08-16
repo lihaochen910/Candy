@@ -17,16 +17,7 @@
    <property name="spacing">
     <number>2</number>
    </property>
-   <property name="leftMargin">
-    <number>0</number>
-   </property>
-   <property name="topMargin">
-    <number>0</number>
-   </property>
-   <property name="rightMargin">
-    <number>0</number>
-   </property>
-   <property name="bottomMargin">
+   <property name="margin">
     <number>0</number>
    </property>
    <item>
@@ -39,6 +30,21 @@
        <string>Lua</string>
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_3">
+       <property name="spacing">
+        <number>5</number>
+       </property>
+       <property name="leftMargin">
+        <number>3</number>
+       </property>
+       <property name="topMargin">
+        <number>5</number>
+       </property>
+       <property name="rightMargin">
+        <number>3</number>
+       </property>
+       <property name="bottomMargin">
+        <number>3</number>
+       </property>
        <item>
         <widget class="QTextEdit" name="luaConsoleOutput">
          <property name="font">
@@ -75,13 +81,25 @@
        <string>Editor Log</string>
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_4">
+       <property name="spacing">
+        <number>2</number>
+       </property>
+       <property name="margin">
+        <number>7</number>
+       </property>
        <item>
         <widget class="QTextEdit" name="editorLogOutput">
          <property name="font">
           <font>
            <family>Consolas</family>
-           <pointsize>10</pointsize>
+           <pointsize>9</pointsize>
           </font>
+         </property>
+         <property name="autoFormatting">
+          <set>QTextEdit::AutoAll</set>
+         </property>
+         <property name="undoRedoEnabled">
+          <bool>false</bool>
          </property>
          <property name="readOnly">
           <bool>true</bool>
