@@ -1,6 +1,8 @@
 import tempfile
 import os
 import sys
+import logging
+import time
 
 from PyQt4 import QtCore, QtGui, uic
 from PyQt4.QtCore import Qt, QEvent, QObject
@@ -82,15 +84,22 @@ class Console( SceneEditorModule ):
 
 ##----------------------------------------------------------------##
 # class ConsoleWindow( QtGui.QWidget, ui_console.Ui_ConsoleWindow ):
-class ConsoleWindow( QtGui.QWidget):
+class ConsoleWindow( QtGui.QWidget ):
 	"""docstring for ConsoleWindow"""
+	COLOR_WHITE = QtGui.QColor(255, 255, 255)
+	COLOR_RED = QtGui.QColor(255, 0, 0)
+	COLOR_YELLOW = QtGui.QColor(255, 255, 0)
+
 	def __init__(self):
 		super(ConsoleWindow, self).__init__()
-		
+
 		# self.setupUi(self)
 
 		self.history = []
 		self.historyCursor = 0
+
+		self.loggingHandler = ConsoleLogHandler()
+		self.loggingHandler.setListener(self.handleOnLoggingEmit)
 
 		uic.loadUi(getAppPath('packages/EditorConsole/console.ui'), self)
 
@@ -133,6 +142,32 @@ class ConsoleWindow( QtGui.QWidget):
 			return False
 		return True
 
+	def handleOnLoggingEmit(self, msg, level):
+		timeStamp = time.strftime("%H:%M:%S", time.localtime())
+		content = (' [%s] ' % (level)) + msg + '\n'
+
+		# coloredText = None
+		# if level == 'WARNING':
+		# 	coloredText = ("<span style=\" color:#ffff00;\" >%s</span>" % (content))
+		# elif level == 'ERROR':
+		# 	coloredText = ("<span style=\" color:#ff0000;\" >%s</span>" % (content))
+		# else: coloredText = content
+
+		self.editorLogOutput.setTextColor(self.COLOR_WHITE)
+		self.editorLogOutput.append(timeStamp)
+
+		if level == 'WARNING':
+			self.editorLogOutput.setTextColor(self.COLOR_YELLOW)
+			self.editorLogOutput.insertPlainText(content)
+		elif level == 'ERROR':
+			self.editorLogOutput.setTextColor(self.COLOR_RED)
+			self.editorLogOutput.insertPlainText(content)
+		else:   self.editorLogOutput.insertPlainText(content)
+
+		self.editorLogOutput.setTextColor(self.COLOR_WHITE)
+		# self.editorLogOutput.insertPlainText(coloredText)
+		self.editorLogOutput.moveCursor(QtGui.QTextCursor.End)
+
 	def execCommand(self):
 		text = self.luaConsoleInput.text()
 		self.history.append(text)
@@ -170,3 +205,21 @@ class ConsoleWindow( QtGui.QWidget):
 	def clearText(self):
 		self.luaConsoleOutput.clear()
 
+class ConsoleLogHandler( logging.Handler ):
+	listener = False
+
+	def __init__(self):
+		logging.Handler.__init__(self)
+
+		logging.getLogger().addHandler(self)
+		logging.getLogger().setLevel(logging.INFO)
+
+	def setListener(self, listener):
+		self.listener = listener
+
+	def emit(self, record):
+		# print(str(type(record)))
+		msg = self.format(record)
+
+		if not msg: return
+		self.listener(msg, record.levelname)
