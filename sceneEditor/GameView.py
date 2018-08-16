@@ -10,17 +10,17 @@ from PyQt4.QtCore import Qt
 from sceneEditor.SceneEditor import SceneEditorModule
 
 ##----------------------------------------------------------------##
-class GamePreviewTest(SceneEditorModule):
-	"""docstring for GamePreview"""
+class GameView(SceneEditorModule):
+	"""docstring for GameView"""
 
 	def __init__(self):
-		super(GamePreviewTest, self).__init__()
+		super(GameView, self).__init__()
 		self.paused = False
 		self.viewWidth = 0
 		self.viewHeight = 0
 
 	def getName(self):
-		return 'game_preview_test'
+		return 'game_view'
 
 	def getDependency(self):
 		return ['qt', 'moai', 'scene_editor']
@@ -50,7 +50,7 @@ class GamePreviewTest(SceneEditorModule):
 		)
 
 		self.canvas = self.window.addWidget(
-			GamePreviewTestCanvas(self.window)
+			GameViewCanvas(self.window)
 		)
 		# self.canvas.startRefreshTimer(self.nonActiveFPS)
 		self.paused = None
@@ -229,6 +229,7 @@ class GamePreviewTest(SceneEditorModule):
 
 		self.getRuntime().reset()
 		self.onMoaiReset()
+		self.refresh()
 		logging.info('game preview stopped')
 
 	def onMoaiReset(self):
@@ -301,7 +302,7 @@ class GamePreviewTest(SceneEditorModule):
 # input sensors IDs
 KEYBOARD, POINTER, MOUSE_LEFT, MOUSE_MIDDLE, MOUSE_RIGHT, TOTAL = range(0, 6)
 
-class GamePreviewTestCanvas(QtOpenGL.QGLWidget):
+class GameViewCanvas(QtOpenGL.QGLWidget):
 	windowReady = False
 	inputDevice = None
 	buttonCount = 0
@@ -431,7 +432,7 @@ class GamePreviewTestCanvas(QtOpenGL.QGLWidget):
 
 
 ##----------------------------------------------------------------##
-GamePreviewTest().register()
+GameView().register()
 
 
 def convertKeyCode(k):
