@@ -5,7 +5,7 @@ from PyQt4 import QtCore, QtGui, uic
 from PyQt4.QtCore import Qt
 
 
-# from ToolWindowManager import ToolWindowManager
+from ToolWindowManager import ToolWindowManager
 
 def getWindowScreenId(window):
     desktop = QtGui.QApplication.desktop()
@@ -31,7 +31,7 @@ class MainWindow(QtGui.QMainWindow):
         self.setUnifiedTitleAndToolBarOnMac(False)
         self.setDockOptions(
             QtGui.QMainWindow.AllowNestedDocks | QtGui.QMainWindow.AllowTabbedDocks)
-        # self.setTabPosition( Qt.AllDockWidgetAreas, QtGui.QTabWidget.North)
+        self.setTabPosition( Qt.AllDockWidgetAreas, QtGui.QTabWidget.North)
         font = QtGui.QFont()
         font.setPointSize(11)
         self.setFont(font)
@@ -43,13 +43,13 @@ class MainWindow(QtGui.QMainWindow):
 
         self.centerTabWidget.currentChanged.connect(self.onDocumentTabChanged)
 
-        # self.centerTabWidget.setDocumentMode(True)
+        self.centerTabWidget.setDocumentMode(True)
         self.centerTabWidget.setMovable(True)
         self.centerTabWidget.setTabsClosable(True)
         self.centerTabWidget.tabCloseRequested.connect(self.onTabCloseRequested)
 
-    # self.toolWindowMgr = ToolWindowManager( self )
-    # self.setCentralWidget( self.toolWindowMgr )
+        self.toolWindowMgr = ToolWindowManager( self )
+        self.setCentralWidget( self.toolWindowMgr )
 
     def moveToCenter(self):
         moveWindowToCenter(self)
