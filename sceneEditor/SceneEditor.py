@@ -39,6 +39,9 @@ class SceneEditor( TopEditorModule ):
 	def onSetupMainWindow( self, window ):
 		self.mainToolBar = self.addToolBar( 'scene', self.mainWindow.requestToolBar( 'main' ) )		
 		window.setMenuWidget( self.getQtSupport().getSharedMenubar() )
+		window.setWindowIcon( self.getQtSupport().mainWindowIcon )
+		# from PyQt4.QtCore import Qt
+		# window.setWindowFlags(Qt.FramelessWindowHint)
 		#menu
 		self.addMenu( 'main/scene', dict( label = 'Scene' ) )
 
@@ -48,7 +51,7 @@ class SceneEditor( TopEditorModule ):
 
 	def postStart( self ):
 		self.mainWindow.show()
-		
+
 	def onMenu(self, node):
 		name = node.name
 		if name == 'open_scene':
