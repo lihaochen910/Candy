@@ -48,7 +48,7 @@ class EditorApp(object):
 		self.commandRegistry       = EditorCommandRegistry.get()
 		self.remoteCommandRegistry = RemoteCommandRegistry.get()
 		
-		self.registerDataPath( self.getPath('data') )
+		self.registerDataPath( self.getPath('resources') )
 
 		signals.connect( 'module.register', self.onModuleRegister )
 
