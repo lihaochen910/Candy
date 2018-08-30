@@ -37,7 +37,7 @@ class QtSupport( QtEditorModule ):
 		# setup styles
 		# QtGui.QApplication.setStyle(QtGui.QStyleFactory.create('Windows'))
 		QtCore.QDir.setSearchPaths( 'theme', [ self.getApp().getPath( 'resources/theme' ) ] )
-		# QtGui.QFontDatabase.addApplicationFont( self.getApp().getPath( 'resources/MyriadPro-Regular.ttf' ) )
+		QtGui.QFontDatabase.addApplicationFont( self.getApp().getPath( 'resources/MyriadPro-Regular.ttf' ) )
 		try:
 			# styleSheetName = 'dark.qss'
 			styleSheetName = 'QtDarkOrange.qss'
@@ -45,8 +45,10 @@ class QtSupport( QtEditorModule ):
 			self.qtApp.setStyleSheet(
 					open( self.getApp().getPath( 'resources/theme/' + styleSheetName ) ).read()
 				)
+			# self.qtApp.setFont(QtGui.QFont(self.getApp().getPath( 'resources/MyriadPro-Regular.ttf' )))
 		except Exception, e:
-			# logging.info('style sheet not load',e)
+			import logging
+			logging.info('style sheet not load', e)
 			self.qtApp.setStyleSheet('''
 				QWidget{
 					font: 10pt;				
@@ -63,9 +65,11 @@ class QtSupport( QtEditorModule ):
 		self.mainWindow = QtMainWindow(None)
 		self.mainWindow.setBaseSize( 800, 600 )
 		self.mainWindow.resize( 800, 600 )
-		self.mainWindow.setWindowTitle( 'Candy - Asset Editor' )
+		self.mainWindow.setWindowTitle( 'Candy - MainWindow' )
+		self.mainWindowIcon = QtGui.QIcon(self.getApp().getPath('resources/icons/appicon_2.png'))
+		self.mainWindow.setWindowIcon(self.mainWindowIcon)
 
-		self.mainWindow.setFixedSize(0,0)
+		self.mainWindow.setFixedSize( 0, 0 )
 		# self.mainWindow.show()
 		# self.mainWindow.raise_() #bring app to front
 		# self.mainWindow.hide()
