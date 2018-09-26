@@ -106,7 +106,6 @@ class EditorApp(object):
 
 		return True
 
-
 	def run( self, **kwargs ):
 		if not self.initialized: 
 			if not self.init( **kwargs ):
@@ -162,7 +161,7 @@ class EditorApp(object):
 		budget = self.mainLoopBudget
 		t0 = time.time()
 		EditorModuleManager.get().updateAllModules()
-		tx = time.time()
+		# tx = time.time()
 		if signals.dispatchAll():
 			rest = 0
 		else:
