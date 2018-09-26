@@ -148,15 +148,18 @@ class MOAIRuntime( EditorModule ):
 	#------Manual Control For MOAI Module
 	#TODO: move function below into bridge module
 	def stepSim(self, step):
-		_CANDY.stepSim(step)
+		# _CANDY.stepSim(step)
+		_G.MOAISim.stepSim(step)
 		
 	def setBufferSize(self, w,h):
 		#for setting edit canvas size (without sending resize event)
-		_CANDY.setBufferSize(w,h)
+		# _CANDY.setBufferSize(w,h)
+		_G.MOAISim.setBufferSize(w, h)
 
 	def manualRenderAll(self):
 		if not self.GLContextReady: return
-		_CANDY.manualRenderAll()
+		# _CANDY.manualRenderAll()
+		_G.MOAISim.renderFrameBuffer(_G.MOAIGfxMgr.getFrameBuffer())
 
 	def changeRenderContext(self, contextId, w, h ):
 		_CANDY.changeRenderContext( contextId or False, w or False, h or False )
@@ -220,6 +223,7 @@ class MOAIRuntime( EditorModule ):
 		self.pause(False)
 	
 	def execConsole(self, command):
+		# logging.info('execConsole: ' + command)
 		self.runString(command)
 
 	def updateAKU(self):
