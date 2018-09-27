@@ -43,10 +43,9 @@ class GameView(SceneEditorModule):
 		getAKU().setOrientationLandscape()
 
 	def onLoad(self):
-		self.window = self.requestDockWindow(
-			'GamePreviewTest',
+		self.window = self.requestDocumentWindow(
 			title='Game',
-			dock='right'
+			# dock='right'
 		)
 
 		self.canvas = self.window.addWidget(
@@ -145,6 +144,7 @@ class GameView(SceneEditorModule):
 	def renderView(self):
 		w = self.viewWidth
 		h = self.viewHeight
+		print(w, h)
 		runtime = self.getRuntime()
 		getAKU().setViewSize(w, h)
 		runtime.changeRenderContext('game', w, h)
@@ -180,6 +180,9 @@ class GameView(SceneEditorModule):
 			entryScript = self.getProject().getScriptLibPath('main.lua')
 			import os
 			if os.path.exists(entryScript):
+				# self.getRuntime().setWorkingDirectory(self.getProject().getPath() + "/game")
+				self.getRuntime().getRuntimeEnv()['SCREEN_WIDTH'] = self.canvas.size().width()
+				self.getRuntime().getRuntimeEnv()['SCREEN_HEIGHT'] = self.canvas.size().height()
 				getAKU().runScript(entryScript)
 
 		self.window.setWindowTitle('Game [ RUNNING ]')
@@ -202,7 +205,7 @@ class GameView(SceneEditorModule):
 		self.enableMenu('main/run/next_frame', True)
 
 		self.window.setWindowTitle('Game [ Paused ]')
-		self.qtool.setStyleSheet('QToolBar{ border-top: 1px solid rgb(255, 0, 0); }')
+		self.qtool.setStyleSheet('QToolBar{ border-top: 1px solid rgb(255, 255, 0); }')
 
 		self.paused = True
 		self.canvas.stopTick()
@@ -332,6 +335,7 @@ class GameViewCanvas(QtOpenGL.QGLWidget):
 
 	def resizeGL(self, w, h):
 		if self.windowReady:
+			logging.info('Game resizeGL ( %d x %d )' % (w, h))
 			getAKU().setScreenSize(w, h)
 			getAKU().setViewSize(w, h)
 
