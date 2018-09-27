@@ -12,6 +12,7 @@ from EditorModule   import EditorModule
 from EditorApp      import app
 
 from helpers import *
+from model import *
 
 CANDY_MIME_ENTITY_DATA = 'application/candy.entity-data'
 CANDY_MIME_ASSET_LIST  = 'application/candy.asset-list'
