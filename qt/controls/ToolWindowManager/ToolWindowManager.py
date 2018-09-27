@@ -675,22 +675,27 @@ if __name__ == '__main__':
 			super(Test, self).__init__( *args )
 			mgr = ToolWindowManager( self )
 			self.setCentralWidget( mgr )
+
 			widget = QtGui.QPushButton( 'hello' )
 			widget.setWindowTitle( 'hello' )
 			widget.setObjectName( 'hello' )
 			mgr.addToolWindow( widget, ToolWindowManager.EmptySpace )
+
 			widget = QtGui.QPushButton( 'world' )
 			widget.setWindowTitle( 'world' )
 			widget.setObjectName( 'world' )
 			mgr.addToolWindow( widget, ToolWindowManager.NewFloatingArea )
+
 			widget = QtGui.QPushButton( 'happy' )
 			widget.setWindowTitle( 'happy' )
 			widget.setObjectName( 'happy' )
 			mgr.addToolWindow( widget, ToolWindowManager.EmptySpace )
+
 			widget = QtGui.QPushButton( 'goodness' )
 			widget.setWindowTitle( 'goodness' )
 			widget.setObjectName( 'goodness' )
 			mgr.addToolWindow( widget, ToolWindowManager.LastUsedArea )
+
 			result = mgr.saveState()
 			for w in mgr.toolWindows():
 				mgr.moveToolWindow( w, ToolWindowManager.NewFloatingArea )

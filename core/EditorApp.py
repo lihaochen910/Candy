@@ -255,7 +255,7 @@ class EditorApp(object):
 		if self.projectLoaded: return Project.get()
 		info = Project.findProject( basePath )
 		if not info:
-			raise Exception( 'no valid gii project found' )
+			raise Exception( 'no valid candy project found' )
 		proj = Project.get()
 		proj.load( info['path'] )
 		self.projectLoaded = True

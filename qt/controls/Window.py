@@ -1,3 +1,4 @@
+import logging
 from core import signals
 from qt.helpers import restrainWidgetToScreen
 
@@ -31,7 +32,7 @@ class MainWindow(QtGui.QMainWindow):
         self.setUnifiedTitleAndToolBarOnMac(False)
         self.setDockOptions(
             QtGui.QMainWindow.AllowNestedDocks | QtGui.QMainWindow.AllowTabbedDocks)
-        self.setTabPosition( Qt.AllDockWidgetAreas, QtGui.QTabWidget.North)
+        # self.setTabPosition( Qt.AllDockWidgetAreas, QtGui.QTabWidget.North)
         font = QtGui.QFont()
         font.setPointSize(11)
         self.setFont(font)
@@ -39,17 +40,19 @@ class MainWindow(QtGui.QMainWindow):
         self.setFocusPolicy(Qt.WheelFocus)
 
         self.centerTabWidget = QtGui.QTabWidget(self)
-        self.setCentralWidget(self.centerTabWidget)
+        self.toolWindowMgr = ToolWindowManager(self)
+        # self.centerTabWidget = self.toolWindowMgr.createArea()
+        self.setCentralWidget(self.toolWindowMgr)
 
         self.centerTabWidget.currentChanged.connect(self.onDocumentTabChanged)
 
-        self.centerTabWidget.setDocumentMode(True)
+        # self.centerTabWidget.setDocumentMode(True)
         self.centerTabWidget.setMovable(True)
         self.centerTabWidget.setTabsClosable(True)
         self.centerTabWidget.tabCloseRequested.connect(self.onTabCloseRequested)
 
-        self.toolWindowMgr = ToolWindowManager( self )
-        self.setCentralWidget( self.toolWindowMgr )
+        # self.toolWindowMgr = ToolWindowManager( self )
+        # self.setCentralWidget( self.toolWindowMgr )
 
     def moveToCenter(self):
         moveWindowToCenter(self)
@@ -92,10 +95,11 @@ class MainWindow(QtGui.QMainWindow):
     def requestDocumentWindow(self, id, **windowOption):
         title = windowOption.get('title', id)
 
-        window = DocumentWindow(self.centerTabWidget)
-        # window = DocumentWindow( self.toolWindowMgr )
-        # self.toolWindowMgr.addToolWindow( window, ToolWindowManager.EmptySpace )
+        # window = DocumentWindow(self.centerTabWidget)
+        window = DocumentWindow( self.toolWindowMgr )
+        toolWindow = self.toolWindowMgr.addToolWindow( window, ToolWindowManager.EmptySpace )
         window.parentWindow = self
+        window.toolWindow = toolWindow
         window.setWindowTitle(title)
         # self.centerTabWidget.addTab( window, title )
 
@@ -111,6 +115,7 @@ class MainWindow(QtGui.QMainWindow):
         size = windowOption.get('size', None)
         if size:
             window.resize(*size)
+
         return window
 
     def requestDockWindow(self, id, **dockOptions):
@@ -173,9 +178,6 @@ class MainWindow(QtGui.QMainWindow):
         window.dockOptions = dockOptions
 
         return window
-
-    def requestToolWindow(self, id, **option):
-        pass
 
     def onTabCloseRequested(self, idx):
         subwindow = self.centerTabWidget.widget(idx)
@@ -299,6 +301,11 @@ class SubWindow(QtGui.QMainWindow, SubWindowMixin):
 
 ##----------------------------------------------------------------##
 class DocumentWindow(SubWindow):
+
+    def __init__(self, parent):
+        super(DocumentWindow, self).__init__(parent)
+        self.toolWindowMgr = parent
+
     def show(self, *args):
         tab = self.parentWindow.centerTabWidget
         idx = tab.indexOf(self)
@@ -306,6 +313,7 @@ class DocumentWindow(SubWindow):
             idx = tab.addTab(self, self.windowTitle())
         super(DocumentWindow, self).show(*args)
         tab.setCurrentIndex(idx)
+        self.toolWindowMgr.addToolWindow( self, ToolWindowManager.EmptySpace )
 
     def setWindowTitle(self, title):
         super(DocumentWindow, self).setWindowTitle(title)
@@ -316,9 +324,8 @@ class DocumentWindow(SubWindow):
     def addToolBar(self):
         return self.addWidget(QtGui.QToolBar(), expanding=False)
 
-    ##----------------------------------------------------------------##
 
-
+##----------------------------------------------------------------##
 class DockWindowTitleBar(QtGui.QWidget):
     """docstring for DockWindowTitleBar"""
 

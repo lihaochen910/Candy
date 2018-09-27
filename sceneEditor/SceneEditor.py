@@ -7,6 +7,7 @@ from qt.TopEditorModule import TopEditorModule, SubEditorModule
 
 # from qt.IconCache                  import getIcon
 # from qt.controls.GenericTreeWidget import GenericTreeWidget
+from core.signals import register
 ##----------------------------------------------------------------##
 class SceneEditorModule( SubEditorModule ):
 	def getParentModuleId( self ):
@@ -43,9 +44,19 @@ class SceneEditor( TopEditorModule ):
 		# from PyQt4.QtCore import Qt
 		# window.setWindowFlags(Qt.FramelessWindowHint)
 		#menu
-		self.addMenu( 'main/scene', dict( label = 'Scene' ) )
+		self.menu = self.addMenu( 'main/scene', dict( label = 'Scene' ) )
+
+		self.menu.addChild([
+			{'name': 'start_scene', 'label': 'Start Scene Tick'},
+			{'name': 'pause_scene', 'label': 'Pause Scene'},
+			{'name': 'stop_scene', 'label': 'Stop Scene'},
+			'----',
+			{'name': 'toggle_scene_view_window', 'label': 'Show Scene View', 'shortcut': 'f4'},
+		], self)
 
 	def onLoad( self ):
+		self.sceneView = self.getModule('scene_view')
+
 		signals.connect( 'app.start', self.postStart )
 		return True
 
@@ -57,6 +68,18 @@ class SceneEditor( TopEditorModule ):
 		if name == 'open_scene':
 			#TODO
 			pass
+		elif name == 'start_scene':
+			# self.startPreview()
+			pass
+		elif name == 'stop_scene':
+			# self.stopPreview()
+			pass
+		elif name == 'pause_scene':
+			# self.pausePreview()
+			pass
+		elif name == 'toggle_scene_view_window':
+			self.sceneView.window.show()
+			# self.sceneView.window.setFocus()
 
 	def onTool( self, tool ):
 		name = tool.name
@@ -80,3 +103,41 @@ class RemoteCommandRunGame( RemoteCommand ):
 	# 	from core.tools import RunHost
 	# 	RunHost.run( 'main' )
 
+
+##----------------------------------------------------------------##
+register( 'scene.pre_open' )
+register( 'scene.update' )
+register( 'scene.clear' )
+register( 'scene.save' )
+register( 'scene.saved' )
+register( 'scene.open' )
+register( 'scene.close' )
+register( 'scene.change' ) #Scene is changed during preview
+
+register( 'scene.modified' )
+
+register( 'entity.added' )
+register( 'entity.removed' )
+register( 'entity.modified' )
+register( 'entity.renamed' )
+register( 'entity.visible_changed' )
+register( 'entity.pickable_changed' )
+
+# register( 'prefab.unlink' )
+# register( 'prefab.relink' )
+# register( 'prefab.push' )
+# register( 'prefab.pull' )
+#
+# register( 'proto.unlink' )
+# register( 'proto.relink' )
+
+register( 'component.added' )
+register( 'component.removed' )
+
+# register( 'animator.start' )
+# register( 'animator.stop' )
+
+register( 'scene_tool.change' )
+register( 'scene_tool_category.update' )
+# register( 'external_player.start' )
+# register( 'external_player.stop' )

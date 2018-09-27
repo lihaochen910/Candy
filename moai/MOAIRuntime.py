@@ -18,7 +18,7 @@ signals.register( 'moai.reset' )
 signals.register( 'moai.ready' )
 
 ##----------------------------------------------------------------##
-# import bridge
+import LuaBridge
 
 ##----------------------------------------------------------------##
 ## MOAIRuntime
@@ -77,10 +77,11 @@ class MOAIRuntime( EditorModule ):
 		#inject python env
 		lua = aku.getLuaRuntime()
 		_G._setTarget( lua.globals() )
-		# _G['CANDY_PYTHON_BRIDGE']            = bridge
-		_G['CANDY_DATA_PATH']                = self.getApp().getPath('data')
 
-		_G['CANDY_LIB_LUA_PATH']              = self.getApp().getPath('lib/lua')
+		_G['CANDY_PYTHON_BRIDGE']            = LuaBridge
+		_G['CANDY_DATA_PATH']                = self.getApp().getPath('resources')
+
+		_G['CANDY_LIB_LUA_PATH']              = self.getApp().getPath('lua')
 		_G['CANDY_PROJECT_ENV_LUA_PATH']     = self.getProject().getEnvLibPath( 'lua' )
 		_G['CANDY_PROJECT_ASSET_PATH']       = self.getProject().getAssetPath()
 		_G['CANDY_PROJECT_SCRIPT_LIB_PATH']  = self.getProject().getScriptLibPath()
@@ -96,9 +97,10 @@ class MOAIRuntime( EditorModule ):
 			self.getApp().getPath( 'moai/lua/RenderContext.lua' )
 		)
 
-		# aku.runScript(
-		# 	self.getApp().getPath( 'lib/lua/init.lua' )
-		# 	)
+		# init candy editor lua module
+		aku.runScript(
+			self.getApp().getPath( 'lua/init.lua' )
+		)
 
 		_CANDY._setTarget( _G['candy'] )
 
