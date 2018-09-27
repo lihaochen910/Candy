@@ -13,6 +13,9 @@ from EditorApp      import app
 
 from helpers import *
 
+CANDY_MIME_ENTITY_DATA = 'application/candy.entity-data'
+CANDY_MIME_ASSET_LIST  = 'application/candy.asset-list'
+
 def getProjectPath( path = None ):
 	return Project.get().getBasePath( path )
 
