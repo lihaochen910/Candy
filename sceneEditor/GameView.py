@@ -202,7 +202,7 @@ class GameView(SceneEditorModule):
 		self.enableMenu('main/run/next_frame', True)
 
 		self.window.setWindowTitle('Game [ Paused ]')
-		self.qtool.setStyleSheet('QToolBar{ border-top: 1px solid rgb(255, 0, 0); }')
+		self.qtool.setStyleSheet('QToolBar{ border-top: 1px solid rgb(255, 255, 0); }')
 
 		self.paused = True
 		self.canvas.stopTick()
