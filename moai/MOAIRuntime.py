@@ -96,12 +96,6 @@ class MOAIRuntime( EditorModule ):
 			self.getApp().getPath( 'moai/MOAIInterfaces.lua' )
 		)
 
-		# print(self.getApp().getPath( 'moai/MOAIInterfaces.lua' ))
-
-		aku.runScript(
-			self.getApp().getPath( 'moai/lua/RenderContext.lua' )
-		)
-
 		# init candy editor lua module
 		aku.runScript(
 			self.getApp().getPath( 'lua/init.lua' )
