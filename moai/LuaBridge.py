@@ -14,6 +14,7 @@ import uuid
 
 import importlib
 
+from qt.dialogs import alertMessage
 
 def wrapLuaCaller(func):
 	def caller(*args):
@@ -60,6 +61,9 @@ def clearLuaRegisteredSignals():
 
 def throwPythonException(name, data=None):
 	raise MOAIException(name)
+
+def showAlertMessage(title, msg):
+	alertMessage(title, msg)
 
 ##----------------------------------------------------------------##
 def importModule( id ):

@@ -9,8 +9,9 @@ from LuaTableProxy import LuaTableProxy
 from MOAIInputDevice import MOAIInputDevice
 
 ##----------------------------------------------------------------##
-_G   = LuaTableProxy( None )
-_CANDY = LuaTableProxy( None )
+_G          = LuaTableProxy( None )
+_CANDY      = LuaTableProxy( None )
+_C          = LuaTableProxy( None )
 
 signals.register( 'lua.msg' )
 signals.register( 'moai.clean' )
@@ -61,6 +62,7 @@ class MOAIRuntime( EditorModule ):
 	def initContext(self):
 		global _G
 		global _CANDY
+		global _C
 
 		self.luaModules        = []
 
@@ -86,6 +88,9 @@ class MOAIRuntime( EditorModule ):
 		_G['CANDY_PROJECT_ASSET_PATH']       = self.getProject().getAssetPath()
 		_G['CANDY_PROJECT_SCRIPT_LIB_PATH']  = self.getProject().getScriptLibPath()
 
+		_G.MOAIEnvironment.horizontalResolution = 1920
+		_G.MOAIEnvironment.verticalResolution = 1080
+
 		logging.info( 'loading moai lua runtime' )
 		aku.runScript(
 			self.getApp().getPath( 'moai/MOAIInterfaces.lua' )
@@ -103,6 +108,7 @@ class MOAIRuntime( EditorModule ):
 		)
 
 		_CANDY._setTarget( _G['candy'] )
+		_C._setTarget( _G['_C'] )
 
 		assert _CANDY, "Failed loading Candy Lua Runtime!"
 		#finish loading lua bridge
@@ -312,10 +318,10 @@ class MOAIRuntime( EditorModule ):
 		self.initContext()
 		self.setWorkingDirectory( self.getProject().getPath() )
 		self.initGLContext()
-		# scriptInit = self.getProject().getScriptLibPath( 'init.lua' )
-		# import os
-		# if os.path.exists( scriptInit ):
-		# 	getAKU().runScript( scriptInit )
+		scriptInit = self.getProject().getScriptLibPath( 'main.lua' )
+		import os
+		if os.path.exists( scriptInit ):
+			getAKU().runScript( scriptInit )
 
 	def onUnload(self):
 		# self.cleanLuaReferences()
@@ -413,6 +419,9 @@ class MOAILuaDelegate(object):
 		self.luaEnv=None
 
 
+##----------------------------------------------------------------##
+## Exception
+##----------------------------------------------------------------##
 class MOAIException(Exception):
 	def __init__(self, code):
 		self.args=(code,)
