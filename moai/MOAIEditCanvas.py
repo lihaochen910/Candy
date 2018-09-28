@@ -1,5 +1,4 @@
 import os.path
-import time
 from time import time as getTime
 
 from PyQt4 import QtCore, QtGui, QtOpenGL
@@ -10,7 +9,7 @@ from core.EditorApp import app
 from core import signals
 
 from qt.controls.GLWidget import GLWidget
-# from MOAIRuntime              import getAKU, MOAIRuntime, MOAILuaDelegate
+from MOAIRuntime              import getAKU, MOAIRuntime, MOAILuaDelegate
 from MOAICanvasBase           import MOAICanvasBase
 
 
@@ -121,8 +120,8 @@ def convertKeyCode(k):
 	if k>1000: k = (k&0xff)+(255 - 0x55)
 	return QTKeymap.get(k, k)
 
-# class MOAIEditCanvasLuaDelegate(MOAILuaDelegate):
-class MOAIEditCanvasLuaDelegate():
+class MOAIEditCanvasLuaDelegate(MOAILuaDelegate):
+# class MOAIEditCanvasLuaDelegate():
 	#Add some shortcuts
 	def clearLua(self):
 		super(MOAIEditCanvasLuaDelegate, self).clearLua()
@@ -140,7 +139,7 @@ class MOAIEditCanvasLuaDelegate():
 		self._onUpdate     = None
 
 	def load(self, scriptPath, scriptEnv = None ):
-		# super( MOAIEditCanvasLuaDelegate, self ).load( scriptPath, scriptEnv )
+		super( MOAIEditCanvasLuaDelegate, self ).load( scriptPath, scriptEnv )
 		env = self.luaEnv
 		if not env:
 			raise Exception( 'failed loading editcanvas script:%s' % scriptPath )
@@ -229,7 +228,7 @@ class MOAIEditCanvasBase( MOAICanvasBase ):
 		self.clearColor  = kwargs.get( 'clear_color', ( 0, 0, 0, 1 ) )
 		self.runtime     = app.affirmModule( 'moai' )
 		self.contextName = '%s<%d>' % ( contextPrefix, MOAIEditCanvas._id )
-		# self.delegate    = MOAIEditCanvasLuaDelegate( self, autoReload = False )
+		self.delegate    = MOAIEditCanvasLuaDelegate()
 		self.updateTimer = QtCore.QTimer(self)
 		self.viewWidth   = 0
 		self.viewHeight  = 0
