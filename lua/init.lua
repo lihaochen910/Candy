@@ -9,9 +9,16 @@ package.path = package.path
 	.. ( ';' .. CANDY_LIB_LUA_PATH .. '/?.lua' )
 	.. ( ';' .. CANDY_LIB_LUA_PATH .. '/?/init.lua' )
 
+--------------------------------------------------------------------
+----Create Global
+--------------------------------------------------------------------
+rawset(_G, '_C', {})
 
 
-module( 'candy_editor', package.seeall )
+require 'candy.PythonBridge'
+
+
+module( 'candy_edit', package.seeall )
 
 
 
