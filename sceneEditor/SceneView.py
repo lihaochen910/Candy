@@ -67,7 +67,7 @@ class SceneViewToolScale( SceneViewTool ):
 class SceneView( SceneEditorModule ):
 	name       = 'scene_view'
 	# dependency = [ 'mock', 'scene_editor', 'scenegraph_editor' ]
-	dependency = [ 'scene_editor' ]
+	dependency = [ 'moai', 'scene_editor' ]
 
 	def getName(self):
 		return self.name
@@ -89,10 +89,11 @@ class SceneView( SceneEditorModule ):
 		self.addToolBar( 'scene_view_config', self.toolbar )
 
 		self.canvas = self.window.addWidget( SceneViewCanvas() )
-		# self.canvas.loadScript( _getModulePath('SceneView.lua') )
+		self.canvas.loadScript( app.getPath('lua/candy/SceneViewHelper.lua') )
+		# self.canvas.loadScript( app.getPath('lua/init.lua') )
 		self.canvas.parentView = self
 		
-		# self.canvas.setDelegateEnv( '_giiSceneView', self )
+		self.canvas.setDelegateEnv( '_candyEditorSceneView', self )
 
 		self.updateTimer        = None
 		self.updatePending      = False
