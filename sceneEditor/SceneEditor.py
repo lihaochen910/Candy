@@ -5,6 +5,8 @@ from qt.controls.Window import MainWindow
 from qt.controls.Menu   import MenuManager
 from qt.TopEditorModule import TopEditorModule, SubEditorModule
 
+from moai.MOAIRuntime import _CANDY
+
 # from qt.IconCache                  import getIcon
 # from qt.controls.GenericTreeWidget import GenericTreeWidget
 from core.signals import register
@@ -29,7 +31,7 @@ class SceneEditorModule( SubEditorModule ):
 ##----------------------------------------------------------------##
 class SceneEditor( TopEditorModule ):
 	name       = 'scene_editor'
-	dependency = ['qt']
+	dependency = ['qt', 'moai']
 
 	def getSelectionGroup( self ):
 		return 'scene'
@@ -47,6 +49,9 @@ class SceneEditor( TopEditorModule ):
 		self.menu = self.addMenu( 'main/scene', dict( label = 'Scene' ) )
 
 		self.menu.addChild([
+			{'name': 'new_scene', 'label': 'New Scene'},
+			{'name': 'open_scene', 'label': 'Open Scene'},
+			'----',
 			{'name': 'start_scene', 'label': 'Start Scene Tick'},
 			{'name': 'pause_scene', 'label': 'Pause Scene'},
 			{'name': 'stop_scene', 'label': 'Stop Scene'},
@@ -56,6 +61,7 @@ class SceneEditor( TopEditorModule ):
 
 	def onLoad( self ):
 		self.sceneView = self.getModule('scene_view')
+		self.runtime = self.getModule('moai')
 
 		signals.connect( 'app.start', self.postStart )
 		return True
@@ -65,7 +71,9 @@ class SceneEditor( TopEditorModule ):
 
 	def onMenu(self, node):
 		name = node.name
-		if name == 'open_scene':
+		if name == 'new_scene':
+			self.createNewSceneAndOpen()
+		elif name == 'open_scene':
 			#TODO
 			pass
 		elif name == 'start_scene':
@@ -91,6 +99,10 @@ class SceneEditor( TopEditorModule ):
 		# 	deployManager = self.getModule('deploy_manager')
 		# 	if deployManager:
 		# 		deployManager.setFocus()
+
+	def createNewSceneAndOpen(self):
+		_CANDY.game.createNewSceneAndOpen()
+
 
 ##----------------------------------------------------------------##
 def getSceneSelectionManager():
