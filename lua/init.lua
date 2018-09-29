@@ -18,8 +18,5 @@ rawset(_G, '_C', {})
 require 'candy.PythonBridge'
 require 'candy.RenderContext'
 
-
-module( 'candy_edit', package.seeall )
-
-
+require 'candy_edit'
 
