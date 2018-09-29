@@ -96,7 +96,14 @@ class MOAIRuntime( EditorModule ):
 			self.getApp().getPath( 'moai/MOAIInterfaces.lua' )
 		)
 
+		logging.info('loading project script lib')
+		self.setWorkingDirectory(self.getProject().getScriptLibPath())
+		aku.runScript(
+			self.getProject().getScriptLibPath('main.lua')
+		)
+
 		# init candy editor lua module
+		logging.info('loading candy editor lua module')
 		aku.runScript(
 			self.getApp().getPath( 'lua/init.lua' )
 		)
@@ -312,10 +319,10 @@ class MOAIRuntime( EditorModule ):
 		self.initContext()
 		self.setWorkingDirectory( self.getProject().getPath() )
 		self.initGLContext()
-		scriptInit = self.getProject().getScriptLibPath( 'main.lua' )
-		import os
-		if os.path.exists( scriptInit ):
-			getAKU().runScript( scriptInit )
+		# scriptInit = self.getProject().getScriptLibPath( 'main.lua' )
+		# import os
+		# if os.path.exists( scriptInit ):
+		# 	getAKU().runScript( scriptInit )
 
 	def onUnload(self):
 		# self.cleanLuaReferences()
