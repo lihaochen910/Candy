@@ -170,6 +170,9 @@ class MOAIRuntime( EditorModule ):
 		# _CANDY.manualRenderAll()
 		_G.MOAISim.renderFrameBuffer(_G.MOAIGfxMgr.getFrameBuffer())
 
+	def getRenderContext(self, key):
+		return _CANDY.getRenderContext(key)
+
 	def changeRenderContext(self, contextId, w, h ):
 		_CANDY.changeRenderContext( contextId or False, w or False, h or False )
 
@@ -323,6 +326,8 @@ class MOAIRuntime( EditorModule ):
 		# import os
 		# if os.path.exists( scriptInit ):
 		# 	getAKU().runScript( scriptInit )
+
+		print('load MOAIRuntime ok!')
 
 	def onUnload(self):
 		# self.cleanLuaReferences()
