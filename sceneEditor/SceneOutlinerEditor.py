@@ -81,7 +81,7 @@ class SceneOutlinerEditor( SceneEditorModule ):
 		self.tool = self.addToolBar( 'scene_graph', self.container.addToolBar() )
 		self.delegate = MOAILuaDelegate( self )
 		# self.delegate.load( getModulePath( 'SceneGraphEditor.lua' ) )
-		self.delegate.load( self.getApp().getPath( 'lua/cnady/SceneOutlinerEditor.lua' ) )
+		self.delegate.load( self.getApp().getPath( 'lua/candy/SceneOutlinerEditor.lua' ) )
 
 		self.entityCreatorMenu=self.addMenu(
 			'main/scene/actor_create',
@@ -444,7 +444,7 @@ class SceneOutlinerEditor( SceneEditorModule ):
 
 	def preProjectSave( self, prj ):
 		if self.activeSceneNode:
-			_MOCK.game.previewingScene = self.activeSceneNode.getNodePath()
+			_CANDY.game.previewingScene = self.activeSceneNode.getNodePath()
 
 	def onMoaiClean( self ):
 		self.tree.clear()
@@ -796,15 +796,15 @@ class SceneOutlinerEditor( SceneEditorModule ):
 			else:
 				text = text + '\n' + s.name
 		mime.setText( text )
-		mime.setData( GII_MIME_ENTITY_DATA, entityGroupData.encode('utf-8') )
+		mime.setData( CANDY_MIME_ACTOR_DATA, entityGroupData.encode('utf-8') )
 		clip.setMimeData( mime )
 		return True
 
 	def onPasteEntity( self ):
 		clip = QtGui.QApplication.clipboard()
 		mime = clip.mimeData()
-		if mime.hasFormat( GII_MIME_ENTITY_DATA ):
-			data = mime.data( GII_MIME_ENTITY_DATA )
+		if mime.hasFormat( CANDY_MIME_ACTOR_DATA ):
+			data = mime.data( CANDY_MIME_ACTOR_DATA )
 			self.doCommand( 'scene_editor/paste_entity',
 				data = str(data).decode('utf-8')
 			)
@@ -822,15 +822,15 @@ class SceneOutlinerEditor( SceneEditorModule ):
 			else:
 				text = text + '\n' + s.name
 		mime.setText( text )
-		mime.setData( GII_MIME_ENTITY_DATA, str(entityGroupData) )
+		mime.setData( CANDY_MIME_ACTOR_DATA, str(entityGroupData) )
 		clip.setMimeData( mime )
 		return True
 
 	def onPasteComponent( self ):
 		clip = QtGui.QApplication.clipboard()
 		mime = clip.mimeData()
-		if mime.hasFormat( GII_MIME_ENTITY_DATA ):
-			data = mime.data( GII_MIME_ENTITY_DATA )
+		if mime.hasFormat( CANDY_MIME_ACTOR_DATA ):
+			data = mime.data( CANDY_MIME_ACTOR_DATA )
 			self.doCommand( 'scene_editor/paste_entity',
 				data = str(data)
 			)
@@ -938,7 +938,7 @@ class SceneGraphTreeWidget( GenericTreeWidget ):
 		return None
 
 	def getNodeChildren( self, node ):
-		if isMockInstance( node, 'EntityGroup' ):
+		if isCandyInstance( node, 'EntityGroup' ):
 			output = []
 			#groups
 			for group in node.childGroups:
@@ -976,7 +976,7 @@ class SceneGraphTreeWidget( GenericTreeWidget ):
 		name = None
 		item.setData( 0, Qt.UserRole, 0 )
 
-		if isMockInstance( node, 'EntityGroup' ):
+		if isCandyInstance( node, 'EntityGroup' ):
 			item.setText( 0, node.name or '<unnamed>' )
 			item.setIcon( 0, getIcon('entity_group') )
 			if node.isLocalVisible( node ):
@@ -990,14 +990,14 @@ class SceneGraphTreeWidget( GenericTreeWidget ):
 				item.setIcon( 2, getIcon( 'entity_nolock' ) )
 			item.setData( 0, Qt.UserRole, 1 )
 
-		elif isMockInstance( node, 'Entity' ):
+		elif isCandyInstance( node, 'Entity' ):
 			if node['FLAG_PROTO_SOURCE']:
 				item.setIcon( 0, getIcon('proto') )
 			elif node['PROTO_INSTANCE_STATE']:
 				item.setIcon( 0, getIcon('instance') )
 			elif node['__proto_history']:
 				item.setIcon( 0, getIcon('instance-sub') )
-			elif isMockInstance( node, 'ProtoContainer' ):
+			elif isCandyInstance( node, 'ProtoContainer' ):
 				item.setIcon( 0, getIcon('instance-container') )
 			else:
 				item.setIcon( 0, getIcon('obj') )
@@ -1150,7 +1150,7 @@ def sceneObjectSearchEnumerator( typeId, context, option ):
 
 def entityNameSearchEnumerator( typeId, context, option ):
 	if not context in [ 'entity_creation' ] : return None
-	registry = _MOCK.getEntityRegistry()
+	registry = _CANDY.getActorRegistry()
 	result = []
 	for name in sorted( registry.keys() ):
 		entry = ( name, name, 'Entity', None )
@@ -1159,7 +1159,7 @@ def entityNameSearchEnumerator( typeId, context, option ):
 
 def componentNameSearchEnumerator( typeId, context, option ):
 	if not context in [ 'component_creation' ] : return None
-	registry = _MOCK.getComponentRegistry()
+	registry = _CANDY.getComponentRegistry()
 	result = []
 	for name in sorted( registry.keys() ):
 		entry = ( name, name, 'Entity', None )
@@ -1168,11 +1168,11 @@ def componentNameSearchEnumerator( typeId, context, option ):
 		
 def layerNameSearchEnumerator( typeId, context, option ):
 	if not context in [ 'scene_layer' ] : return None
-	layers = _MOCK.game.layers
+	layers = _CANDY.game.layers
 	result = []
 	for l in sorted( layers.values() ):
 		name = l.name
-		if name == '_GII_EDITOR_LAYER': continue
+		if name == 'CANDY_EDITOR_LAYER': continue
 		entry = ( name, name, 'Layer', None )
 		result.append( entry )
 	return result
