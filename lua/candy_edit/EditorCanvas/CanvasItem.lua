@@ -1,6 +1,6 @@
 module 'candy_edit'
 
-CLASS: CanvasItemManager ( EditorActor )
+CLASS: CanvasItemManager ( candy.EditorActor )
 	:MODEL{}
 
 function CanvasItemManager:__init()
@@ -207,7 +207,7 @@ end
 
 
 --------------------------------------------------------------------
-CLASS: CanvasItem ( EditorActor )
+CLASS: CanvasItem ( candy.EditorActor )
 	:MODEL{}
 
 function CanvasItem:__init()

@@ -1,6 +1,6 @@
 module 'candy_edit'
 
-CLASS:CanvasView ( EditorActor )
+CLASS:CanvasView ( candy.EditorActor )
 
 function CanvasView:__init( canvasEnv )
 	self.canvasEnv = assert( canvasEnv )

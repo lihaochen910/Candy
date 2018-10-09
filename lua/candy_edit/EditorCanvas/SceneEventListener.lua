@@ -1,6 +1,6 @@
 module 'candy_edit'
 
-CLASS: SceneEventListener ( EditorActor )
+CLASS: SceneEventListener ( candy.EditorActor )
 	:MODEL{}
 
 function SceneEventListener:onEntityEvent( ev, entity, com )

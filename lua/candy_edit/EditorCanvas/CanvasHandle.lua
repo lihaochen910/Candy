@@ -1,7 +1,7 @@
 module 'candy_edit'
 
 --------------------------------------------------------------------
-CLASS: CanvasHandleLayer ( EditorActor )
+CLASS: CanvasHandleLayer ( candy.EditorActor )
 
 function CanvasHandleLayer:__init( option )
 	self.option = option
@@ -113,7 +113,7 @@ end
 
 
 --------------------------------------------------------------------
-CLASS: CanvasHandle ( EditorActor )
+CLASS: CanvasHandle ( candy.EditorActor )
 
 function CanvasHandle:onMouseDown( btn, x, y )
 end

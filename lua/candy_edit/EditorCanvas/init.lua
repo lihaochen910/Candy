@@ -2,7 +2,7 @@
 -- require 'candy_edit.EditorCanvas.common'
 
 --------------------------------------------------------------------
-require 'candy.EditorActor'
+assert ( candy.EditorActor )
 require 'candy_edit.EditorCanvas.SceneEventListener'
 
 --------------------------------------------------------------------

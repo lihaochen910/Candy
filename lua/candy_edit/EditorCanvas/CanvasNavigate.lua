@@ -3,7 +3,7 @@ module 'candy_edit'
 --------------------------------------------------------------------
 --CanvasNavigate
 --------------------------------------------------------------------
-CLASS: CanvasNavigate( EditorActor )
+CLASS: CanvasNavigate( candy.EditorActor )
 
 function CanvasNavigate:__init( option )
 	self.option = option

@@ -2,7 +2,7 @@ module 'candy_edit'
 --------------------------------------------------------------------
 --CanvasGrid
 --------------------------------------------------------------------
-CLASS: CanvasGrid( EditorActor )
+CLASS: CanvasGrid( candy.EditorActor )
 
 function CanvasGrid:onLoad()
 	self:attach( candy.DrawScript{	priority = -1	} )

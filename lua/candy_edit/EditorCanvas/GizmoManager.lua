@@ -1,6 +1,6 @@
 module 'candy_edit'
 
-CLASS: Gizmo ( EditorActor )
+CLASS: Gizmo ( candy.EditorActor )
 	:MODEL{}
 
 function Gizmo:__init()
