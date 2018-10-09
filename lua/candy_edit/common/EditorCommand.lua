@@ -5,7 +5,7 @@ module 'candy_edit'
 CLASS: EditorCommand ()
 function EditorCommand.register( clas, name )
 	_stat( 'register Lua Editor Command', name )
-	gii.registerLuaEditorCommand( name, clas )
+	candy.registerLuaEditorCommand( name, clas )
 	clas._commandName = name
 end
 
