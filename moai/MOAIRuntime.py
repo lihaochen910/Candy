@@ -9,9 +9,9 @@ from LuaTableProxy import LuaTableProxy
 from MOAIInputDevice import MOAIInputDevice
 
 ##----------------------------------------------------------------##
-_G          = LuaTableProxy( None )
-_CANDY      = LuaTableProxy( None )
-_C          = LuaTableProxy( None )
+_G              = LuaTableProxy( None )
+_CANDY          = LuaTableProxy( None )
+_CANDY_EDITOR   = LuaTableProxy( None )
 
 signals.register( 'lua.msg' )
 signals.register( 'moai.clean' )
@@ -109,9 +109,10 @@ class MOAIRuntime( EditorModule ):
 		)
 
 		_CANDY._setTarget( _G['candy'] )
-		_C._setTarget( _G['_C'] )
+		_CANDY_EDITOR._setTarget( _G['candy_editor'] )
 
 		assert _CANDY, "Failed loading Candy Lua Runtime!"
+		assert _CANDY_EDITOR, "Failed loading CandyEditor Lua Module! Check ./lua/candy_editor"
 		#finish loading lua bridge
 		
 		self.AKUReady      = True
@@ -171,13 +172,13 @@ class MOAIRuntime( EditorModule ):
 		_G.MOAISim.renderFrameBuffer(_G.MOAIGfxMgr.getFrameBuffer())
 
 	def getRenderContext(self, key):
-		return _CANDY.getRenderContext(key)
+		return _CANDY_EDITOR.getRenderContext(key)
 
 	def changeRenderContext(self, contextId, w, h ):
-		_CANDY.changeRenderContext( contextId or False, w or False, h or False )
+		_CANDY_EDITOR.changeRenderContext( contextId or False, w or False, h or False )
 
 	def createRenderContext( self, key, clearColor = (0,0,0,0) ):
-		_CANDY.createRenderContext( key, *clearColor )
+		_CANDY_EDITOR.createRenderContext( key, *clearColor )
 
 	#### Delegate Related
 	def loadLuaDelegate( self, scriptPath , owner = None, **option ):
@@ -193,7 +194,7 @@ class MOAIRuntime( EditorModule ):
 		try:
 			if env:
 				assert isinstance( env, dict )
-			return _CANDY.loadLuaWithEnv( file, env, option.get( 'isdelegate', False ) )
+			return _CANDY_EDITOR.loadLuaWithEnv( file, env, option.get( 'isdelegate', False ) )
 		except Exception, e:
 			logging.error( 'error loading lua:\n' + str(e) )
 
@@ -446,4 +447,3 @@ class RemoteCommandEvalScript( RemoteCommand ):
 			runtime = app.getModule( 'moai' )
 			print '> ' + s
 			runtime.runString( s )
-
