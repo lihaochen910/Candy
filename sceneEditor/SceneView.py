@@ -89,7 +89,7 @@ class SceneView( SceneEditorModule ):
 		self.addToolBar( 'scene_view_config', self.toolbar )
 
 		self.canvas = self.window.addWidget( SceneViewCanvas() )
-		self.canvas.loadScript( app.getPath('lua/candy/SceneViewHelper.lua') )
+		self.canvas.loadScript( app.getPath('lua/candy_editor/SceneViewHelper.lua') )
 		# self.canvas.loadScript( app.getPath('lua/init.lua') )
 		self.canvas.parentView = self
 		
