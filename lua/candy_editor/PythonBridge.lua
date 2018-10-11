@@ -2,7 +2,7 @@ local rawget,rawset= rawget,rawset
 
 local bridge = CANDY_PYTHON_BRIDGE
 
-module( 'candy', package.seeall )
+module( 'candy_editor', package.seeall )
 
 _C.bridge = bridge
 

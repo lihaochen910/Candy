@@ -15,8 +15,5 @@ package.path = package.path
 rawset(_G, '_C', {})
 
 
-require 'candy.PythonBridge'
-require 'candy.RenderContext'
-
 require 'candy_edit'
-
+require 'candy_editor'
