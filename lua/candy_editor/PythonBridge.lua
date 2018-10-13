@@ -66,7 +66,7 @@ function dictToTablePlain(dict) --just one level?
 end
 
 
-local _sizeOf=sizeOfPythonObject
+local _sizeOf = bridge.sizeOfPythonObject
 function listToTable(list)
 	local c=_sizeOf(list)
 	local r={}
