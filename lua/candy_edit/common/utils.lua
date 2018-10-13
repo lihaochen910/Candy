@@ -39,7 +39,7 @@ local function findTopLevelGroups( groupSet )
 	return found
 end
 
-local function findTopLevelEntities( entitySet )
+local function findTopLevelActors( entitySet )
 	local found = {}
 	for e in pairs( entitySet ) do
 		local p = e.parent
@@ -53,7 +53,7 @@ local function findTopLevelEntities( entitySet )
 	return found
 end
 
-local function findEntitiesOutsideGroups( entitySet, groupSet )
+local function findActorsOutsideGroups( entitySet, groupSet )
 	local found = {}
 	for e in pairs( entitySet ) do
 		local g = e:getEntityGroup( true )
@@ -67,21 +67,21 @@ local function findEntitiesOutsideGroups( entitySet, groupSet )
 	return found
 end
 
-local function getTopLevelEntitySelection()
-	local entitySet = {}
+local function getTopLevelActorSelection()
+	local actorSet = {}
 	local groupSet  = {}
-	for i, e in ipairs( gii.getSelection( 'scene' ) ) do
+	for i, e in ipairs( candy_editor.getSelection( 'scene' ) ) do
 		if isInstance( e, candy.Actor ) then
-			entitySet[ e ] = true
+			actorSet[ e ] = true
 		elseif isInstance( e, candy.ActorGroup ) then
 			groupSet[ e ] = true
 		end
 	end
-	local topLevelEntitySet = findTopLevelEntities( entitySet )
+	local topLevelActorSet = findTopLevelActors(actorSet)
 	local topLevelGroupSet = findTopLevelGroups( groupSet )
-	topLevelEntitySet = findEntitiesOutsideGroups( topLevelEntitySet, topLevelGroupSet )
+	topLevelActorSet = findActorsOutsideGroups(topLevelActorSet, topLevelGroupSet )
 	local list = {}
-	for ent in pairs( topLevelEntitySet ) do
+	for ent in pairs(topLevelActorSet) do
 		table.insert( list, ent )
 	end
 	for group in pairs( topLevelGroupSet ) do
@@ -105,8 +105,8 @@ end
 --	end
 --end
 --------------------------------------------------------------------
-_C.findTopLevelEntities       = findTopLevelEntities
-_C.getTopLevelEntitySelection = getTopLevelEntitySelection
-_C.isEditorActor             = isEditorActor
-_C.affirmGUID                 = affirmGUID
-_C.affirmSceneGUID            = affirmSceneGUID
+_C.findTopLevelActors       	= findTopLevelActors
+_C.getTopLevelActorSelection 	= getTopLevelActorSelection
+_C.isEditorActor             	= isEditorActor
+_C.affirmGUID                 	= affirmGUID
+_C.affirmSceneGUID            	= affirmSceneGUID
