@@ -4,40 +4,38 @@ local bridge = CANDY_PYTHON_BRIDGE
 
 module( 'candy_editor', package.seeall )
 
-_C.bridge = bridge
-
 --------------------------------------------------------------------
 -- CORE FUNCTIONS
 --------------------------------------------------------------------
 
 --communication
-_C.emitPythonSignal     = bridge.emitPythonSignal
-_C.emitPythonSignalNow  = bridge.emitPythonSignalNow
-_C.connectPythonSignal  = bridge.connectPythonSignal
-_C.registerPythonSignal = bridge.registerPythonSignal
+emitPythonSignal     = bridge.emitPythonSignal
+emitPythonSignalNow  = bridge.emitPythonSignalNow
+connectPythonSignal  = bridge.connectPythonSignal
+registerPythonSignal = bridge.registerPythonSignal
 
 --data
-_C.sizeOfPythonObject   = bridge.sizeOfPythonObject
-_C.newPythonDict        = bridge.newPythonDict
-_C.newPythonList        = bridge.newPythonList
-_C.appendPythonList     = bridge.appendPythonList
-_C.deletePythonList     = bridge.deletePythonList
-_C.getDict              = bridge.getDict
-_C.setDict              = bridge.setDict
+sizeOfPythonObject   = bridge.sizeOfPythonObject
+newPythonDict        = bridge.newPythonDict
+newPythonList        = bridge.newPythonList
+appendPythonList     = bridge.appendPythonList
+deletePythonList     = bridge.deletePythonList
+getDict              = bridge.getDict
+setDict              = bridge.setDict
 --other
-_C.throwPythonException = bridge.throwPythonException
-_C.getTime              = bridge.getTime
-_C.generateGUID         = bridge.generateGUID
-_C.showAlertMessage		= bridge.showAlertMessage
+throwPythonException = bridge.throwPythonException
+getTime              = bridge.getTime
+generateGUID         = bridge.generateGUID
+showAlertMessage		= bridge.showAlertMessage
 
 MOAIEnvironment.generateGUID = bridge.generateGUID
 
 --import
-_C.importPythonModule   = bridge.importModule
+importPythonModule   = bridge.importModule
 
 --data conversion
-local encodeDict=bridge.encodeDict
-local decodeDict=bridge.decodeDict
+local encodeDict = bridge.encodeDict
+local decodeDict = bridge.decodeDict
 
 function tableToDict(table)
 	local json = MOAIJsonParser.encode(table)
@@ -45,7 +43,7 @@ function tableToDict(table)
 end
 
 function tableToList(table)
-	local list=bridge.newPythonList()
+	local list = bridge.newPythonList()
 	for i, v in ipairs(table) do
 		appendPythonList(list,v)
 	end

@@ -346,11 +346,11 @@ function SceneOutlinerEditor:onActorEvent( action, actor, com )
 end
 
 function SceneOutlinerEditor:onMainSceneOpen( scn )
-	candy.emitPythonSignal( 'scene.change' )
+	candy_editor.emitPythonSignal( 'scene.change' )
 end
 
 function SceneOutlinerEditor:onMainSceneClose( scn )
-	candy.emitPythonSignal( 'scene.change' )
+	candy_editor.emitPythonSignal( 'scene.change' )
 end
 
 function SceneOutlinerEditor:makeSceneSelectionCopyData()
