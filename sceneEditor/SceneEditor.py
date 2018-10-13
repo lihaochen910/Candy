@@ -128,12 +128,12 @@ register( 'scene.change' ) #Scene is changed during preview
 
 register( 'scene.modified' )
 
-register( 'entity.added' )
-register( 'entity.removed' )
-register( 'entity.modified' )
-register( 'entity.renamed' )
-register( 'entity.visible_changed' )
-register( 'entity.pickable_changed' )
+register( 'actor.added' )
+register( 'actor.removed' )
+register( 'actor.modified' )
+register( 'actor.renamed' )
+register( 'actor.visible_changed' )
+register( 'actor.pickable_changed' )
 
 # register( 'prefab.unlink' )
 # register( 'prefab.relink' )
