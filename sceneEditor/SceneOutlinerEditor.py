@@ -81,7 +81,7 @@ class SceneOutlinerEditor( SceneEditorModule ):
 		self.tool = self.addToolBar( 'scene_graph', self.container.addToolBar() )
 		self.delegate = MOAILuaDelegate( self )
 		# self.delegate.load( getModulePath( 'SceneGraphEditor.lua' ) )
-		self.delegate.load( self.getApp().getPath( 'lua/candy/SceneOutlinerEditor.lua' ) )
+		self.delegate.load( self.getApp().getPath( 'lua/candy_editor/SceneOutlinerEditor.lua' ) )
 
 		self.entityCreatorMenu=self.addMenu(
 			'main/scene/actor_create',
@@ -95,14 +95,13 @@ class SceneOutlinerEditor( SceneEditorModule ):
 
 
 		#menu
-		self.addMenuItem(
-			'main/file/open_scene', 
-			dict( label = 'Open Scene', shortcut = 'ctrl+shift+o' )
-			)
-
-		self.addMenuItem( 'main/file/close_scene', 
-			dict( label = 'Close Scene', shortcut = 'Ctrl+W' )
-			)
+		# self.addMenuItem( 'main/file/open_scene',
+		# 	dict( label = 'Open Scene', shortcut = 'ctrl+shift+o' )
+		# 	)
+		#
+		# self.addMenuItem( 'main/file/close_scene',
+		# 	dict( label = 'Close Scene', shortcut = 'Ctrl+W' )
+		# 	)
 		self.addMenuItem( 'main/scene/save_scene',
 			dict( label = 'Save', shortcut = 'Ctrl+S' )
 			)
@@ -140,28 +139,28 @@ class SceneOutlinerEditor( SceneEditorModule ):
 			dict( label = 'Edit Alias' )
 			)
 
-		self.addMenu( 'main/entity', dict( label = 'Entity' ) )
-		self.addMenuItem( 'main/entity/add_empty_entity',    dict( label = 'Create Empty', shortcut = 'ctrl+alt+N' ) )
-		self.addMenuItem( 'main/entity/add_entity',          dict( label = 'Create',       shortcut = 'ctrl+shift+N' ) )
-		self.addMenuItem( 'main/entity/----' )
-		self.addMenuItem( 'main/entity/group_entity',        dict( label = 'Group Entites',    shortcut = 'ctrl+G' ) )
-		self.addMenuItem( 'main/entity/create_group',        dict( label = 'Create Empty Group',    shortcut = 'ctrl+shift+G' ) )
-		self.addMenuItem( 'main/entity/----' )
-		self.addMenuItem( 'main/entity/load_prefab',         dict( label = 'Load Prefab', shortcut = 'ctrl+alt+shift+N' ) )
-		self.addMenuItem( 'main/entity/load_prefab_in_container', dict( label = 'Load Prefab In Container', shortcut = 'ctrl+shift+=' ) )
-		self.addMenuItem( 'main/entity/----' )
-		self.addMenuItem( 'main/entity/remove_entity',       dict( label = 'Remove'  ) )
-		self.addMenuItem( 'main/entity/clone_entity',        dict( label = 'Clone',  shortcut = 'ctrl+d' ) )
-		self.addMenuItem( 'main/entity/----' )
-		self.addMenuItem( 'main/entity/add_component',       dict( label = 'Add Component', shortcut = 'ctrl+alt+=' ) )
-		self.addMenuItem( 'main/entity/assign_layer',        dict( label = 'Assign Layer', shortcut = 'ctrl+alt+L' ) )
-		self.addMenuItem( 'main/entity/toggle_visibility',   dict( label = 'Toggle Visibility', shortcut = 'ctrl+/' ) )
-		self.addMenuItem( 'main/entity/freeze_entity_pivot', dict( label = 'Freeze Pivot' ) )
+		self.addMenu( 'main/actor', dict( label = 'Actor' ) )
+		self.addMenuItem( 'main/actor/add_empty_actor',    dict( label = 'Create Empty', shortcut = 'ctrl+alt+N' ) )
+		self.addMenuItem( 'main/actor/add_actor',          dict( label = 'Create',       shortcut = 'ctrl+shift+N' ) )
+		self.addMenuItem( 'main/actor/----' )
+		self.addMenuItem( 'main/actor/group_entity',        dict( label = 'Group Entites',    shortcut = 'ctrl+G' ) )
+		self.addMenuItem( 'main/actor/create_group',        dict( label = 'Create Empty Group',    shortcut = 'ctrl+shift+G' ) )
+		self.addMenuItem( 'main/actor/----' )
+		self.addMenuItem( 'main/actor/load_prefab',         dict( label = 'Load Prefab', shortcut = 'ctrl+alt+shift+N' ) )
+		self.addMenuItem( 'main/actor/load_prefab_in_container', dict( label = 'Load Prefab In Container', shortcut = 'ctrl+shift+=' ) )
+		self.addMenuItem( 'main/actor/----' )
+		self.addMenuItem( 'main/actor/remove_actor',       dict( label = 'Remove'  ) )
+		self.addMenuItem( 'main/actor/clone_actor',        dict( label = 'Clone',  shortcut = 'ctrl+d' ) )
+		self.addMenuItem( 'main/actor/----' )
+		self.addMenuItem( 'main/actor/add_component',       dict( label = 'Add Component', shortcut = 'ctrl+alt+=' ) )
+		self.addMenuItem( 'main/actor/assign_layer',        dict( label = 'Assign Layer', shortcut = 'ctrl+alt+L' ) )
+		self.addMenuItem( 'main/actor/toggle_visibility',   dict( label = 'Toggle Visibility', shortcut = 'ctrl+/' ) )
+		self.addMenuItem( 'main/actor/freeze_entity_pivot', dict( label = 'Freeze Pivot' ) )
 
-		self.addMenuItem( 'main/entity/----' )
-		self.addMenuItem( 'main/find/find_entity', dict( label = 'Find In Scene', shortcut = 'ctrl+f' ) )
-		self.addMenuItem( 'main/find/find_entity_in_group', dict( label = 'Find In Group', shortcut = 'ctrl+shift+f' ) )
-		self.addMenuItem( 'main/find/find_entity_group', dict( label = 'Find Group', shortcut = 'ctrl+alt+f' ) )
+		self.addMenuItem( 'main/actor/----' )
+		self.addMenuItem( 'main/find/find_actor', dict( label = 'Find In Scene', shortcut = 'ctrl+f' ) )
+		self.addMenuItem( 'main/find/find_actor_in_group', dict( label = 'Find In Group', shortcut = 'ctrl+shift+f' ) )
+		self.addMenuItem( 'main/find/find_actor_group', dict( label = 'Find Group', shortcut = 'ctrl+alt+f' ) )
 
 		#Toolbars
 		self.addTool( 'scene_graph/select_scene',    label ='Select Scene', icon = 'settings' )
@@ -195,12 +194,12 @@ class SceneOutlinerEditor( SceneEditorModule ):
 		# signals.connect( 'animator.start',     self.onAnimatorStart     )
 		# signals.connect( 'animator.stop' ,     self.onAnimatorStop      )
 
-		signals.connect( 'entity.added',      self.onEntityAdded      )
-		signals.connect( 'entity.removed',    self.onEntityRemoved    )
-		signals.connect( 'entity.renamed',    self.onEntityRenamed    )
-		signals.connect( 'entity.modified',    self.onEntityModified    )
-		signals.connect( 'entity.visible_changed',    self.onEntityVisibleChanged )
-		signals.connect( 'entity.pickable_changed',   self.onEntityPickableChanged )
+		signals.connect( 'actor.added', self.onActorAdded)
+		signals.connect( 'actor.removed', self.onActorRemoved)
+		signals.connect( 'actor.renamed', self.onActorRenamed)
+		signals.connect( 'actor.modified', self.onActorModified)
+		signals.connect( 'actor.visible_changed', self.onActorVisibleChanged)
+		signals.connect( 'actor.pickable_changed', self.onActorPickableChanged)
 
 
 		# signals.connect( 'prefab.unlink',     self.onPrefabUnlink    )
@@ -488,7 +487,7 @@ class SceneOutlinerEditor( SceneEditorModule ):
 				)
 
 		elif name == 'create_group':
-			self.doCommand( 'scene_editor/entity_group_create' )
+			self.doCommand( 'scene_editor/actor_group_create' )
 
 		elif name == 'group_entity':
 			self.doCommand( 'scene_editor/group_entities' )
@@ -528,12 +527,12 @@ class SceneOutlinerEditor( SceneEditorModule ):
 				if assetBrowser:
 					assetBrowser.selectAsset( self.activeSceneNode )
 
-		elif name == 'add_entity':
+		elif name == 'add_actor':
 			requestSearchView( 
-				info    = 'select entity type to create',
+				info    = 'select actor type to create',
 				context = 'entity_creation',
 				on_selection = lambda obj: 
-					self.doCommand( 'scene_editor/create_entity', name = obj )
+					self.doCommand( 'scene_editor/create_actor', name = obj )
 				)
 
 		elif name == 'add_component':
@@ -544,7 +543,7 @@ class SceneOutlinerEditor( SceneEditorModule ):
 					self.doCommand( 'scene_editor/create_component', name = obj )
 				)
 
-		elif name == 'add_empty_entity':
+		elif name == 'add_empty_actor':
 			self.doCommand( 'scene_editor/create_actor', name = 'Actor' )
 
 		elif name == 'load_prefab':
@@ -567,41 +566,41 @@ class SceneOutlinerEditor( SceneEditorModule ):
 						self.doCommand( 'scene_editor/create_prefab_container', prefab = obj.getNodePath() )
 				)
 
-		elif name == 'remove_entity':
-			self.doCommand( 'scene_editor/remove_entity' )
+		elif name == 'remove_actor':
+			self.doCommand( 'scene_editor/remove_actor' )
 
-		elif name == 'clone_entity':
-			self.doCommand( 'scene_editor/clone_entity' )
+		elif name == 'clone_actor':
+			self.doCommand( 'scene_editor/clone_actor' )
 
-		elif name == 'find_entity':
+		elif name == 'find_actor':
 			requestSearchView( 
-				info    = 'search for entity in current scene',
+				info    = 'search for actor in current scene',
 				context = 'scene',
 				type    = 'entity',
-				on_selection = lambda x: self.selectEntity( x, focus_tree = True ) ,
-				on_test      = self.selectEntity
+				on_selection = lambda x: self.selectActor(x, focus_tree = True) ,
+				on_test      = self.selectActor
 				)
 
-		elif name == 'find_entity_in_group':
+		elif name == 'find_actor_in_group':
 			requestSearchView( 
-				info    = 'search for entity in current entity group',
+				info    = 'search for actor in current entity group',
 				context = 'scene',
-				type    = 'entity_in_group',
-				on_selection = lambda x: self.selectEntity( x, focus_tree = True ) ,
-				on_test      = self.selectEntity
+				type    = 'actor_in_group',
+				on_selection = lambda x: self.selectActor(x, focus_tree = True) ,
+				on_test      = self.selectActor
 				)
 
-		elif name == 'find_entity_group':
+		elif name == 'find_actor_group':
 			requestSearchView( 
 				info    = 'search for group in current scene',
 				context = 'scene',
 				type    = 'group',
-				on_selection = lambda x: self.selectEntity( x, focus_tree = True ) ,
-				on_test      = self.selectEntity
+				on_selection = lambda x: self.selectActor(x, focus_tree = True) ,
+				on_test      = self.selectActor
 				)
 
 		elif name == 'create_group':
-			self.doCommand( 'scene_editor/entity_group_create' )
+			self.doCommand( 'scene_editor/actor_group_create' )
 
 		elif name == 'remove_component':
 			context = menu.getContext()
@@ -628,7 +627,7 @@ class SceneOutlinerEditor( SceneEditorModule ):
 				info    = 'select layer to assign',
 				context = 'scene_layer',
 				type    = _MOCK.Entity,
-				on_selection = self.assignEntityLayer
+				on_selection = self.assignActorLayer
 				)
 
 		elif name == 'toggle_visibility':
@@ -647,25 +646,25 @@ class SceneOutlinerEditor( SceneEditorModule ):
 				self.tree.selectNode( e, add = True)
 			self.tree.blockSignals( False )
 
-	def selectEntity( self, target, **option ):
+	def selectActor(self, target, **option):
 		if option.get( 'focus_tree', False ):
 			self.tree.setFocus()
 		self.changeSelection( target )
 
 	##----------------------------------------------------------------##
-	def renameEntity( self, target, name ):
+	def renameActor(self, target, name):
 		#TODO:command pattern
 		target.setName( target, name )
-		signals.emit( 'entity.modified', target )
+		signals.emit( 'actor.modified', target )
 
-	def addEntityNode( self, entity ):
-		self.tree.addNode( entity, expanded = False )
-		self.tree.setNodeExpanded( entity, False )
+	def addActorNode(self, actor):
+		self.tree.addNode( actor, expanded = False )
+		self.tree.setNodeExpanded( actor, False )
 
-	def removeEntityNode( self, entity ):
-		self.tree.removeNode( entity )
+	def removeActorNode(self, actor):
+		self.tree.removeNode( actor )
 
-	def assignEntityLayer( self, layerName ):
+	def assignActorLayer(self, layerName):
 		#TODO:command pattern
 		if not layerName: return
 		self.doCommand( 'scene_editor/assign_layer', target = layerName )
@@ -707,52 +706,52 @@ class SceneOutlinerEditor( SceneEditorModule ):
 		if not self.activeSceneNode: return
 		self.markSceneDirty()
 
-	def onEntityRenamed( self, entity, newname ):
+	def onActorRenamed(self, entity, newname):
 		self.tree.refreshNodeContent( entity )
 		self.markSceneDirty()
 
-	def onEntityVisibleChanged( self, entity ):
-		self.tree.refreshNodeContent( entity )
+	def onActorVisibleChanged(self, actor):
+		self.tree.refreshNodeContent( actor )
 
-	def onEntityPickableChanged( self, entity ):
-		self.tree.refreshNodeContent( entity )
+	def onActorPickableChanged(self, actor):
+		self.tree.refreshNodeContent( actor )
 
-	def onEntityAdded( self, entity, context = None ):
+	def onActorAdded(self, actor, context = None):
 		if context == 'new':
 			self.setFocus()
-			pnode = entity.parent
+			pnode = actor.parent
 			if pnode:
 				self.tree.setNodeExpanded( pnode, True )
 			self.tree.setFocus()
-			self.tree.editNode( entity )
-			self.tree.selectNode( entity )
+			self.tree.editNode(actor)
+			self.tree.selectNode(actor)
 		signals.emit( 'scene.update' )
 		self.markSceneDirty()
 
-	def onEntityRemoved( self, entity ):
+	def onActorRemoved(self, actor):
 		signals.emit( 'scene.update' )
 		self.markSceneDirty()
 
-	def onEntityModified( self, entity, context = None ):
+	def onActorModified(self, actor, context = None):
 		self.markSceneDirty()
 
 	##----------------------------------------------------------------##
-	def onComponentAdded( self, com, entity ):
+	def onComponentAdded( self, com, actor ):
 		signals.emit( 'scene.update' )
 		self.markSceneDirty()
 
 
-	def onComponentRemoved( self, com, entity ):
+	def onComponentRemoved( self, com, actor ):
 		signals.emit( 'scene.update' )
 		self.markSceneDirty()
 
 
 	##----------------------------------------------------------------##
-	def onPrefabUnlink( self, entity ):
-		self.tree.refreshNodeContent( entity, updateChildren = True )
+	def onPrefabUnlink( self, actor ):
+		self.tree.refreshNodeContent( actor, updateChildren = True )
 
-	def onPrefabRelink( self, entity ):
-		self.tree.refreshNodeContent( entity, updateChildren = True )
+	def onPrefabRelink( self, actor ):
+		self.tree.refreshNodeContent( actor, updateChildren = True )
 
 	def createPrefab( self, targetPrefab ):
 		selection = self.getSelection()
@@ -784,7 +783,7 @@ class SceneOutlinerEditor( SceneEditorModule ):
 
 
 	##----------------------------------------------------------------##
-	def onCopyEntity( self ):
+	def onCopyActor(self):
 		entityGroupData = self.delegate.callMethod( 'editor', 'makeSceneSelectionCopyData' )
 		if not entityGroupData: return False
 		clip = QtGui.QApplication.clipboard()
@@ -933,7 +932,7 @@ class SceneGraphTreeWidget( GenericTreeWidget ):
 
 	def getNodeParent( self, node ): # reimplemnt for target node	
 		p = node.getParentOrGroup( node )
-		if p and not p.FLAG_EDITOR_OBJECT :
+		if p and not p.IS_EDITOR_OBJECT :
 			return p
 		return None
 
@@ -943,18 +942,18 @@ class SceneGraphTreeWidget( GenericTreeWidget ):
 			#groups
 			for group in node.childGroups:
 				output.append( group )
-			#entities
-			for ent in node.entities:
-				if ( not ent.parent ) and ( not ( ent.FLAG_EDITOR_OBJECT or ent.FLAG_INTERNAL ) ):
-					output.append( ent )
+			#actors
+			for actor in node.actors:
+				if ( not actor.parent ) and ( not ( actor.IS_EDITOR_OBJECT or actor.FLAG_INTERNAL ) ):
+					output.append( actor )
 			# output = sorted( output, cmp = _sortEntity )
 			return output
 
 		else: #entity
 			output = []
-			for ent in node.children:
-				if not ( ent.FLAG_EDITOR_OBJECT or ent.FLAG_INTERNAL ):
-					output.append( ent )
+			for actor in node.children:
+				if not ( actor.IS_EDITOR_OBJECT or actor.FLAG_INTERNAL ):
+					output.append( actor )
 			# output = sorted( output, cmp = _sortEntity )
 			return output
 
@@ -976,7 +975,7 @@ class SceneGraphTreeWidget( GenericTreeWidget ):
 		name = None
 		item.setData( 0, Qt.UserRole, 0 )
 
-		if isCandyInstance( node, 'EntityGroup' ):
+		if isCandyInstance( node, 'ActorGroup' ):
 			item.setText( 0, node.name or '<unnamed>' )
 			item.setIcon( 0, getIcon('entity_group') )
 			if node.isLocalVisible( node ):
@@ -990,7 +989,7 @@ class SceneGraphTreeWidget( GenericTreeWidget ):
 				item.setIcon( 2, getIcon( 'entity_nolock' ) )
 			item.setData( 0, Qt.UserRole, 1 )
 
-		elif isCandyInstance( node, 'Entity' ):
+		elif isCandyInstance( node, 'Actor' ):
 			if node['FLAG_PROTO_SOURCE']:
 				item.setIcon( 0, getIcon('proto') )
 			elif node['PROTO_INSTANCE_STATE']:
@@ -1059,17 +1058,17 @@ class SceneGraphTreeWidget( GenericTreeWidget ):
 		self.syncSelection = False
 		item0 = self.currentItem()
 		item1 = self.itemBelow( item0 )
-		self.module.doCommand( 'scene_editor/remove_entity' )
+		self.module.doCommand( 'scene_editor/remove_actor' )
 		if item1:
 			self.setFocusedItem( item1 )
 		self.syncSelection = True
 		self.onItemSelectionChanged()
 
 	def onItemChanged( self, item, col ):
-		self.module.renameEntity( item.node, item.text(0) )
+		self.module.renameActor(item.node, item.text(0))
 
 	def onClipboardCopy( self ):
-		self.module.onCopyEntity()
+		self.module.onCopyActor()
 		return True
 
 	def onClipboardPaste( self ):
