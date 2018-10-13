@@ -110,3 +110,5 @@ _C.getTopLevelActorSelection 	= getTopLevelActorSelection
 _C.isEditorActor             	= isEditorActor
 _C.affirmGUID                 	= affirmGUID
 _C.affirmSceneGUID            	= affirmSceneGUID
+
+candy_edit.affirmGUID			= affirmGUID
