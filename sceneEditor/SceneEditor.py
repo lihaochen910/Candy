@@ -101,7 +101,7 @@ class SceneEditor( TopEditorModule ):
 		# 		deployManager.setFocus()
 
 	def createNewSceneAndOpen(self):
-		_CANDY.game.createNewSceneAndOpen()
+		_CANDY.newScene()
 
 
 ##----------------------------------------------------------------##

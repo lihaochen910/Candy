@@ -48,7 +48,7 @@ class SceneOutlinerEditor( SceneEditorModule ):
 
 	def getDependency( self ):
 		# return [ 'scene_editor', 'mock' ]
-		return [ 'scene_editor', 'moai' ]
+		return [ 'scene_editor', 'moai', 'candy' ]
 
 	def onLoad( self ):
 		#UI
@@ -366,11 +366,11 @@ class SceneOutlinerEditor( SceneEditorModule ):
 		self.tree.refreshAllContent()
 		self.tree.verticalScrollBar().setValue( 0 )
 		self.tree.show()
-		if self.editingProtoNode:
-			self.delegate.safeCallMethod( 'editor', 'locateProto', self.editingProtoNode.getPath() )
-			self.editingProtoNode = None
-			if self.getModule('scene_view'):
-					self.getModule('scene_view').focusSelection()
+		# if self.editingProtoNode:
+		# 	self.delegate.safeCallMethod( 'editor', 'locateProto', self.editingProtoNode.getPath() )
+		# 	self.editingProtoNode = None
+		# 	if self.getModule('scene_view'):
+		# 			self.getModule('scene_view').focusSelection()
 		
 	def saveScene( self ):
 		if not self.activeSceneNode: return
@@ -424,10 +424,10 @@ class SceneOutlinerEditor( SceneEditorModule ):
 		registry = _CANDY.getActorRegistry()
 		#entity
 		keys = sorted( registry.keys() )
-		addEntityMenuItem( 'Entity' )
+		addEntityMenuItem( 'Actor' )
 		addEntityMenuItem( '----' )
 		for entityName in sorted( registry.keys() ):
-			if entityName!='Entity': addEntityMenuItem( entityName )
+			if entityName!='Actor': addEntityMenuItem( entityName )
 
 		#component
 		registry = _CANDY.getComponentRegistry()
