@@ -6,12 +6,13 @@ import json
 from core              import *
 from moai.MOAIRuntime \
 	import \
-	MOAIRuntime, MOAILuaDelegate, LuaTableProxy, _G, _LuaTable, _LuaObject
+	MOAIRuntime, MOAILuaDelegate, LuaTableProxy, _G, _LuaTable, _LuaObject, \
+	_CANDY
 
 
 signals.register ( 'candy.init' )
 ##----------------------------------------------------------------##
-_CANDY = LuaTableProxy( None )
+# _CANDY = LuaTableProxy( None )
 _CANDY_EDIT = LuaTableProxy( None )
 
 _CANDY_GAME_CONFIG_NAME = 'game_config.json'
@@ -100,7 +101,7 @@ class CandyRuntime( EditorModule ):
 		# global _CANDY_EDIT
 
 		self.runtime.requireModule( 'candy_edit' )
-		_CANDY._setTarget( _G['candy'] )
+		# _CANDY._setTarget( _G['candy'] )
 		_CANDY_EDIT._setTarget( _G['candy_edit'] )
 		# _CANDY.setBasePaths( self.getProject().getPath(), self.getProject().getAssetPath() )
 
