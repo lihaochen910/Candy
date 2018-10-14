@@ -13,7 +13,7 @@ from qt.helpers                    import makeBrush, makeFont
 from moai.MOAIRuntime import MOAILuaDelegate, _CANDY
 from SceneEditor      import SceneEditorModule
 
-# from SearchView       import requestSearchView, registerSearchEnumerator
+from qt.controls.SearchView       import requestSearchView, registerSearchEnumerator
 
 ##----------------------------------------------------------------##
 from PyQt4           import QtCore, QtGui, uic
@@ -78,7 +78,7 @@ class SceneOutlinerEditor( SceneEditorModule ):
 			)
 		self.treeFilter.setTargetTree( self.tree )
 		self.tree.module = self
-		self.tool = self.addToolBar( 'scene_graph', self.container.addToolBar() )
+		self.tool = self.addToolBar( 'scene_outliner', self.container.addToolBar() )
 		self.delegate = MOAILuaDelegate( self )
 		# self.delegate.load( getModulePath( 'SceneGraphEditor.lua' ) )
 		self.delegate.load( self.getApp().getPath( 'lua/candy_editor/SceneOutlinerEditor.lua' ) )
@@ -163,19 +163,19 @@ class SceneOutlinerEditor( SceneEditorModule ):
 		self.addMenuItem( 'main/find/find_actor_group', dict( label = 'Find Group', shortcut = 'ctrl+alt+f' ) )
 
 		#Toolbars
-		self.addTool( 'scene_graph/select_scene',    label ='Select Scene', icon = 'settings' )
-		self.addTool( 'scene_graph/----'  )
-		self.addTool( 'scene_graph/create_group',    label ='+ Group', icon = 'add_folder' )
-		self.addTool( 'scene_graph/----'  )
-		self.addTool( 'scene_graph/make_proto',    label = 'Convert To Proto', icon = 'proto_make' )
-		self.addTool( 'scene_graph/create_proto_instance',    label = 'Create Proto Instance', icon = 'proto_instantiate' )
-		self.addTool( 'scene_graph/create_proto_container',    label = 'Create Proto Container', icon = 'proto_container' )
-		self.addTool( 'scene_graph/----'  )
-		self.addTool( 'scene_graph/fold_all',    label = 'F' )
-		self.addTool( 'scene_graph/unfold_all',  label = 'U' )
-		self.addTool( 'scene_graph/refresh_tree',  label = 'R' )
-		# self.addTool( 'scene_graph/load_prefab', label = '+ P' )
-		# self.addTool( 'scene_graph/save_prefab', label = '>>P' )
+		self.addTool( 'scene_outliner/select_scene',    label ='Select Scene', icon = 'settings' )
+		self.addTool( 'scene_outliner/----'  )
+		self.addTool( 'scene_outliner/create_group',    label ='+ Group', icon = 'add_folder' )
+		self.addTool( 'scene_outliner/----'  )
+		self.addTool( 'scene_outliner/make_proto',    label = 'Convert To Proto', icon = 'proto_make' )
+		self.addTool( 'scene_outliner/create_proto_instance',    label = 'Create Proto Instance', icon = 'proto_instantiate' )
+		self.addTool( 'scene_outliner/create_proto_container',    label = 'Create Proto Container', icon = 'proto_container' )
+		self.addTool( 'scene_outliner/----'  )
+		self.addTool( 'scene_outliner/fold_all',    label = 'F' )
+		self.addTool( 'scene_outliner/unfold_all',  label = 'U' )
+		self.addTool( 'scene_outliner/refresh_tree',  label = 'R' )
+		# self.addTool( 'scene_outliner/load_prefab', label = '+ P' )
+		# self.addTool( 'scene_outliner/save_prefab', label = '>>P' )
 
 		self.addTool( 'scene/refresh', label = 'refresh', icon='refresh' )
 
@@ -215,10 +215,10 @@ class SceneOutlinerEditor( SceneEditorModule ):
 
 		signals.connect( 'project.presave',   self.preProjectSave )
 
-		# registerSearchEnumerator( sceneObjectSearchEnumerator )
-		# registerSearchEnumerator( entityNameSearchEnumerator )
-		# registerSearchEnumerator( componentNameSearchEnumerator )
-		# registerSearchEnumerator( layerNameSearchEnumerator )
+		registerSearchEnumerator( sceneObjectSearchEnumerator )
+		registerSearchEnumerator( entityNameSearchEnumerator )
+		registerSearchEnumerator( componentNameSearchEnumerator )
+		registerSearchEnumerator( layerNameSearchEnumerator )
 
 	def onStart( self ):
 		self.refreshCreatorMenu()
@@ -254,6 +254,7 @@ class SceneOutlinerEditor( SceneEditorModule ):
 		else:
 			return None
 
+
 	def openScene( self, node, protoNode = None ):
 		if self.activeSceneNode == node:			
 			if self.getModule('scene_view'):
@@ -282,7 +283,6 @@ class SceneOutlinerEditor( SceneEditorModule ):
 			self.loadWorkspaceState( False )
 			self.delegate.safeCallMethod( 'editor', 'postOpenScene' )
 
-		
 	def closeScene( self ):
 		if not self.activeSceneNode: return True
 		if self.sceneDirty:
@@ -310,6 +310,7 @@ class SceneOutlinerEditor( SceneEditorModule ):
 	def markSceneDirty( self, dirty = True ):
 		if not self.previewing:
 			self.sceneDirty = dirty
+
 
 	def saveWorkspaceState( self ):
 		self.retainWorkspaceState()
@@ -395,7 +396,7 @@ class SceneOutlinerEditor( SceneEditorModule ):
 		self.refreshScheduled = True
 
 	def refreshCreatorMenu( self ):
-		def addEntityMenuItem( name ):
+		def addActorMenuItem( name ):
 			if name == '----': 
 				self.entityCreatorMenu.addChild( '----' )
 				return
@@ -420,14 +421,13 @@ class SceneOutlinerEditor( SceneEditorModule ):
 		self.entityCreatorMenu.clear()
 		self.componentCreatorMenu.clear()
 
-		# registry = _MOCK.getEntityRegistry()
 		registry = _CANDY.getActorRegistry()
 		#entity
 		keys = sorted( registry.keys() )
-		addEntityMenuItem( 'Actor' )
-		addEntityMenuItem( '----' )
-		for entityName in sorted( registry.keys() ):
-			if entityName!='Actor': addEntityMenuItem( entityName )
+		addActorMenuItem( 'Actor' )
+		addActorMenuItem( '----' )
+		for actorName in sorted( registry.keys() ):
+			if actorName!='Actor': addActorMenuItem( actorName )
 
 		#component
 		registry = _CANDY.getComponentRegistry()
@@ -706,8 +706,8 @@ class SceneOutlinerEditor( SceneEditorModule ):
 		if not self.activeSceneNode: return
 		self.markSceneDirty()
 
-	def onActorRenamed(self, entity, newname):
-		self.tree.refreshNodeContent( entity )
+	def onActorRenamed(self, actor, newName):
+		self.tree.refreshNodeContent( actor )
 		self.markSceneDirty()
 
 	def onActorVisibleChanged(self, actor):
@@ -799,7 +799,7 @@ class SceneOutlinerEditor( SceneEditorModule ):
 		clip.setMimeData( mime )
 		return True
 
-	def onPasteEntity( self ):
+	def onPasteActor( self ):
 		clip = QtGui.QApplication.clipboard()
 		mime = clip.mimeData()
 		if mime.hasFormat( CANDY_MIME_ACTOR_DATA ):
@@ -1072,7 +1072,7 @@ class SceneGraphTreeWidget( GenericTreeWidget ):
 		return True
 
 	def onClipboardPaste( self ):
-		self.module.onPasteEntity()
+		self.module.onPasteActor()
 		return True
 
 	def onScrollRangeChanged( self, min, max ):
