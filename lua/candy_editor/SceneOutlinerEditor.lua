@@ -45,16 +45,16 @@ function SceneOutlinerEditor:openScene( path )
 end
 
 function SceneOutlinerEditor:postOpenScene()
-	_stat( 'post open mock scene' )
-	mock.setAssetCacheWeak()
+	_stat( 'post open candy scene' )
+	--mock.setAssetCacheWeak()
 	MOAISim.forceGC()
-	mock.setAssetCacheStrong()
+	--mock.setAssetCacheStrong()
 	mock.game:resetClock()
 end
 
 function SceneOutlinerEditor:closeScene()
 	if not self.scene then return end
-	_stat( 'close mock scene' )
+	_stat( 'close candy scene' )
 	self:clearScene()
 	self.scene = false
 	self.retainedSceneData = false
