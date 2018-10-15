@@ -121,8 +121,10 @@ class CandyRuntime( EditorModule ):
 
 	def postInitCandy(self):
 		try:
-			game = _CANDY.game
-			# game.initCommonDataFromEditor( game )
+			_CANDY.init(self.configPath, True)
+
+			print ("postInitCandy() _CANDY ok!")
+
 			signals.emit( 'candy.init' )
 		except Exception, e:
 			raise e
