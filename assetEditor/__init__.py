@@ -3,3 +3,6 @@ from AssetBrowser    import AssetBrowser
 from AssetPreviewer  import AssetPreviewer
 
 import AssetSearchEnumerator
+
+import CommonAsset
+import EngineAsset
