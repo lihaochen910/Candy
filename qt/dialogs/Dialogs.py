@@ -1,8 +1,8 @@
 import logging
 # from gii.core.tmpfile import TempDir
 
-from PyQt4 import QtGui,QtCore
-from PyQt4.QtGui import QMessageBox
+from PyQt4 import QtGui, QtCore
+from PyQt4.QtGui import QMessageBox, QFileDialog
 
 class StringDialog(QtGui.QDialog):
 	def __init__(self, prompt, *args):
@@ -84,6 +84,16 @@ def requestColor(prompt, initColor = None, **kwargs):
 		# dialog.destroy()
 		if col.isValid(): return col
 	return initColor
+
+def requestSaveFile( parentContainer, title, sourcePath, filter = 'All Files (*)' ):
+	fileName = QFileDialog.getSaveFileName(
+		parentContainer, title, sourcePath, filter)
+	return fileName
+
+def requestOpenFile( parentContainer, title, sourcePath, filter = 'All Files (*)' ):
+	fileName, filetype = QFileDialog.getOpenFileName(
+		parentContainer, title, sourcePath, filter)
+	return fileName, filetype
 
 	# col = None
 	# if initCol: 
