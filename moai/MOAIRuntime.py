@@ -11,6 +11,7 @@ from MOAIInputDevice import MOAIInputDevice
 ##----------------------------------------------------------------##
 _G              = LuaTableProxy( None )
 _CANDY          = LuaTableProxy( None )
+_CANDY_EDIT     = LuaTableProxy( None )
 _CANDY_EDITOR   = LuaTableProxy( None )
 
 signals.register( 'lua.msg' )
@@ -62,7 +63,6 @@ class MOAIRuntime( EditorModule ):
 	def initContext(self):
 		global _G
 		global _CANDY
-		global _C
 
 		self.luaModules        = []
 
@@ -109,9 +109,11 @@ class MOAIRuntime( EditorModule ):
 		)
 
 		_CANDY._setTarget( _G['candy'] )
+		_CANDY_EDIT._setTarget( _G['candy_edit'] )
 		_CANDY_EDITOR._setTarget( _G['candy_editor'] )
 
 		assert _CANDY, "Failed loading Candy Lua Runtime!"
+		assert _CANDY_EDIT, "Failed loading candy_edit!"
 		assert _CANDY_EDITOR, "Failed loading CandyEditor Lua Module! Check ./lua/candy_editor"
 		#finish loading lua bridge
 		
