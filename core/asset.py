@@ -16,7 +16,7 @@ from cache import CacheManager
 CANDY_ASSET_INDEX_PATH = 'asset_table.json'
 CANDY_ASSET_META_DIR   = '.assetmeta'
 
-CANDY_MIME_ENTITY_DATA = 'application/candy.entity-data'
+CANDY_MIME_ACTOR_DATA = 'application/candy.actor-data'
 CANDY_MIME_ASSET_LIST  = 'application/candy.asset-list'
 
 ##----------------------------------------------------------------##
