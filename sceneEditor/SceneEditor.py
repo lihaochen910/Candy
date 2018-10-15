@@ -1,9 +1,11 @@
 from core           import app, signals, EditorCommandStack, RemoteCommand
+from core.asset     import AssetLibrary
 from core.selection import SelectionManager, getSelectionManager
 
 from qt.controls.Window import MainWindow
 from qt.controls.Menu   import MenuManager
 from qt.TopEditorModule import TopEditorModule, SubEditorModule
+from qt.dialogs import *
 
 from moai.MOAIRuntime import _CANDY
 
@@ -27,7 +29,8 @@ class SceneEditorModule( SubEditorModule ):
 	def getAssetSelection( self ):
 		return getSelectionManager( 'asset' ).getSelection()
 
-
+_CANDY_EDITOR_DEFAULT_SCENE_SESSION_KEY = "editor"
+_CANDY_EDITOR_DEFAULT_SCENE_SESSION = False
 ##----------------------------------------------------------------##
 class SceneEditor( TopEditorModule ):
 	name       = 'scene_editor'
@@ -101,7 +104,10 @@ class SceneEditor( TopEditorModule ):
 		# 		deployManager.setFocus()
 
 	def createNewSceneAndOpen(self):
-		_CANDY.newScene()
+		self.getModule('asset_browser').createAsset('scene')
+		nodePath = self.getModule('asset_browser').newCreateNodePath
+		node = AssetLibrary.get().initAssetNode(nodePath)
+		self.getModule('sceneoutliner_editor').openScene(node)
 
 
 ##----------------------------------------------------------------##
