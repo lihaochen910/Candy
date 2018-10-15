@@ -195,6 +195,7 @@ class AssetBrowser( SceneEditorModule ):
 	def createAsset( self, creator, instance = None ):
 		if isinstance( creator, str ):
 			creator = self.getAssetLibrary().getAssetCreator( creator )
+			assert creator != None
 
 		label       = creator.getLabel()
 		assetType   = creator.getAssetType()		
