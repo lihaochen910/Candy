@@ -16,11 +16,6 @@ from PyQt4.QtCore import Qt
 
 
 ##----------------------------------------------------------------##
-def _getModulePath( path ):
-	import os.path
-	return os.path.dirname( __file__ ) + '/' + path
-
-##----------------------------------------------------------------##
 class SceneViewTool( SceneTool ):
 	def getSceneViewToolId( self ):
 		toolId = getattr( self.__class__, 'tool' )
@@ -66,8 +61,7 @@ class SceneViewToolScale( SceneViewTool ):
 ##----------------------------------------------------------------##
 class SceneView( SceneEditorModule ):
 	name       = 'scene_view'
-	# dependency = [ 'mock', 'scene_editor', 'scenegraph_editor' ]
-	dependency = [ 'moai', 'scene_editor' ]
+	dependency = [ 'moai', 'scene_editor', 'sceneoutliner_editor' ]
 
 	def getName(self):
 		return self.name
@@ -81,7 +75,7 @@ class SceneView( SceneEditorModule ):
 		# self.window = self.requestDocumentWindow(
 		# 		title = 'Scene'
 		# 	)
-		self.window = self.requestDocumentWindow(
+		self.window = self.requestDockWindow(
 			title = 'Scene'
 		)
 
@@ -90,6 +84,7 @@ class SceneView( SceneEditorModule ):
 
 		self.canvas = self.window.addWidget( SceneViewCanvas() )
 		self.canvas.loadScript( app.getPath('lua/candy_editor/SceneViewHelper.lua') )
+
 		# self.canvas.loadScript( app.getPath('lua/init.lua') )
 		self.canvas.parentView = self
 		
@@ -282,7 +277,7 @@ class SceneView( SceneEditorModule ):
 			self.updatePending = False
 			self.canvas.updateCanvas( no_sim = self.previewing, forced = True )
 			if not self.previewing:
-				self.getModule( 'game_preview' ).refresh()
+				self.getModule( 'game_view' ).refresh()
 
 	def onSetFocus( self ):
 		self.getModule( 'scene_editor' ).setFocus()
@@ -310,16 +305,16 @@ class SceneView( SceneEditorModule ):
 		self.scheduleUpdate()
 
 		#sync toolbar
-		gridWidth   = self.canvas.callMethod( 'view', 'getGridWidth'  )
-		gridHeight  = self.canvas.callMethod( 'view', 'getGridHeight' )
-		gridVisible = self.canvas.callMethod( 'view', 'isGridVisible' )
-		gridSnapping = self.canvas.callMethod( 'view', 'isGridSnapping' )
-		gizmoVisible = self.canvas.callMethod( 'view', 'isGizmoVisible' )
-		self.gridWidthSpinBox.setValue(	gridWidth	)
-		self.gridHeightSpinBox.setValue( gridHeight )
-		self.findTool( 'scene_view_config/toggle_grid' ).setValue( gridVisible )
-		self.findTool( 'scene_view_config/toggle_snap_grid' ).setValue( gridSnapping )
-		self.findTool( 'scene_view_config/toggle_gizmo_visible' ).setValue( gizmoVisible )
+		# gridWidth   = self.canvas.callMethod( 'view', 'getGridWidth'  )
+		# gridHeight  = self.canvas.callMethod( 'view', 'getGridHeight' )
+		# gridVisible = self.canvas.callMethod( 'view', 'isGridVisible' )
+		# gridSnapping = self.canvas.callMethod( 'view', 'isGridSnapping' )
+		# gizmoVisible = self.canvas.callMethod( 'view', 'isGizmoVisible' )
+		# self.gridWidthSpinBox.setValue(	gridWidth	)
+		# self.gridHeightSpinBox.setValue( gridHeight )
+		# self.findTool( 'scene_view_config/toggle_grid' ).setValue( gridVisible )
+		# self.findTool( 'scene_view_config/toggle_snap_grid' ).setValue( gridSnapping )
+		# self.findTool( 'scene_view_config/toggle_gizmo_visible' ).setValue( gizmoVisible )
 
 	def makeCanvasCurrent( self ):
 		self.canvas.makeCurrent()

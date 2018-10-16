@@ -26,10 +26,6 @@ from moai.CandyRuntime import _CANDY, isCandyInstance
 
 CANDY_MIME_ACTOR_DATA = 'application/candy.actor-data'
 
-def getModulePath( path ):
-	import os.path
-	return os.path.dirname( __file__ ) + '/' + path
-
 
 _brushAnimatable = makeBrush( color = '#5f3d26' )
 _fontAnimatable  = makeFont( bold = True, italic = True )
@@ -182,8 +178,8 @@ class SceneOutlinerEditor( SceneEditorModule ):
 		#SIGNALS
 		signals.connect( 'moai.clean',        self.onMoaiClean        )
 
-		signals.connect( 'scene.clear',       self.onSceneClear      )
-		signals.connect( 'scene.change',      self.onSceneChange     )
+		signals.connect( 'scene.clear',       self.onSceneClear       )
+		signals.connect( 'scene.change',      self.onSceneChange      )
 
 		signals.connect( 'selection.changed', self.onSelectionChanged )
 		signals.connect( 'selection.hint',    self.onSelectionHint    )
