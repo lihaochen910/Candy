@@ -154,7 +154,7 @@ function loadLuaWithEnv(file, env, ...)
 		env = dictToTablePlain( env )
 	end
 
-	env = setmetatable(env or {}, 
+	env = setmetatable(env or {},
 			{__index=function(t,k) return rawget(_G,k) end}
 		)
 	local func, err=loadfile(file)

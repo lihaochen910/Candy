@@ -2,8 +2,8 @@ local findTopLevelActors       = candy_edit.findTopLevelActors
 local getTopLevelActorSelection = candy_edit.getTopLevelActorSelection
 local isEditorActor             = candy_edit.isEditorActor
 
-local affirmGUID      = candy_edit.affirmGUID
-local affirmSceneGUID = candy_edit.affirmSceneGUID
+local affirmGUID      = candy.affirmGUID
+local affirmSceneGUID = candy.affirmSceneGUID
 local generateGUID = MOAIEnvironment.generateGUID
 
 local firstRun = true
@@ -33,12 +33,12 @@ function SceneOutlinerEditor:openScene( path )
 	) --dont start
 	assert( scene )
 	self.scene = scene
-	affirmSceneGUID( scene )
-	candy_edit.updateMOAIGfxResource()
+	candy.affirmSceneGUID( scene )
+	--candy_edit.updateMOAIGfxResource()
 	self:postLoadScene()
 	if firstRun then
 		firstRun = false
-		MOAIGfxResourceMgr.renewResources()
+		--MOAIGfxResourceMgr.renewResources()
 	end
 	self.previewState = false
 	return scene
@@ -49,7 +49,7 @@ function SceneOutlinerEditor:postOpenScene()
 	--mock.setAssetCacheWeak()
 	MOAISim.forceGC()
 	--mock.setAssetCacheStrong()
-	mock.game:resetClock()
+	candy.game:resetClock()
 end
 
 function SceneOutlinerEditor:closeScene()
@@ -91,7 +91,7 @@ function SceneOutlinerEditor:saveEntityLockState()
 	for ent in pairs( self.scene.actors ) do
 		if ent.__guid and ent._editLocked then output[ent.__guid] = true end
 	end
-	for group in pairs( self.scene:collectEntityGroups() ) do
+	for group in pairs( self.scene:collectActorGroups() ) do
 		if group.__guid and group._editLocked then output[group.__guid] = true end
 	end
 	return candy.tableToDict( output )
@@ -357,7 +357,7 @@ function SceneOutlinerEditor:makeSceneSelectionCopyData()
 	local targets = getTopLevelActorSelection()
 	local dataList = {}
 	for _, ent in ipairs( targets ) do
-		local data = candy.makeEntityCopyData( ent )
+		local data = candy.makeActorCopyData( ent )
 		table.insert( dataList, data )
 	end
 	return encodeJSON( { 

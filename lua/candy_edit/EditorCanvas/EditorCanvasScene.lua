@@ -5,8 +5,8 @@ module 'candy_edit'
 CLASS: EditorCanvasCamera ( candy.Camera )
 
 function EditorCanvasCamera:__init( env )
-	self.IS_EDITOR_OBJECT = true
-	context = candy.getCurrentRenderContext()
+	self.FLAG_EDITOR_OBJECT = true
+	context = candy_editor.getCurrentRenderContext()
 	self.context = context.key
 	self.env = env
 	self.parallaxEnabled = false
@@ -69,7 +69,7 @@ function EditorCanvasCamera:setCursor( id )
 end
 
 function EditorCanvasCamera:onAttach( actor )
-	actor.IS_EDITOR_OBJECT = true
+	actor.FLAG_EDITOR_OBJECT = true
 	return candy.Camera.onAttach( self, actor)
 end
 
@@ -79,7 +79,7 @@ end
 --------------------------------------------------------------------
 CLASS: EditorCanvasScene ( candy.Scene )
 function EditorCanvasScene:__init()
-	self.IS_EDITOR_SCENE = true
+	self.FLAG_EDITOR_SCENE = true
 end
 
 function EditorCanvasScene:setEnv( env )
@@ -91,7 +91,7 @@ function EditorCanvasScene:getEnv()
 end
 
 function EditorCanvasScene:initLayers()
-	self.layerSource = mock.Layer( 'CANDY_EDITOR_LAYER' )
+	self.layerSource = candy.Layer( 'CANDY_EDITOR_LAYER' )
 	local l = self.layerSource:makeMoaiLayer()
 	self.layers = { l }
 	self.layersByName = {
@@ -162,7 +162,7 @@ end
 --------------------------------------------------------------------
 function createEditorCanvasInputDevice( env )
 	local env = env or getfenv( 2 )
-	local inputDevice = candy.InputDevice( assert( env.contextName), true )
+	local inputDevice = candy.InputDevice( assert( env.contextName ), true )
 
 	function env.onMouseDown( btn, x, y )
 		inputDevice:sendMouseEvent( 'down', x, y, btn )

@@ -13,11 +13,11 @@ function CanvasView:onLoad()
 	self:initContext()
 	self:initAddons()
 	self:onInit()
-	self:connect( 'scene.entity_event', 'onEntityEvent' )
+	self:connect( 'scene.actor_event', 'onActorEvent' )
 end
 
 function CanvasView:createCamera( canvasEnv )
-	local cameraActor = EditorActor()
+	local cameraActor = candy.EditorActor()
 	local cameraCom    = EditorCanvasCamera( canvasEnv )
 	cameraActor:attach( cameraCom )
 	self:addChild(cameraActor)
@@ -43,6 +43,11 @@ function CanvasView:initAddons()
 	self.itemManager    = self:addChild( CanvasItemManager() )
 	self.pickingManager = PickingManager()
 	self.pickingManager:setTargetScene( self:getScene() )
+
+	assert(self.toolManager)
+	assert(self.gizmoManager)
+	assert(self.itemManager)
+	assert(self.pickingManager)
 end
 
 function CanvasView:onInit()
