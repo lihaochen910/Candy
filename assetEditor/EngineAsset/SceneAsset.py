@@ -35,9 +35,9 @@ class SceneAssetManager(AssetManager):
 		return True
 
 	def editAsset( self, node ):
-		editor = app.getModule( 'scenegraph_editor' )
+		editor = app.getModule( 'sceneoutliner_editor' )
 		if not editor:
-			return alertMessage( 'Editor not load', 'Scene Editor not found!' ) 
+			return alertMessage( 'Editor not load', 'Scene Outliner Editor not found!' )
 		if node.assetType == 'scene':
 			editor.openScene( node )
 		elif node.assetType == 'proto':
