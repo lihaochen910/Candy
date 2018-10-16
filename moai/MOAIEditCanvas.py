@@ -300,6 +300,7 @@ class MOAIEditCanvasBase( MOAICanvasBase ):
 		if self.scriptPath:
 			self.makeCurrent()
 			env = {
+				'_delegate'        : self.delegate,
 				'updateCanvas'     : boundToClosure( self.updateCanvas ),
 				'hideCursor'       : boundToClosure( self.hideCursor ),
 				'showCursor'       : boundToClosure( self.showCursor ),
@@ -310,7 +311,7 @@ class MOAIEditCanvasBase( MOAICanvasBase ):
 				'stopUpdateTimer'  : boundToClosure( self.stopUpdateTimer ),
 				'contextName'      : boundToClosure( self.contextName )				
 			}
-			
+
 			if self.scriptEnv:
 				env.update( self.scriptEnv )
 			self.delegate.load( self.scriptPath, env )
