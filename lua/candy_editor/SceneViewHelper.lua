@@ -13,10 +13,10 @@ function onSceneOpen( scene )
 	local gameActionRoot = candy.game:getActionRoot()
 	candy_editor.setCurrentRenderContextActionRoot( gameActionRoot )
 
-	if not candy_editor.contextName then candy_editor.contextName = 'game' end
-	if not candy_editor._delegate then candy_editor._delegate = _candyEditorSceneView.canvas.delegate end
+	--if not candy_editor.contextName then candy_editor.contextName = 'game' end
+	--if not candy_editor._delegate then candy_editor._delegate = _candyEditorSceneView.canvas.delegate end
 
-	view = candy_edit.createSceneView( scene, candy_editor )
+	view = candy_edit.createSceneView( scene, _C )
 	view.updateCanvas = function()
 		_candyEditorSceneView.scheduleUpdate()
 	end

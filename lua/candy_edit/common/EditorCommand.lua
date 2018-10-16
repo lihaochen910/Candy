@@ -7,7 +7,7 @@ require 'candy_editor'
 --------------------------------------------------------------------
 CLASS: EditorCommand ()
 function EditorCommand.register( clas, name )
-	_stat( 'register Lua Editor Command', name )
+	_stat( 'from Lua register Editor Command', name )
 	candy_editor.registerLuaEditorCommand( name, clas )
 	clas._commandName = name
 end

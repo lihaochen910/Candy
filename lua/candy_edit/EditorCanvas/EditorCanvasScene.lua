@@ -21,7 +21,7 @@ function EditorCanvasCamera:isEditorCamera()
 end
 
 function EditorCanvasCamera:getDefaultOutputRenderTarget()
-	context = candy.getCurrentRenderContext()
+	context = candy_editor.getCurrentRenderContext()
 	local w, h = context.w, context.h
 	self.canvasRenderTarget = candy.DeviceRenderTarget(
 		MOAIGfxDevice.getFrameBuffer(), 1, 1
@@ -104,13 +104,13 @@ function EditorCanvasScene:onLoad()
 	self.cameraCom = EditorCanvasCamera( self.env )
 	--self.camera    = candy.SingleEntity( self.cameraCom )
 	self.camera    = candy.Actor( self.cameraCom )
-	self.camera.IS_EDITOR_OBJECT = true
+	self.camera.FLAG_EDITOR_OBJECT = true
 	self:addActor( self.camera )
 end
 
 
 function EditorCanvasScene:getParentActionRoot()
-	local ctx = candy.getCurrentRenderContext()
+	local ctx = candy_editor.getCurrentRenderContext()
 	return ctx.actionRoot
 end
 

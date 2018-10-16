@@ -28,10 +28,33 @@ getTime              = bridge.getTime
 generateGUID         = bridge.generateGUID
 showAlertMessage		= bridge.showAlertMessage
 
-MOAIEnvironment.generateGUID = bridge.generateGUID
-
 --import
 importPythonModule   = bridge.importModule
+--------------------------------------------------------------------
+--communication
+_C.emitPythonSignal     = bridge.emitPythonSignal
+_C.emitPythonSignalNow  = bridge.emitPythonSignalNow
+_C.connectPythonSignal  = bridge.connectPythonSignal
+_C.registerPythonSignal = bridge.registerPythonSignal
+
+--data
+_C.sizeOfPythonObject   = bridge.sizeOfPythonObject
+_C.newPythonDict        = bridge.newPythonDict
+_C.newPythonList        = bridge.newPythonList
+_C.appendPythonList     = bridge.appendPythonList
+_C.deletePythonList     = bridge.deletePythonList
+_C.getDict              = bridge.getDict
+_C.setDict              = bridge.setDict
+--other
+_C.throwPythonException = bridge.throwPythonException
+_C.getTime              = bridge.getTime
+_C.generateGUID         = bridge.generateGUID
+_C.showAlertMessage		= bridge.showAlertMessage
+
+--import
+_C.importPythonModule   = bridge.importModule
+
+MOAIEnvironment.generateGUID = bridge.generateGUID
 
 --data conversion
 local encodeDict = bridge.encodeDict
