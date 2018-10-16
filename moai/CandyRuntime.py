@@ -144,10 +144,10 @@ class CandyRuntime( EditorModule ):
 	def onMoaiReady( self ):
 		self.initCandy()
 
-	def getMockEnv( self ):
+	def getCandyEnv( self ):
 		return _CANDY
 
-	def getMockEditEnv( self ):
+	def getCandyEditEnv( self ):
 		return _CANDY_EDIT
 
 	def getLuaEnv( self ):

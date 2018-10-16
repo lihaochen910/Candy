@@ -13,6 +13,8 @@ _G              = LuaTableProxy( None )
 _CANDY          = LuaTableProxy( None )
 _CANDY_EDIT     = LuaTableProxy( None )
 _CANDY_EDITOR   = LuaTableProxy( None )
+_C              = LuaTableProxy( None )
+
 
 signals.register( 'lua.msg' )
 signals.register( 'moai.clean' )
@@ -111,10 +113,12 @@ class MOAIRuntime( EditorModule ):
 		_CANDY._setTarget( _G['candy'] )
 		_CANDY_EDIT._setTarget( _G['candy_edit'] )
 		_CANDY_EDITOR._setTarget( _G['candy_editor'] )
+		_C._setTarget( _G['_C'] )
 
 		assert _CANDY, "Failed loading Candy Lua Runtime!"
 		assert _CANDY_EDIT, "Failed loading candy_edit!"
 		assert _CANDY_EDITOR, "Failed loading CandyEditor Lua Module! Check ./lua/candy_editor"
+		assert _C, "Failed loading _C!"
 		#finish loading lua bridge
 		
 		self.AKUReady      = True
