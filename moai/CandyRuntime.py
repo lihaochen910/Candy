@@ -110,20 +110,22 @@ class CandyRuntime( EditorModule ):
 
 	def initCandy(self):
 		try:
+			_CANDY.init(self.configPath, True)
+
 			if not self.runtime.getRenderContext( 'game' ):
 				self.runtime.createRenderContext( 'game' )
 			self.runtime.changeRenderContext( 'game', 100, 100 )
 
-			# _CANDY.init( self.configPath, True )
+			# self.runtime.runString("_stat('CandyRuntime.initCandy() after getRenderContext()', MOAISim.getActionMgr():getRoot())")
+
 		except Exception, e:
-			print(e)
-			# raise e
+			raise e
 
 	def postInitCandy(self):
 		try:
-			_CANDY.init(self.configPath, True)
+			# _CANDY.init(self.configPath, True)
 
-			print ("postInitCandy() _CANDY ok!")
+			# print ("postInitCandy() _CANDY ok!")
 
 			signals.emit( 'candy.init' )
 		except Exception, e:
