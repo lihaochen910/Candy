@@ -92,7 +92,7 @@ end
 
 local function isEditorActor( a )
 	while a do
-		if a.IS_EDITOR_OBJECT or a.FLAG_INTERNAL then return true end
+		if a.FLAG_EDITOR_OBJECT or a.FLAG_INTERNAL then return true end
 		a = a.parent
 	end
 	return false
@@ -112,3 +112,4 @@ _C.affirmGUID                 	= affirmGUID
 _C.affirmSceneGUID            	= affirmSceneGUID
 
 candy_edit.affirmGUID			= affirmGUID
+candy_edit.isEditorActor		= isEditorActor

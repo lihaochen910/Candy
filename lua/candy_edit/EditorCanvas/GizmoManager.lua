@@ -80,7 +80,7 @@ end
 function GizmoManager:updateConstantSizeForGizmo( giz )
 	local view = self.parent
 	local cameraCom = view:getCameraComponent()
-	local factorZoom = 1/cameraCom:getZoom()
+	local factorZoom = 1 / cameraCom:getZoom()
 	local factorDistance = 1
 	if cameraCom:isPerspective() then
 		--TODO
@@ -96,7 +96,7 @@ function GizmoManager:updateConstantSize()
 	end
 end
 
-function GizmoManager:_attachChildEntity( child )
+function GizmoManager:_attachChildActor( child )
 	linkLocalVisible( self:getProp(), child:getProp() )
 end
 
@@ -106,36 +106,35 @@ function GizmoManager:onSelectionChanged( selection )
 		giz:destroyWithChildrenNow()
 	end
 	self.selectedGizmoMap = {}
-	local entitySet = {}
+	local actorSet = {}
 	for i, e in ipairs( selection ) do
-		entitySet[ e ] = true
+		actorSet[ e ] = true
 	end
-	local topEntitySet = findTopLevelEntities( entitySet )
-	for e in pairs( topEntitySet ) do
-		if isInstance( e, mock.Entity ) then
-			self:buildForEntity( e, true )
+	local topActorSet = findTopLevelActors( actorSet )
+	for e in pairs( topActorSet ) do
+		if isInstance( e, candy.Actor ) then
+			self:buildForActor( e, true )
 		end
 	end
 end
 
-function GizmoManager:onEntityEvent( ev, entity, com )
+function GizmoManager:onActorEvent( ev, actor, com )
 	if ev == 'clear' then
 		self:clear()
 		return
 	end
 
-	if entity.IS_EDITOR_OBJECT then return end
+	if actor.FLAG_EDITOR_OBJECT then return end
 
 	if ev == 'add' then
-		self:buildForEntity( entity ) 
+		self:buildForActor( actor ) 
 	elseif ev == 'remove' then
-		self:removeForEntity( entity )
+		self:removeForActor( actor )
 	elseif ev == 'attach' then
 		self:buildForObject( com )
 	elseif ev == 'detach' then
 		self:removeForObject( com )
 	end
-
 end
 
 function GizmoManager:addConstantSizeGizmo( giz )
@@ -150,15 +149,15 @@ function GizmoManager:refresh()
 end
 
 function GizmoManager:scanScene()
-	local entities = table.simplecopy( self.scene.entities )
-	for e in pairs( entities ) do
-		self:buildForEntity( e, false )
+	local actors = table.simplecopy( self.scene.actors )
+	for e in pairs( actors ) do
+		self:buildForActor( e, false )
 	end
 end
 
-function GizmoManager:buildForEntity( actor, selected )
+function GizmoManager:buildForActor( actor, selected )
 	if actor.components then
-		if not ( actor.FLAG_INTERNAL or actor.IS_EDITOR_OBJECT ) then
+		if not ( actor.FLAG_INTERNAL or actor.FLAG_EDITOR_OBJECT ) then
 			self:buildForObject( actor, selected )
 			for c in pairs( actor.components ) do
 				if not ( c.FLAG_EDITOR_OBJECT ) then
@@ -166,7 +165,7 @@ function GizmoManager:buildForEntity( actor, selected )
 				end
 			end
 			for child in pairs( actor.children ) do
-				self:buildForEntity( child, selected )
+				self:buildForActor( child, selected )
 			end
 		end
 	end
@@ -197,10 +196,10 @@ function GizmoManager:buildForObject( obj, selected )
 				giz:setVisible( self.gizmoVisible )
 			end
 			self:addChild( giz )
-			if obj:isInstance( mock.Entity ) then
+			if obj:isInstance( candy.Actor ) then
 				inheritVisible( giz:getProp(), obj:getProp() )
-			elseif obj._entity then
-				inheritVisible( giz:getProp(), obj._entity:getProp() )
+			elseif obj._actor then
+				inheritVisible( giz:getProp(), obj._actor:getProp() )
 			end
 			giz:setTarget( obj )
 		end
@@ -228,14 +227,14 @@ function GizmoManager:removeForObject( obj )
 	end
 end
 
-function GizmoManager:removeForEntity( ent )
-	for com in pairs( ent.components ) do
+function GizmoManager:removeForActor( actor )
+	for com in pairs( actor.components ) do
 		self:removeForObject( com )
 	end
-	for child in pairs( ent.children ) do
-		self:removeForEntity( child )
+	for child in pairs( actor.children ) do
+		self:removeForActor( child )
 	end
-	self:removeForObject( ent )
+	self:removeForObject( actor )
 end
 
 function GizmoManager:clear()
@@ -252,4 +251,3 @@ end
 function GizmoManager:pickRect( x,y, x1, y1  )
 	--TODO
 end
-

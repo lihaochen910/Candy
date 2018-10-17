@@ -60,8 +60,8 @@ function SceneView:__init()
 end
 
 function SceneView:onInit()
-	self:connect( 'scene.pre_serialize',    'preSceneSerialize'    )
-	self:connect( 'scene.post_deserialize',  'postSceneDeserialize' )
+	--self:connect( 'scene.pre_serialize',    'preSceneSerialize'    )
+	--self:connect( 'scene.post_deserialize',  'postSceneDeserialize' )
 	self:readConfig()
 	self.gizmoManager:updateConstantSize()
 	self.itemManager:updateAllItemScale()
@@ -75,7 +75,8 @@ function SceneView:registerDragFactory( factory, priority )
 end
 
 function SceneView:readConfig()
-	local cfg = self.scene:getMetaData( 'scene_view' )
+	--local cfg = self.scene:getMetaData( 'scene_view' )
+	local cfg = nil
 	if cfg then
 		local cameraCfg = cfg['camera']
 		if cameraCfg then
@@ -121,7 +122,7 @@ function SceneView:saveConfig()
 end
 
 function SceneView:focusSelection()
-	local selection = candy.getSelection( 'scene' )
+	local selection = candy_editor.getSelection( 'scene' )
 	for _, a in ipairs( selection ) do
 		if isInstance(a, candy.Actor ) then
 			self.camera:setLoc( a:getWorldLoc() )
@@ -212,14 +213,14 @@ function SceneView:enableCamera()
 end
 
 function SceneView:getCurrentToolId()
-	local sceneToolManager = candy.getModule( 'scene_tool_manager' )
+	local sceneToolManager = candy_editor.getModule( 'scene_tool_manager' )
 	if sceneToolManager then
 		return sceneToolManager:getCurrentToolId()
 	end
 end
 
 function SceneView:changeTool( id, t )
-	local sceneToolManager = candy.getModule( 'scene_tool_manager' )
+	local sceneToolManager = candy_editor.getModule( 'scene_tool_manager' )
 	if sceneToolManager then
 		local dict = candy.tableToDictPlain( t or {} )
 		sceneToolManager:changeToolD( id, dict )

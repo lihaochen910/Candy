@@ -27,6 +27,10 @@ function EditorCanvasCamera:getDefaultOutputRenderTarget()
 		MOAIGfxDevice.getFrameBuffer(), 1, 1
 	)
 	self:setScreenSize( w or 100, h or 100 )
+
+	_stat('CurrentRenderContext:', context)
+	_stat('EditorCanvasCamera:getDefaultOutputRenderTarget()', self.canvasRenderTarget)
+
 	return self.canvasRenderTarget
 end
 
@@ -103,9 +107,10 @@ end
 function EditorCanvasScene:onLoad()
 	self.cameraCom = EditorCanvasCamera( self.env )
 	--self.camera    = candy.SingleEntity( self.cameraCom )
-	self.camera    = candy.Actor( self.cameraCom )
-	self.camera.FLAG_EDITOR_OBJECT = true
-	self:addActor( self.camera )
+	self.cameraActor    = candy.Actor()
+	self.cameraActor.FLAG_EDITOR_OBJECT = true
+	self.cameraActor:attach(self.cameraCom)
+	self:addActor( self.cameraActor )
 end
 
 

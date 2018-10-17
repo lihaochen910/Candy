@@ -13,7 +13,7 @@ function CanvasView:onLoad()
 	self:initContext()
 	self:initAddons()
 	self:onInit()
-	self:connect( 'scene.actor_event', 'onActorEvent' )
+	--self:connect( 'scene.actor_event', 'onActorEvent' )
 end
 
 function CanvasView:createCamera( canvasEnv )

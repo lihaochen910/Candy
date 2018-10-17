@@ -6,35 +6,35 @@ CLASS: PickingManager ()
 	:MODEL{}
 
 function PickingManager:__init()
-	self.pickingPropToEntity = {}
-	self.entityToPickingProps = {} 
+	self.pickingPropToActor = {}
+	self.actorToPickingProps = {} 
 end
 
-function PickingManager:addPickingProp( srcEntity, prop )
-	self.pickingPropToEntity[ prop ] = srcEntity
-	local props = self.entityToPickingProps[ srcEntity ]
+function PickingManager:addPickingProp( srcActor, prop )
+	self.pickingPropToActor[ prop ] = srcActor
+	local props = self.actorToPickingProps[ srcActor ]
 	if not props then
 		props = {}
-		self.entityToPickingProps[ srcEntity ] = props
+		self.actorToPickingProps[ srcActor ] = props
 	end
 	props[ prop ] = true
 end
 
 function PickingManager:removePickingProp( prop )
-	local src = self.pickingPropToEntity[ prop ]
-	self.pickingPropToEntity[ prop ] = nil
-	local props = self.entityToPickingProps[ src ]
+	local src = self.pickingPropToActor[ prop ]
+	self.pickingPropToActor[ prop ] = nil
+	local props = self.actorToPickingProps[ src ]
 	if props then props[ prop ] = nil end
 end
 
-function PickingManager:removeEntity( srcEntity )
-	local props = self.entityToPickingProps[ srcEntity ]
+function PickingManager:removeActor( srcActor )
+	local props = self.actorToPickingProps[ srcActor ]
 	if not props then return end
-	local pickingPropToEntity = self.pickingPropToEntity
+	local pickingPropToActor = self.pickingPropToActor
 	for prop in pairs( props ) do
-		pickingPropToEntity[ prop ] = nil
+		pickingPropToActor[ prop ] = nil
 	end
-	self.entityToPickingProps[ srcEntity ] = nil
+	self.actorToPickingProps[ srcActor ] = nil
 end
 
 
@@ -49,43 +49,43 @@ function PickingManager:refresh()
 end
 
 function PickingManager:scanScene()
-	local entities = table.simplecopy( self.targetScene.entities )
-	for e in pairs( entities ) do
-		self:buildForEntity( e, false )
+	local actors = table.simplecopy( self.targetScene.actors )
+	for e in pairs( actors ) do
+		self:buildForActor( e, false )
 	end
 end
 
-function PickingManager:onEntityEvent( ev, entity, com )
+function PickingManager:onActorEvent( ev, actor, com )
 	if ev == 'clear' then
 		self:clear()
 		return
 	end
 
 	if ev == 'add' then
-		self:buildForEntity( entity ) 
+		self:buildForActor( actor ) 
 	elseif ev == 'remove' then
-		self:removeForEntity( entity )
+		self:removeForActor( actor )
 	elseif ev == 'attach' then
-		if self:isEntityPickable( entity ) then
-			self:buildForObject( com, entity )
+		if self:isActorPickable( actor ) then
+			self:buildForObject( com, actor )
 		end
 	elseif ev == 'detach' then
-		self:removeForObject( com, entity )
+		self:removeForObject( com, actor )
 	end
 
 end
 
-function PickingManager:isEntityPickable( ent )
-	if not ent:isVisible() then return false end
+function PickingManager:isActorPickable( actor )
+	if not actor:isVisible() then return false end
 	local defaultPickable = true
-	if ent.FLAG_EDITOR_OBJECT then
+	if actor.FLAG_EDITOR_OBJECT then
 		defaultPickable = false
 	end
 
 	local pickable
-	local isPickable = ent.isPickable
+	local isPickable = actor.isPickable
 	if isPickable then
-		pickable = isPickable( ent )
+		pickable = isPickable( actor )
 	else
 		pickable = defaultPickable
 	end
@@ -94,30 +94,30 @@ function PickingManager:isEntityPickable( ent )
 end
 
 
-function PickingManager:buildForEntity( ent )
-	if not self:isEntityPickable( ent ) then return end
-	self:buildForObject( ent, ent )
-	for com in pairs( ent.components ) do
+function PickingManager:buildForActor( actor )
+	if not self:isActorPickable( actor ) then return end
+	self:buildForObject( actor, actor )
+	for com in pairs( actor.components ) do
 		if not ( com.FLAG_EDITOR_OBJECT ) then
-			self:buildForObject( com, ent )
+			self:buildForObject( com, actor )
 		end
 	end
-	for child in pairs( ent.children ) do
-		self:buildForEntity( child )
+	for child in pairs( actor.children ) do
+		self:buildForActor( child )
 	end
 end
 
-function PickingManager:buildForObject( obj, srcEntity )
+function PickingManager:buildForObject( obj, srcActor )
 	getPickingProp = obj.getPickingProp
 	if getPickingProp then
 		local prop = getPickingProp( obj )
 		if prop then
-			self:addPickingProp( srcEntity, prop )
+			self:addPickingProp( srcActor, prop )
 		end
 	end
 end
 
-function PickingManager:removeForObject( obj, srcEntity )
+function PickingManager:removeForObject( obj, srcActor )
 	getPickingProp = obj.getPickingProp
 	if getPickingProp then
 		local prop = getPickingProp( obj )
@@ -127,20 +127,20 @@ function PickingManager:removeForObject( obj, srcEntity )
 	end
 end
 
-function PickingManager:removeForEntity( ent )
-	for com in pairs( ent.components ) do
-		self:removeForObject( com, ent )
+function PickingManager:removeForActor( actor )
+	for com in pairs( actor.components ) do
+		self:removeForObject( com, actor )
 	end
-	for child in pairs( ent.children ) do
-		self:removeForEntity( child )
+	for child in pairs( actor.children ) do
+		self:removeForActor( child )
 	end
-	self:removeForObject( ent, ent )
-	self:removeEntity( ent )
+	self:removeForObject( actor, actor )
+	self:removeActor( actor )
 end
 
 function PickingManager:clear()
-	self.pickingPropToEntity = {}
-	self.entityToPickingProps = {}
+	self.pickingPropToActor = {}
+	self.actorToPickingProps = {}
 end
 
 local defaultSortMode = MOAILayer.SORT_Z_ASCENDING
@@ -203,20 +203,20 @@ end
 
 function PickingManager:pickPoint( x, y, pad )
 	-- print( 'picking', x, y )
-	local pickingPropToEntity = self.pickingPropToEntity
+	local pickingPropToActor = self.pickingPropToActor
 
 	for i, layer in ipairs( self:getVisibleLayers() ) do
 		local partition = layer:getPartition()
 		local result = { partition:propListForRay( x, y, -1000, 0, 0, 1, defaultSortMode ) }
 		for i, prop in ipairs( result ) do
-			local ent = pickingPropToEntity[ prop ]
-			if ent and ent.getPickingTarget then
-				ent = ent:getPickingTarget()
+			local actor = pickingPropToActor[ prop ]
+			if actor and actor.getPickingTarget then
+				actor = actor:getPickingTarget()
 			end
-			if ent and ent:isVisible() and ( not ent:isEditLocked() ) then --TODO: sorting & sub picking
-				-- print( ent:getName() )
-				ent = self:findBestPickingTarget( ent, true )
-				return { ent }
+			if actor and actor:isVisible() and ( not actor:isEditLocked() ) then --TODO: sorting & sub picking
+				-- print( actor:getName() )
+				actor = self:findBestPickingTarget( actor, true )
+				return { actor }
 			end
 		end
 	end
@@ -226,21 +226,21 @@ end
 function PickingManager:pickRect( x0, y0, x1, y1, pad )
 	-- print( 'picking rect', x0, y0, x1, y1 )
 	local picked = {}
-	local pickingPropToEntity = self.pickingPropToEntity
+	local pickingPropToActor = self.pickingPropToActor
 
 	for i, layer in ipairs( self:getVisibleLayers() ) do
 		local partition = layer:getPartition()
 		local result = { partition:propListForRect( x0, y0, x1, y1, defaultSortMode ) }
 		for i, prop in ipairs( result ) do
-			local ent = pickingPropToEntity[ prop ]
-			if ent then --TODO: sub picking
-				if ent.getPickingTarget then
-					ent = ent:getPickingTarget()
+			local actor = pickingPropToActor[ prop ]
+			if actor then --TODO: sub picking
+				if actor.getPickingTarget then
+					actor = actor:getPickingTarget()
 				end
-				if ent:isVisible() and ( not ent:isEditLocked()) then
-					picked[ ent ] = true
+				if actor:isVisible() and ( not actor:isEditLocked()) then
+					picked[ actor ] = true
 				end
-				-- print( ent:getName() )
+				-- print( actor:getName() )
 			end
 		end
 	end
@@ -251,25 +251,24 @@ end
 function PickingManager:pickBox( x0, y0, z0, x1, y1, z1, pad )
 	-- print( 'picking rect', x0, y0, x1, y1 )
 	local picked = {}
-	local pickingPropToEntity = self.pickingPropToEntity
+	local pickingPropToActor = self.pickingPropToActor
 
 	for i, layer in ipairs( self:getVisibleLayers() ) do
 		local partition = layer:getPartition()
 		local result = { partition:propListForBox( x0, y0, z0, x1, y1, z1, defaultSortMode ) }
 		for i, prop in ipairs( result ) do
-			local ent = pickingPropToEntity[ prop ]
-			if ent then --TODO: sub picking
-				if ent.getPickingTarget then
-					ent = ent:getPickingTarget()
+			local actor = pickingPropToActor[ prop ]
+			if actor then --TODO: sub picking
+				if actor.getPickingTarget then
+					actor = actor:getPickingTarget()
 				end
-				if ent:isVisible() and ( not ent:isEditLocked()) then
-					picked[ ent ] = true
+				if actor:isVisible() and ( not actor:isEditLocked()) then
+					picked[ actor ] = true
 				end
-				-- print( ent:getName() )
+				-- print( actor:getName() )
 			end
 		end
 	end
 	picked = self:correctPicked( picked )
 	return table.keys( picked )
 end
-

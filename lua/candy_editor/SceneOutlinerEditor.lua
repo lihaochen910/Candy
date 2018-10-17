@@ -1,4 +1,4 @@
-local findTopLevelActors       = candy_edit.findTopLevelActors
+local findTopLevelActors        = candy_edit.findTopLevelActors
 local getTopLevelActorSelection = candy_edit.getTopLevelActorSelection
 local isEditorActor             = candy_edit.isEditorActor
 
@@ -287,7 +287,7 @@ function SceneOutlinerEditor:enumerateObjects( typeId, context, option )
 			table.insert( result, g )
 		end
 
-	elseif typeId == 'entity_in_group' then	
+	elseif typeId == 'actor_in_group' then
 		local collection = {}	
 		--TODO:!!!!
 		
