@@ -65,6 +65,15 @@ def throwPythonException(name, data=None):
 def showAlertMessage(title, msg):
 	alertMessage(title, msg)
 
+def pyLogInfo(msg):
+	logging.info(msg)
+
+def pyLogWarn(msg):
+	logging.warn(msg)
+
+def pyLogError(msg):
+	logging.error(msg)
+
 ##----------------------------------------------------------------##
 def importModule( id ):
 	return importlib.import_module( id )
