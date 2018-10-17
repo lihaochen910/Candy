@@ -6,6 +6,12 @@ local affirmGUID      = candy.affirmGUID
 local affirmSceneGUID = candy.affirmSceneGUID
 local generateGUID = MOAIEnvironment.generateGUID
 
+local function _handleOnError( msg )
+	local errMsg = msg
+	local tracebackMsg = debug.traceback(2)
+	return errMsg .. '\n' .. tracebackMsg
+end
+
 local firstRun = true
 --------------------------------------------------------------------
 CLASS:  SceneOutlinerEditor()
@@ -94,7 +100,7 @@ function SceneOutlinerEditor:saveEntityLockState()
 	for group in pairs( self.scene:collectActorGroups() ) do
 		if group.__guid and group._editLocked then output[group.__guid] = true end
 	end
-	return candy.tableToDict( output )
+	return candy_editor.tableToDict( output )
 end
 
 function SceneOutlinerEditor:loadEntityLockState( data )
@@ -142,14 +148,15 @@ function SceneOutlinerEditor:locateProto( path )
 	local rootId = protoData.rootId
 	for ent in pairs( self.scene.actors ) do
 		if ent.__guid == rootId then
-			return candy.changeSelection( 'scene', ent )
+			return candy_editor.changeSelection( 'scene', ent )
 		end
 	end
 end
 
 function SceneOutlinerEditor:postLoadScene()
 	local scene = self.scene
-	scene:setActorListener( function( action, ... ) return self:onActorEvent( action, ... ) end )
+	--scene:setActorListener( function( action, ... ) return self:onActorEvent( action, ... ) end )
+	scene:setActorListener( function( action, actor, com ) return self:onActorEvent( action, actor, com ) end )
 end
 
 
@@ -179,8 +186,8 @@ end
 function SceneOutlinerEditor:retainScene()
 	--keep current selection
 	local guids = {}
-	for i, e in ipairs( candy_editor.getSelection( 'scene' ) ) do
-		guids[ i ] = e.__guid
+	for i, a in ipairs( candy_editor.getSelection( 'scene' ) ) do
+		guids[ i ] = a.__guid
 	end
 	self.retainedSceneSelection = guids
 	self.retainedSceneData = candy.serializeScene( self.scene, 'keepProto' )
@@ -319,8 +326,10 @@ end
 
 
 function SceneOutlinerEditor:onActorEvent( action, actor, com )
-	if self.previewState then return end --ignore entity event on previewing
-	
+	if self.previewState then return end --ignore actor event on previewing
+
+	--_log('SceneOutlinerEditor:onActorEvent()', action, actor, com)
+
 	emitSignal( 'scene.actor_event', action, actor, com )
 	
 	if action == 'clear' then
@@ -328,6 +337,8 @@ function SceneOutlinerEditor:onActorEvent( action, actor, com )
 	end
 
 	if isEditorActor( actor ) then return end
+
+	--candy_editor.pyLogWarn("onActorEvent() "..action.." "..tostring(actor))
 
 	if action == 'add' then
 		_owner.addActorNode( actor )
@@ -452,7 +463,7 @@ end
 local function findNextNumberProfix( scene, name )
 	local max = -1
 	local pattern = name .. '_(%d+)$'
-	for ent in pairs( scene.entities ) do
+	for ent in pairs( scene.actors ) do
 		local n = ent:getName()
 		if n then
 			if n == name then 
@@ -468,15 +479,15 @@ local function findNextNumberProfix( scene, name )
 	return max
 end
 
-local function makeNumberProfix( scene, entity )
-	local n = entity:getName()
+local function makeNumberProfix( scene, actor )
+	local n = actor:getName()
 	if n then
 		--auto increase prefix
 		local header, profix = extractNumberPrefix( n )
 		local number = findNextNumberProfix( scene, header )
 		if number >= 0 then
 			local profix = '_' .. string.format( '%02d', number + 1 )
-			entity:setName( header .. profix )
+			actor:setName( header .. profix )
 		end
 	end
 end
@@ -484,17 +495,17 @@ end
 --------------------------------------------------------------------
 CLASS: CmdCreateActorBase ( candy_edit.EditorCommand )
 function CmdCreateActorBase:init( option )
-	local contextEntity = candy_editor.getSelection( 'scene' )[1]
-	if isInstance( contextEntity, candy.Actor ) then
+	local contextActor = candy_editor.getSelection( 'scene' )[1]
+	if isInstance( contextActor, candy.Actor ) then
 		if option[ 'create_sibling' ] then
-			self.parentEntity = contextEntity:getParent()
+			self.parentActor = contextActor:getParent()
 		else
-			self.parentEntity = contextEntity
+			self.parentActor = contextActor
 		end
-	elseif isInstance( contextEntity, candy.ActorGroup ) then
-		self.parentEntity = contextEntity
+	elseif isInstance( contextActor, candy.ActorGroup ) then
+		self.parentActor = contextActor
 	else
-		self.parentEntity = false
+		self.parentActor = false
 	end
 end
 
@@ -534,7 +545,7 @@ local function _editorDeleteCom( com )
 	end
 end
 
-local function _editorDeleteEntity( e )
+local function _editorDeleteActor( e )
 	if e.onEditorDelete then
 		e:onEditorDelete()
 	end
@@ -542,21 +553,24 @@ local function _editorDeleteEntity( e )
 		_editorDeleteCom( com )
 	end
 	for child in pairs( e.children ) do
-		_editorDeleteEntity( child )
+		_editorDeleteActor( child )
 	end
 end
 
-local function _editorInitEntity( e )
-	if e.onEditorInit then
-		e:onEditorInit()
+local function _editorInitActor( a )
+	--_log('_editorInitActor', a:getName(), a)
+	if a.onEditorInit then
+		a:onEditorInit()
 	end
 
-	for com in pairs( e.components ) do
+	for com in pairs( a.components ) do
+		--_log('_editorInitActor -> component', com:getClassName(), com)
 		_editorInitCom( com )
 	end
 
-	for child in pairs( e.children ) do
-		_editorInitEntity( child )
+	for child in pairs( a.children ) do
+		--_log('_editorInitActor -> children', child:getClassName(), child)
+		_editorInitActor( child )
 	end
 end
 
@@ -570,7 +584,7 @@ function CmdAddActor:init( option )
 	if not self.precreatedActor then
 		return false
 	end
-	_editorInitEntity( self.precreatedActor )
+	_editorInitActor( self.precreatedActor )
 end
 
 function CmdAddActor:createActor()
@@ -587,12 +601,25 @@ function CmdCreateActor:init( option )
 end
 
 function CmdCreateActor:createActor()
-	local entType = candy.getActorType( self.actorName )
-	assert( entType )
-	local e = entType()
-	_editorInitEntity( e )
-	if not e.name then e.name = self.actorName end
-	return e
+	local actorType = candy.getActorType( self.actorName )
+	assert( actorType )
+	local a = actorType()
+
+	_log('CmdCreateActor:createActor()', self.actorName)
+
+	local ok, msg = xpcall(function()
+		_editorInitActor( a )
+		if not a.name then a.name = self.actorName end
+	end, _handleOnError)
+
+	if not ok then
+		print (msg)
+	end
+
+	-- _editorInitActor( a )
+	-- if not a.name then a.name = self.actorName end
+
+	return a
 end
 
 function CmdCreateActor:undo()
@@ -673,11 +700,11 @@ end
 
 function CmdRemoveComponent:redo()
 	--todo
-	local ent = self.target._actor
-	if ent then
-		ent:detach( self.target )
+	local actor = self.target._actor
+	if actor then
+		actor:detach( self.target )
 	end
-	self.previousParent = ent
+	self.previousParent = actor
 	candy_editor.emitPythonSignal( 'component.removed', self.target, self.previousParent )	
 end
 
@@ -702,16 +729,16 @@ function CmdCloneActor:redo()
 	local createdList = {}
 	for _, target in ipairs( self.targets ) do
 		if isInstance( target, candy.ActorGroup ) then
-			mock_edit.alertMessage( 'todo', 'Group clone not yet implemented', 'info' )
+			candy_edit.alertMessage( 'todo', 'Group clone not yet implemented', 'info' )
 			return false
 		else
-			local created = mock.copyAndPasteEntity( target, generateGUID )
+			local created = candy.copyAndPasteActor( target, generateGUID )
 			makeNumberProfix( editor.scene, created )
 			local parent = target.parent
 			if parent then
 				parent:addChild( created )
 			else
-				editor.scene:addActor( created, nil, target._entityGroup )
+				editor.scene:addActor( created, nil, target._actorGroup )
 			end		
 			candy_editor.emitPythonSignal( 'actor.added', created, 'clone' )
 			table.insert( createdList, created )
@@ -731,22 +758,22 @@ function CmdCloneActor:undo()
 end
 
 --------------------------------------------------------------------
-CLASS: CmdPasteEntity ( candy_edit.EditorCommand )
-	:register( 'scene_editor/paste_entity' )
+CLASS: CmdPasteActor ( candy_edit.EditorCommand )
+	:register( 'scene_editor/paste_actor' )
 
-function CmdPasteEntity:init( option )
+function CmdPasteActor:init( option )
 	self.data   = decodeJSON( option['data'] )
 	self.parent = candy_editor.getSelection( 'scene' )[1] or false
 	self.createdList = false
-	if not self.data then _error( 'invalid entity data' ) return false end
+	if not self.data then _error( 'invalid actor data' ) return false end
 end
 
-function CmdPasteEntity:redo()
+function CmdPasteActor:redo()
 	local createdList = {}
 	local parent = self.parent
-	for i, copyData in ipairs( self.data.entities ) do
-		local entityData = mock.makeEntityPasteData( copyData, generateGUID )
-		local created = mock.deserializeEntity( entityData )
+	for i, copyData in ipairs( self.data.actors ) do
+		local actorData = candy.makeActorPasteData( copyData, generateGUID )
+		local created = candy.deserializeEntity( actorData )
 		if parent then
 			parent:addChild( created )
 		else
@@ -759,7 +786,7 @@ function CmdPasteEntity:redo()
 	candy_editor.changeSelection( 'scene', unpack( createdList ) )
 end
 
-function CmdPasteEntity:undo()
+function CmdPasteActor:undo()
 	--todo:
 	for i, created in ipairs( self.createdList ) do
 		created:destroyWithChildrenNow()
@@ -780,7 +807,7 @@ function CmdReparentActor:init( option )
 	else
 		self.target   = option['target']
 	end
-	self.children = getTopLevelActorSelection()
+	self.children = candy_edit.getTopLevelActorSelection()
 	self.oldParents = {}
 	local targetIsActor = isInstance( self.target, candy.Actor )
 	for i, e in ipairs( self.children ) do
@@ -816,7 +843,6 @@ function CmdReparentActor:reparentActorGroup( group, target )
 
 	group:reparent( targetGroup )
 end
-
 
 function CmdReparentActor:reparentActor( e, target )
 	e:forceUpdate()
@@ -859,15 +885,14 @@ function CmdReparentActor:reparentActor( e, target )
 
 end
 
-
 function CmdReparentActor:undo()
 	--todo:
 	_error( 'NOT IMPLEMENTED' )
 end
 
 --------------------------------------------------------------------
-local function saveEntityToPrefab( entity, prefabFile )
-	local data = mock.serializeEntity( entity )
+local function saveActorToPrefab( actor, prefabFile )
+	local data = candy.serializeActor( actor )
 	local str  = encodeJSON( data )
 	local file = io.open( prefabFile, 'wb' )
 	if file then
@@ -880,23 +905,23 @@ local function saveEntityToPrefab( entity, prefabFile )
 	return true
 end
 
-local function reloadPrefabEntity( entity )
-	local guid = entity.__guid
-	local prefabPath = entity.__prefabId
+local function reloadPrefabActor( actor )
+	local guid = actor.__guid
+	local prefabPath = actor.__prefabId
 
 	--Just recreate entity from prefab
-	local prefab, node = mock.loadAsset( prefabPath )
+	local prefab, node = candy.loadAsset( prefabPath )
 	if not prefab then return false end
-	local newEntity = prefab:createInstance()
+	local newActor = prefab:createInstance()
 	--only perserve location?
-	newEntity:setLoc( entity:getLoc() )
-	newEntity:setName( entity:getName() )
-	newEntity:setLayer( entity:getLayer() )
-	newEntity.__guid = guid
-	newEntity.__prefabId = prefabPath
+	newActor:setLoc( actor:getLoc() )
+	newActor:setName( actor:getName() )
+	newActor:setLayer( actor:getLayer() )
+	newActor.__guid = guid
+	newActor.__prefabId = prefabPath
 	--TODO: just marked as deleted
-	entity:addSibling( newEntity )
-	entity:destroyWithChildrenNow()	
+	actor:addSibling( newActor )
+	actor:destroyWithChildrenNow()	
 end
 
 --------------------------------------------------------------------
@@ -910,7 +935,7 @@ function CmdCreatePrefab:init( option )
 end
 
 function CmdCreatePrefab:redo()
-	if saveEntityToPrefab( self.entity, self.prefabFile ) then
+	if saveActorToPrefab( self.entity, self.prefabFile ) then
 		self.entity.__prefabId = self.prefabPath
 		return true
 	else
@@ -966,7 +991,7 @@ function CmdPushPrefab:redo()
 	local prefabPath = entity.__prefabId
 	local node = mock.getAssetNode( prefabPath )
 	local filePath = node:getAbsObjectFile( 'def' )
-	if saveEntityToPrefab( entity, filePath ) then
+	if saveActorToPrefab( entity, filePath ) then
 		candy_editor.emitPythonSignal( 'prefab.push', entity )
 		--Update all entity in current scene
 		local scene = entity.scene
@@ -977,7 +1002,7 @@ function CmdPushPrefab:redo()
 			end
 		end
 		for e in pairs( toReload ) do
-			reloadPrefabEntity( e )
+			reloadPrefabActor( e )
 		end
 	else
 		return false
@@ -993,7 +1018,7 @@ function CmdPullPrefab:init( option )
 end
 
 function CmdPullPrefab:redo()
-	reloadPrefabEntity( self.entity )
+	reloadPrefabActor( self.entity )
 	candy_editor.emitPythonSignal( 'prefab.pull', self.newEntity )
 	--TODO: reselect it ?
 end
@@ -1297,7 +1322,7 @@ function CmdActorGroupCreate:init( option )
 	
 	if isInstance( contextActor, candy.Actor ) then
 		if not contextActor._actorGroup then
-			candy_edit.alertMessage( 'fail', 'cannot create Group inside Entity', 'info' )
+			candy_edit.alertMessage( 'fail', 'cannot create Group inside Actor', 'info' )
 			return false
 		end
 		self.parentGroup = contextActor._actorGroup
@@ -1308,7 +1333,6 @@ function CmdActorGroupCreate:init( option )
 	end
 
 	self.guid = generateGUID()
-
 end
 
 function CmdActorGroupCreate:redo()
@@ -1333,7 +1357,7 @@ function CmdGroupActors:init( option )
 	local contextActor = candy_editor.getSelection( 'scene' )[1]
 	if isInstance( contextActor, candy.Actor ) then
 		if not contextActor._actorGroup then
-			candy_edit.alertMessage( 'fail', 'cannot create Group inside Entity', 'info' )
+			candy_edit.alertMessage( 'fail', 'cannot create Group inside Actor', 'info' )
 			return false
 		end
 		self.parentGroup = contextActor._actorGroup

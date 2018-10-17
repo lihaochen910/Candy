@@ -44,6 +44,8 @@ function CanvasView:initAddons()
 	self.pickingManager = PickingManager()
 	self.pickingManager:setTargetScene( self:getScene() )
 
+	assert(self.grid)
+	assert(self.navi)
 	assert(self.toolManager)
 	assert(self.gizmoManager)
 	assert(self.itemManager)
@@ -103,17 +105,17 @@ function CanvasView:onCanvasResize( w, h )
 end
 
 function CanvasView:onSelectionChanged( selection )
-	selection = candy.listToTable( selection )
+	selection = candy_editor.listToTable( selection )
 	--TODO:use signal or message for this
 	self.gizmoManager :onSelectionChanged( selection )
 	self.toolManager  :onSelectionChanged( selection )
 	self:updateCanvas()
 end
 
-function CanvasView:onEntityEvent( ev, entity, com ) --FIXME: remove this
-	self.gizmoManager   :onEntityEvent ( ev, entity, com )
-	self.toolManager    :onEntityEvent ( ev, entity, com )
-	self.pickingManager :onEntityEvent ( ev, entity, com )
+function CanvasView:onActorEvent( ev, entity, com ) --FIXME: remove this
+	self.gizmoManager   :onActorEvent ( ev, entity, com )
+	self.toolManager    :onActorEvent ( ev, entity, com )
+	self.pickingManager :onActorEvent ( ev, entity, com )
 end
 
 

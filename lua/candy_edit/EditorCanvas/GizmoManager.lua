@@ -110,7 +110,7 @@ function GizmoManager:onSelectionChanged( selection )
 	for i, e in ipairs( selection ) do
 		actorSet[ e ] = true
 	end
-	local topActorSet = findTopLevelActors( actorSet )
+	local topActorSet = _C.findTopLevelActors( actorSet )
 	for e in pairs( topActorSet ) do
 		if isInstance( e, candy.Actor ) then
 			self:buildForActor( e, true )

@@ -26,7 +26,10 @@ setDict              = bridge.setDict
 throwPythonException = bridge.throwPythonException
 getTime              = bridge.getTime
 generateGUID         = bridge.generateGUID
-showAlertMessage		= bridge.showAlertMessage
+showAlertMessage	 = bridge.showAlertMessage
+pyLogInfo   		 = bridge.pyLogInfo
+pyLogWarn   		 = bridge.pyLogWarn
+pyLogError   		 = bridge.pyLogError
 
 --import
 importPythonModule   = bridge.importModule

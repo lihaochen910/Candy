@@ -28,8 +28,8 @@ function EditorCanvasCamera:getDefaultOutputRenderTarget()
 	)
 	self:setScreenSize( w or 100, h or 100 )
 
-	_stat('CurrentRenderContext:', context)
-	_stat('EditorCanvasCamera:getDefaultOutputRenderTarget()', self.canvasRenderTarget)
+	--_stat('CurrentRenderContext:', context)
+	--_stat('EditorCanvasCamera:getDefaultOutputRenderTarget()', self.canvasRenderTarget)
 
 	return self.canvasRenderTarget
 end

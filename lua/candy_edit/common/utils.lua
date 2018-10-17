@@ -53,13 +53,13 @@ local function findTopLevelActors( entitySet )
 	return found
 end
 
-local function findActorsOutsideGroups( entitySet, groupSet )
+local function findActorsOutsideGroups(actorSet, groupSet )
 	local found = {}
-	for e in pairs( entitySet ) do
-		local g = e:getEntityGroup( true )
+	for e in pairs(actorSet) do
+		local g = e:getActorGroup( true )
 		local isTop = true
 		while g do
-			if entitySet[ g ] then isTop = false break end
+			if actorSet[ g ] then isTop = false break end
 			g = g.parent
 		end
 		if isTop then found[e] = true end
@@ -113,3 +113,4 @@ _C.affirmSceneGUID            	= affirmSceneGUID
 
 candy_edit.affirmGUID			= affirmGUID
 candy_edit.isEditorActor		= isEditorActor
+candy_edit.getTopLevelActorSelection = getTopLevelActorSelection
