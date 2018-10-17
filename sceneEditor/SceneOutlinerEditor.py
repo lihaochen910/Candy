@@ -79,7 +79,7 @@ class SceneOutlinerEditor( SceneEditorModule ):
 		# self.delegate.load( getModulePath( 'SceneGraphEditor.lua' ) )
 		self.delegate.load( self.getApp().getPath( 'lua/candy_editor/SceneOutlinerEditor.lua' ) )
 
-		self.entityCreatorMenu=self.addMenu(
+		self.actorCreatorMenu=self.addMenu(
 			'main/scene/actor_create',
 			{ 'label':'Create Actor' }
 			)
@@ -394,9 +394,9 @@ class SceneOutlinerEditor( SceneEditorModule ):
 	def refreshCreatorMenu( self ):
 		def addActorMenuItem( name ):
 			if name == '----': 
-				self.entityCreatorMenu.addChild( '----' )
+				self.actorCreatorMenu.addChild('----')
 				return
-			self.entityCreatorMenu.addChild({
+			self.actorCreatorMenu.addChild({
 					'name'     : 'create_actor_'+name,
 					'label'    : name,
 					'command'  : 'scene_editor/create_actor',
@@ -414,11 +414,11 @@ class SceneOutlinerEditor( SceneEditorModule ):
 					'command_args' : dict( name = name )
 				})
 
-		self.entityCreatorMenu.clear()
+		self.actorCreatorMenu.clear()
 		self.componentCreatorMenu.clear()
 
 		registry = _CANDY.getActorRegistry()
-		#entity
+		#actor
 		keys = sorted( registry.keys() )
 		addActorMenuItem( 'Actor' )
 		addActorMenuItem( '----' )
@@ -526,7 +526,7 @@ class SceneOutlinerEditor( SceneEditorModule ):
 		elif name == 'add_actor':
 			requestSearchView( 
 				info    = 'select actor type to create',
-				context = 'entity_creation',
+				context = 'actor_creation',
 				on_selection = lambda obj: 
 					self.doCommand( 'scene_editor/create_actor', name = obj )
 				)
@@ -572,7 +572,7 @@ class SceneOutlinerEditor( SceneEditorModule ):
 			requestSearchView( 
 				info    = 'search for actor in current scene',
 				context = 'scene',
-				type    = 'entity',
+				type    = 'actor',
 				on_selection = lambda x: self.selectActor(x, focus_tree = True) ,
 				on_test      = self.selectActor
 				)
@@ -622,15 +622,15 @@ class SceneOutlinerEditor( SceneEditorModule ):
 			requestSearchView( 
 				info    = 'select layer to assign',
 				context = 'scene_layer',
-				type    = _MOCK.Entity,
+				type    = _CANDY.Actor,
 				on_selection = self.assignActorLayer
 				)
 
 		elif name == 'toggle_visibility':
-			self.doCommand( 'scene_editor/toggle_entity_visibility' )
+			self.doCommand( 'scene_editor/toggle_actor_visibility' )
 
 		elif name == 'freeze_entity_pivot':
-			self.doCommand( 'scene_editor/freeze_entity_pivot' )
+			self.doCommand( 'scene_editor/freeze_actor_pivot' )
 
 
 	def onSelectionChanged( self, selection, key ):
@@ -666,8 +666,8 @@ class SceneOutlinerEditor( SceneEditorModule ):
 		self.doCommand( 'scene_editor/assign_layer', target = layerName )
 
 	def onSelectionHint( self, selection ):
-		if selection._entity:
-			self.changeSelection( selection._entity )			
+		if selection._actor:
+			self.changeSelection( selection._actor )
 		else:
 			self.changeSelection( selection )
 
@@ -800,13 +800,13 @@ class SceneOutlinerEditor( SceneEditorModule ):
 		mime = clip.mimeData()
 		if mime.hasFormat( CANDY_MIME_ACTOR_DATA ):
 			data = mime.data( CANDY_MIME_ACTOR_DATA )
-			self.doCommand( 'scene_editor/paste_entity',
+			self.doCommand( 'scene_editor/paste_actor',
 				data = str(data).decode('utf-8')
 			)
 
 	##----------------------------------------------------------------##
 	def onCopyComponent( self ):
-		entityGroupData = self.delegate.callMethod( 'editor', 'makeEntityCopyData' )
+		entityGroupData = self.delegate.callMethod( 'editor', 'makeActorCopyData' )
 		if not entityGroupData: return False
 		clip = QtGui.QApplication.clipboard()
 		mime = QtCore.QMimeData()
@@ -826,7 +826,7 @@ class SceneOutlinerEditor( SceneEditorModule ):
 		mime = clip.mimeData()
 		if mime.hasFormat( CANDY_MIME_ACTOR_DATA ):
 			data = mime.data( CANDY_MIME_ACTOR_DATA )
-			self.doCommand( 'scene_editor/paste_entity',
+			self.doCommand( 'scene_editor/paste_actor',
 				data = str(data)
 			)
 
@@ -926,21 +926,21 @@ class SceneGraphTreeWidget( GenericTreeWidget ):
 	def loadTreeStates( self ):
 		pass
 
-	def getNodeParent( self, node ): # reimplemnt for target node	
-		p = node.getParentOrGroup( node )
-		if p and not p.IS_EDITOR_OBJECT :
-			return p
+	def getNodeParent( self, actorNode ): # reimplemnt for target node
+		parentNode = _CANDY.Actor.getParentOrGroup( actorNode )
+		if parentNode and not parentNode.FLAG_EDITOR_OBJECT :
+			return parentNode
 		return None
 
 	def getNodeChildren( self, node ):
-		if isCandyInstance( node, 'EntityGroup' ):
+		if isCandyInstance( node, 'ActorGroup' ):
 			output = []
 			#groups
 			for group in node.childGroups:
 				output.append( group )
 			#actors
 			for actor in node.actors:
-				if ( not actor.parent ) and ( not ( actor.IS_EDITOR_OBJECT or actor.FLAG_INTERNAL ) ):
+				if ( not actor.parent ) and ( not ( actor.FLAG_EDITOR_OBJECT or actor.FLAG_INTERNAL ) ):
 					output.append( actor )
 			# output = sorted( output, cmp = _sortEntity )
 			return output
@@ -948,7 +948,7 @@ class SceneGraphTreeWidget( GenericTreeWidget ):
 		else: #entity
 			output = []
 			for actor in node.children:
-				if not ( actor.IS_EDITOR_OBJECT or actor.FLAG_INTERNAL ):
+				if not ( actor.FLAG_EDITOR_OBJECT or actor.FLAG_INTERNAL ):
 					output.append( actor )
 			# output = sorted( output, cmp = _sortEntity )
 			return output
@@ -990,10 +990,10 @@ class SceneGraphTreeWidget( GenericTreeWidget ):
 				item.setIcon( 0, getIcon('proto') )
 			elif node['PROTO_INSTANCE_STATE']:
 				item.setIcon( 0, getIcon('instance') )
-			elif node['__proto_history']:
-				item.setIcon( 0, getIcon('instance-sub') )
-			elif isCandyInstance( node, 'ProtoContainer' ):
-				item.setIcon( 0, getIcon('instance-container') )
+			# elif node['__proto_history']:
+			# 	item.setIcon( 0, getIcon('instance-sub') )
+			# elif isCandyInstance( node, 'ProtoContainer' ):
+			# 	item.setIcon( 0, getIcon('instance-container') )
 			else:
 				item.setIcon( 0, getIcon('obj') )
 			item.setText( 0, node.name or '<unnamed>' )
@@ -1010,10 +1010,10 @@ class SceneGraphTreeWidget( GenericTreeWidget ):
 			else:
 				item.setIcon( 1, getIcon( 'entity_invis' ) )
 
-			if node.isLocalEditLocked( node ):
-				item.setIcon( 2, getIcon( 'entity_lock' ) )
-			else:
-				item.setIcon( 2, getIcon( 'entity_nolock' ) )
+			# if _CANDY.Actor.isLocalEditLocked( node ):
+			# 	item.setIcon( 2, getIcon( 'entity_lock' ) )
+			# else:
+			# 	item.setIcon( 2, getIcon( 'entity_nolock' ) )
 		
 	def onItemSelectionChanged(self):
 		if not self.syncSelection: return
@@ -1039,11 +1039,11 @@ class SceneGraphTreeWidget( GenericTreeWidget ):
 		target = self.itemAt( ev.pos() )
 		ok = False
 		if pos == 'on':
-			ok = self.module.doCommand( 'scene_editor/reparent_entity', target = target.node )
+			ok = self.module.doCommand( 'scene_editor/reparent_actor', target = target.node )
 		elif pos == 'viewport':
-			ok = self.module.doCommand( 'scene_editor/reparent_entity', target = 'root' )
+			ok = self.module.doCommand( 'scene_editor/reparent_actor', target = 'root' )
 		elif pos == 'above' or pos == 'below':
-			ok = self.module.doCommand( 'scene_editor/reparent_entity', target = target.node, mode = 'sibling' )
+			ok = self.module.doCommand( 'scene_editor/reparent_actor', target = target.node, mode = 'sibling' )
 
 		if ok:
 			super( GenericTreeWidget, self ).dropEvent( ev )
@@ -1085,11 +1085,11 @@ class SceneGraphTreeWidget( GenericTreeWidget ):
 				col = self.columnAt( ev.pos().x() )
 				if col == 1:
 					node = self.getNodeByItem( item )
-					self.module.doCommand( 'scene_editor/toggle_entity_visibility', target = node )
+					self.module.doCommand( 'scene_editor/toggle_actor_visibility', target = node )
 					return
 				elif col == 2:
 					node = self.getNodeByItem( item )
-					self.module.doCommand( 'scene_editor/toggle_entity_lock', target = node )
+					self.module.doCommand( 'scene_editor/toggle_actor_lock', target = node )
 					return
 			
 		return super( SceneGraphTreeWidget, self ).mousePressEvent( ev )
@@ -1144,11 +1144,11 @@ def sceneObjectSearchEnumerator( typeId, context, option ):
 	return result
 
 def entityNameSearchEnumerator( typeId, context, option ):
-	if not context in [ 'entity_creation' ] : return None
+	if not context in [ 'actor_creation' ] : return None
 	registry = _CANDY.getActorRegistry()
 	result = []
 	for name in sorted( registry.keys() ):
-		entry = ( name, name, 'Entity', None )
+		entry = ( name, name, 'Actor', None )
 		result.append( entry )
 	return result
 
@@ -1157,7 +1157,7 @@ def componentNameSearchEnumerator( typeId, context, option ):
 	registry = _CANDY.getComponentRegistry()
 	result = []
 	for name in sorted( registry.keys() ):
-		entry = ( name, name, 'Entity', None )
+		entry = ( name, name, 'Actor', None )
 		result.append( entry )
 	return result
 		
