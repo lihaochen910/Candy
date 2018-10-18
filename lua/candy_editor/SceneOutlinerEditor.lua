@@ -605,7 +605,7 @@ function CmdCreateActor:createActor()
 	assert( actorType )
 	local a = actorType()
 
-	_log('CmdCreateActor:createActor()', self.actorName)
+	_log('CmdCreateActor:createActor()', self.actorName, a)
 
 	local ok, msg = xpcall(function()
 		_editorInitActor( a )
