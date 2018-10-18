@@ -162,10 +162,10 @@ class SceneOutlinerEditor( SceneEditorModule ):
 		self.addTool( 'scene_outliner/select_scene',    label ='Select Scene', icon = 'settings' )
 		self.addTool( 'scene_outliner/----'  )
 		self.addTool( 'scene_outliner/create_group',    label ='+ Group', icon = 'add_folder' )
-		self.addTool( 'scene_outliner/----'  )
-		self.addTool( 'scene_outliner/make_proto',    label = 'Convert To Proto', icon = 'proto_make' )
-		self.addTool( 'scene_outliner/create_proto_instance',    label = 'Create Proto Instance', icon = 'proto_instantiate' )
-		self.addTool( 'scene_outliner/create_proto_container',    label = 'Create Proto Container', icon = 'proto_container' )
+		# self.addTool( 'scene_outliner/----'  )
+		# self.addTool( 'scene_outliner/make_proto',    label = 'Convert To Proto', icon = 'proto_make' )
+		# self.addTool( 'scene_outliner/create_proto_instance',    label = 'Create Proto Instance', icon = 'proto_instantiate' )
+		# self.addTool( 'scene_outliner/create_proto_container',    label = 'Create Proto Container', icon = 'proto_container' )
 		self.addTool( 'scene_outliner/----'  )
 		self.addTool( 'scene_outliner/fold_all',    label = 'F' )
 		self.addTool( 'scene_outliner/unfold_all',  label = 'U' )
@@ -698,7 +698,7 @@ class SceneOutlinerEditor( SceneEditorModule ):
 			self.restoreWorkspaceState()
 
 	##----------------------------------------------------------------##
-	def updateEntityPriority( self ):
+	def updateActorPriority( self ):
 		if not self.activeSceneNode: return
 		self.markSceneDirty()
 
@@ -719,7 +719,7 @@ class SceneOutlinerEditor( SceneEditorModule ):
 			if pnode:
 				self.tree.setNodeExpanded( pnode, True )
 			self.tree.setFocus()
-			self.tree.editNode(actor)
+			# self.tree.editNode(actor)
 			self.tree.selectNode(actor)
 		signals.emit( 'scene.update' )
 		self.markSceneDirty()
@@ -891,7 +891,8 @@ class SceneGraphTreeWidget( GenericTreeWidget ):
 		self.setIndentation( 13 )
 
 	def getHeaderInfo( self ):
-		return [('Name',240), ('V',27 ), ('L',27 ), ( 'Layer', -1 ) ]
+		# return [('Name',240), ('V',27 ), ('L',27 ), ( 'Layer', -1 ) ]
+		return [('V',60), ('Name',240), ('L',30), ( 'Layer', -1 ) ]
 
 	def getReadonlyItemDelegate( self ):
 		return ReadonlySceneGraphTreeItemDelegate( self )
@@ -945,7 +946,7 @@ class SceneGraphTreeWidget( GenericTreeWidget ):
 			# output = sorted( output, cmp = _sortEntity )
 			return output
 
-		else: #entity
+		else: #actor
 			output = []
 			for actor in node.children:
 				if not ( actor.FLAG_EDITOR_OBJECT or actor.FLAG_INTERNAL ):
@@ -969,34 +970,34 @@ class SceneGraphTreeWidget( GenericTreeWidget ):
 
 	def updateItemContent( self, item, node, **option ):
 		name = None
-		item.setData( 0, Qt.UserRole, 0 )
+		item.setData( 1, Qt.UserRole, 0 )
 
 		if isCandyInstance( node, 'ActorGroup' ):
-			item.setText( 0, node.name or '<unnamed>' )
-			item.setIcon( 0, getIcon('entity_group') )
+			item.setText( 1, node.name or '<unnamed>' )
+			item.setIcon( 1, getIcon('actor_group') )
 			if node.isLocalVisible( node ):
-				item.setIcon( 1, getIcon( 'entity_vis' ) )
+				item.setIcon( 0, getIcon( 'entity_vis' ) )
 			else:
-				item.setIcon( 1, getIcon( 'entity_invis' ) )
+				item.setIcon( 0, getIcon( 'entity_invis' ) )
 
 			if node.isLocalEditLocked( node ):
 				item.setIcon( 2, getIcon( 'entity_lock' ) )
 			else:
 				item.setIcon( 2, getIcon( 'entity_nolock' ) )
-			item.setData( 0, Qt.UserRole, 1 )
+			item.setData( 1, Qt.UserRole, 1 )
 
 		elif isCandyInstance( node, 'Actor' ):
 			if node['FLAG_PROTO_SOURCE']:
-				item.setIcon( 0, getIcon('proto') )
+				item.setIcon( 1, getIcon('proto') )
 			elif node['PROTO_INSTANCE_STATE']:
-				item.setIcon( 0, getIcon('instance') )
+				item.setIcon( 1, getIcon('instance') )
 			# elif node['__proto_history']:
 			# 	item.setIcon( 0, getIcon('instance-sub') )
 			# elif isCandyInstance( node, 'ProtoContainer' ):
 			# 	item.setIcon( 0, getIcon('instance-container') )
 			else:
-				item.setIcon( 0, getIcon('obj') )
-			item.setText( 0, node.name or '<unnamed>' )
+				item.setIcon( 1, getIcon('obj') )
+			item.setText( 1, node.name or '<unnamed>' )
 	
 			layerName = node.getLayer( node )
 			if isinstance( layerName, tuple ):
@@ -1006,9 +1007,9 @@ class SceneGraphTreeWidget( GenericTreeWidget ):
 			# item.setText( 2, node.getClassName( node ) )
 			# item.setFont( 0, _fontAnimatable )
 			if node.isLocalVisible( node ):
-				item.setIcon( 1, getIcon( 'entity_vis' ) )
+				item.setIcon( 0, getIcon( 'entity_vis' ) )
 			else:
-				item.setIcon( 1, getIcon( 'entity_invis' ) )
+				item.setIcon( 0, getIcon( 'entity_invis' ) )
 
 			# if _CANDY.Actor.isLocalEditLocked( node ):
 			# 	item.setIcon( 2, getIcon( 'entity_lock' ) )
@@ -1061,7 +1062,7 @@ class SceneGraphTreeWidget( GenericTreeWidget ):
 		self.onItemSelectionChanged()
 
 	def onItemChanged( self, item, col ):
-		self.module.renameActor(item.node, item.text(0))
+		self.module.renameActor(item.node, item.text(1))
 
 	def onClipboardCopy( self ):
 		self.module.onCopyActor()
@@ -1083,13 +1084,17 @@ class SceneGraphTreeWidget( GenericTreeWidget ):
 			item = self.itemAt( ev.pos() )
 			if item:
 				col = self.columnAt( ev.pos().x() )
-				if col == 1:
-					node = self.getNodeByItem( item )
-					self.module.doCommand( 'scene_editor/toggle_actor_visibility', target = node )
-					return
-				elif col == 2:
+				if col == 2:
 					node = self.getNodeByItem( item )
 					self.module.doCommand( 'scene_editor/toggle_actor_lock', target = node )
+					return
+		elif ev.button() == Qt.RightButton:
+			item = self.itemAt(ev.pos())
+			if item:
+				col = self.columnAt( ev.pos().x() )
+				if col == 0:
+					node = self.getNodeByItem( item )
+					self.module.doCommand( 'scene_editor/toggle_actor_visibility', target = node )
 					return
 			
 		return super( SceneGraphTreeWidget, self ).mousePressEvent( ev )

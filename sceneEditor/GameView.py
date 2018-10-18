@@ -43,7 +43,7 @@ class GameView(SceneEditorModule):
 		getAKU().setOrientationLandscape()
 
 	def onLoad(self):
-		self.window = self.requestDocumentWindow(
+		self.window = self.requestDockWindow(
 			title='Game',
 			# dock='right'
 		)
