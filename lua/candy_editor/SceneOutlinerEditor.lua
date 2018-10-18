@@ -632,7 +632,7 @@ CLASS: CmdRemoveActor ( candy_edit.EditorCommand )
 	:register( 'scene_editor/remove_actor' )
 
 function CmdRemoveActor:init( option )
-	self.selection = getTopLevelActorSelection()
+	self.selection = candy_edit.getTopLevelActorSelection()
 end
 
 function CmdRemoveActor:redo()
@@ -773,7 +773,7 @@ function CmdPasteActor:redo()
 	local parent = self.parent
 	for i, copyData in ipairs( self.data.actors ) do
 		local actorData = candy.makeActorPasteData( copyData, generateGUID )
-		local created = candy.deserializeEntity( actorData )
+		local created = candy.deserializeActor( actorData )
 		if parent then
 			parent:addChild( created )
 		else
@@ -812,7 +812,7 @@ function CmdReparentActor:init( option )
 	local targetIsActor = isInstance( self.target, candy.Actor )
 	for i, e in ipairs( self.children ) do
 		if isInstance( e, candy.ActorGroup ) and targetIsActor then
-			candy_edit.alertMessage( 'fail', 'cannot make Group child of Actor', 'info' )
+			--candy_editor.alertMessage( 'fail', 'cannot make Group child of Actor', 'info' )
 			return false
 		end
 	end
@@ -1228,7 +1228,7 @@ function CmdToggleActorVisibility:redo()
 	vis = not vis
 	for i, e in ipairs( self.actors ) do
 		e:setVisible( vis )
-		mock.markProtoInstanceOverrided( e, 'visible' )
+		--candy.markProtoInstanceOverrided( e, 'visible' )
 		candy_editor.emitPythonSignal( 'actor.visible_changed', e )
 		candy_editor.emitPythonSignal( 'actor.modified', e, '' )
 	end
@@ -1245,23 +1245,23 @@ end
 
 
 --------------------------------------------------------------------
-CLASS: CmdToggleEntityLock ( candy_edit.EditorCommandNoHistory )
-	:register( 'scene_editor/toggle_entity_lock' )
+CLASS: CmdToggleActorLock ( candy_edit.EditorCommandNoHistory )
+	:register( 'scene_editor/toggle_actor_lock' )
 
-function CmdToggleEntityLock:init( option )
+function CmdToggleActorLock:init( option )
 	local target = option[ 'target' ]
 	if target then
-		self.entities = { target }
+		self.actors = { target }
 	else
-		self.entities  = candy_editor.getSelection( 'scene' )
+		self.actors  = candy_editor.getSelection( 'scene' )
 	end
 
 	local locked = false
-	for i, e in ipairs( self.entities ) do
+	for i, e in ipairs( self.actors ) do
 		if e:isLocalEditLocked() then locked = true break end
 	end	
 	locked = not locked
-	for i, e in ipairs( self.entities ) do
+	for i, e in ipairs( self.actors ) do
 		e:setEditLocked( locked )
 		candy_editor.emitPythonSignal( 'actor.visible_changed', e )
 		candy_editor.emitPythonSignal( 'actor.modified', e, '' )
@@ -1286,16 +1286,16 @@ end
 
 --------------------------------------------------------------------
 CLASS: CmdFreezePivot ( candy_edit.EditorCommand )
-	:register( 'scene_editor/freeze_entity_pivot' )
+	:register( 'scene_editor/freeze_actor_pivot' )
 
 function CmdFreezePivot:init( option )
-	self.entities  = candy_editor.getSelection( 'scene' )
+	self.actors  = candy_editor.getSelection( 'scene' )
 	self.previousPivots = {}
 end
 
 function CmdFreezePivot:redo( )
 	local pivots = self.previousPivots
-	for i, e in ipairs( self.entities ) do
+	for i, e in ipairs( self.actors ) do
 		local px, py, pz = e:getPiv()
 		e:setPiv( 0,0,0 )
 		e:addLoc( -px, -py, -pz )
