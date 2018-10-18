@@ -39,17 +39,18 @@ class MainWindow(QtGui.QMainWindow):
         self.setIconSize(QtCore.QSize(16, 16))
         self.setFocusPolicy(Qt.WheelFocus)
 
-        self.centerTabWidget = QtGui.QTabWidget(self)
+        # self.centerTabWidget = QtGui.QTabWidget(self)
+        # self.centerTabWidget.setMinimumSize(0, 0)
         self.toolWindowMgr = ToolWindowManager(self)
         # self.centerTabWidget = self.toolWindowMgr.createArea()
         self.setCentralWidget(self.toolWindowMgr)
 
-        self.centerTabWidget.currentChanged.connect(self.onDocumentTabChanged)
+        # self.centerTabWidget.currentChanged.connect(self.onDocumentTabChanged)
 
         # self.centerTabWidget.setDocumentMode(True)
-        self.centerTabWidget.setMovable(True)
-        self.centerTabWidget.setTabsClosable(True)
-        self.centerTabWidget.tabCloseRequested.connect(self.onTabCloseRequested)
+        # self.centerTabWidget.setMovable(True)
+        # self.centerTabWidget.setTabsClosable(True)
+        # self.centerTabWidget.tabCloseRequested.connect(self.onTabCloseRequested)
 
         # self.toolWindowMgr = ToolWindowManager( self )
         # self.setCentralWidget( self.toolWindowMgr )

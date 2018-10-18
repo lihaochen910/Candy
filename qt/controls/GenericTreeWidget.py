@@ -30,9 +30,12 @@ class GenericTreeWidget( QtGui.QTreeWidget ):
 		self.firstSetup = True
 		
 		self.option = option
-		headerInfo = self.getHeaderInfo()
-		headerItem = QtGui.QTreeWidgetItem()
-		self.setHeaderItem(headerItem)
+
+		if not self.getOption( 'no_header', False ):
+			headerInfo = self.getHeaderInfo()
+			headerItem = QtGui.QTreeWidgetItem()
+			self.setHeaderItem(headerItem)
+
 		self.setItemDelegate( self.defaultItemDelegate )
 		self.resetHeader()
 	
@@ -229,6 +232,10 @@ class GenericTreeWidget( QtGui.QTreeWidget ):
 	def resetHeader( self ):
 		headerInfo = self.getHeaderInfo()
 		headerItem = self.headerItem()
+
+		if headerInfo == None:
+			return
+
 		for i in range( 0, len(headerInfo) ):			
 			if i > 0:
 				self.setItemDelegateForColumn( i, self.readonlyItemDelegate )			
