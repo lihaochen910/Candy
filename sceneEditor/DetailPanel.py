@@ -426,13 +426,14 @@ class SceneDetailPanel(SceneEditorModule):
     def onLoad(self):
         self.window = self.requestDockWindow('Detail', title='Detail', dock='right', minSize=(200, 100))
         self.actorPreviewWidget = self.window.addWidget(uic.loadUi(app.getPath('sceneEditor/Detail_ActorPreviewWidget.ui')))
-        self.actorPreviewTree = self.actorPreviewWidget.container.addWidget(ActorComponentTreeWidget(
+        self.actorPreviewTree = ActorComponentTreeWidget(
             self.actorPreviewWidget,
             multiple_selection=False,
             sorting=False,
             editable=False,
             # no_header=True
-        ))
+        )
+        self.actorPreviewWidget.container.addWidget(self.actorPreviewTree)
         self.actorPreviewWidget.hide()
 
         self.requestInstance()
@@ -498,22 +499,25 @@ class SceneDetailPanel(SceneEditorModule):
         if not self.activeInstance: return
         target = None
         if isinstance(selection, list):
+            print('selection is list')
+
+            if len(selection) > 0:
+                target = selection[0]
+
+            if target and isCandySubInstance(target, 'Actor'):
+                print ('onSelectionChanged() isCandySubInstance: Actor')
+                self.actorPreviewWidget.actorName.setText(target.name)
+                self.actorPreviewWidget.actorIcon.setIcon(getIcon('obj'))
+                self.actorPreviewTree.clear()
+                self.actorPreviewTree.addNode(target)
+
             target = selection
+
         elif isinstance(selection, tuple):
+            print('selection is tuple')
             target = selection
         else:
             target = selection
-
-        print ('onSelectionChanged()', target)
-
-        print('getClass()', _CANDY.isClassInstance(target))
-
-        if isCandySubInstance(target, 'Actor'):
-            print ('onSelectionChanged() isCandySubInstance: Actor')
-            self.actorPreviewWidget.actorName.setText(target.name)
-            self.actorPreviewWidget.actorIcon.setIcon(getIcon('obj'))
-            self.actorPreviewTree.clear()
-            self.actorPreviewTree.addNode(target)
 
         self.actorPreviewWidget.setWindowOpacity(1)
         self.actorPreviewWidget.show()
@@ -564,14 +568,14 @@ class ActorComponentTreeWidget(GenericTreeWidget):
         if isCandySubInstance(node, 'Actor'):
             result = []
             for com in node.components.values():
-                if com.FLAG_INTERNAL: continue
+                # if com.FLAG_INTERNAL: continue
                 result.append(com)
             return reversed(result)
         # ActorComponent
         if isCandySubInstance(node, 'ActorComponent'):
             result = []
             for com in node.children.values():
-                if com.FLAG_INTERNAL: continue
+                # if com.FLAG_INTERNAL: continue
                 result.append(com)
             return reversed(result)
         return []

@@ -81,12 +81,15 @@ class SceneEditor( TopEditorModule ):
 			pass
 		elif name == 'start_scene':
 			# self.startPreview()
+			self.runtime.runString("candy.game:getMainSceneSession():start()")
 			pass
 		elif name == 'stop_scene':
 			# self.stopPreview()
+			self.runtime.runString("candy.game:getMainSceneSession():stop()")
 			pass
 		elif name == 'pause_scene':
 			# self.pausePreview()
+			self.runtime.runString("candy.game:getMainSceneSession():pause(true)")
 			pass
 		elif name == 'toggle_scene_view_window':
 			self.sceneView.window.show()

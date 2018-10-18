@@ -17,6 +17,8 @@ local currentContextKey = false
 
 local ContextChangeListeners = {}
 
+local OriginalMOAIActionRoot = MOAIActionMgr.getRoot()
+
 function createRenderContext( key, cr,cg,cb,ca )
 	local clearColor = {0,0,0,1}
 	if cr==false then
