@@ -25,6 +25,14 @@ def isCandyInstance(obj, name):
 	else:
 		return False
 
+def isCandySubInstance(obj, name):
+	if isinstance( obj, _LuaObject ):
+		clas = _CANDY[name]
+		assert clas
+		return _CANDY.isSubclass(_CANDY.getClass(obj), clas)
+	else:
+		return False
+
 def getCandyClassName(obj):
 	if isinstance( obj, _LuaTable ):
 		clas = obj.__class
