@@ -119,11 +119,13 @@ class CandyRuntime( EditorModule ):
 
 	def initCandy(self):
 		try:
-			_CANDY.init(self.configPath, True)
 
-			if not self.runtime.getRenderContext( 'game' ):
-				self.runtime.createRenderContext( 'game' )
-			self.runtime.changeRenderContext( 'game', 100, 100 )
+			print ( 'initCandy' )
+			# _CANDY.init(self.configPath, True)
+
+			# if not self.runtime.getRenderContext( 'game' ):
+			# 	self.runtime.createRenderContext( 'game' )
+			# self.runtime.changeRenderContext( 'game', 100, 100 )
 
 			# self.runtime.runString("_stat('CandyRuntime.initCandy() after getRenderContext()', MOAISim.getActionMgr():getRoot())")
 

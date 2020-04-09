@@ -1,6 +1,6 @@
 import re, fnmatch
 
-from PyQt5 import QtCore, QtGui, uic
+from PyQt5 import QtCore, QtGui, uic, QtWidgets
 from PyQt5.QtCore import Qt, QSize
 from PyQt5.QtWidgets import QApplication, QStyle, QStyledItemDelegate, QTreeWidget, QWidget
 from PyQt5.QtGui import QBrush, QColor, QPen, QIcon
@@ -570,7 +570,8 @@ class GenericTreeFilter( QWidget ):
 		self.setSizePolicy( QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed )
 		self.setMinimumSize( 100, 20 )
 		layout = QtWidgets.QHBoxLayout( self )
-		layout.setMargin( 0 )
+		# layout.setMargin( 0 )
+		layout.setContentsMargins( 0,0,0,0 )
 		layout.setSpacing( 0 )
 		self.buttonClear = QtWidgets.QToolButton( self )
 		self.buttonClear.setText( 'X' )
@@ -578,7 +579,7 @@ class GenericTreeFilter( QWidget ):
 		# self.buttonClear.setIconSize( QtCore.QSize( 12, 12 ) )
 		# self.buttonClear.setIcon( getIcon('remove') )
 		self.buttonClear.clicked.connect( self.clearFilter )
-		self.lineEdit = QtGui.QLineEdit( self )
+		self.lineEdit = QtWidgets.QLineEdit( self )
 		self.lineEdit.textChanged.connect( self.onTextChanged )
 		self.lineEdit.setPlaceholderText( 'Filters' )
 		self.targetTree = None

@@ -4,7 +4,7 @@ from qt.controls.Window import MainWindow
 from qt.QtEditorModule  import QtEditorModule
 
 ##----------------------------------------------------------------##
-from PyQt5           import QtGui
+from PyQt5           import QtWidgets
 
 ##----------------------------------------------------------------##
 class TopEditorModule( QtEditorModule ):
@@ -21,7 +21,7 @@ class TopEditorModule( QtEditorModule ):
 		window.resize( 800, 600 )
 		window.setWindowTitle( 'Candy - ' + self.getWindowTitle() )
 		window.defaultToolBarIconSize = 24
-		self.statusBar = QtGui.QStatusBar()
+		self.statusBar = QtWidgets.QStatusBar()
 		window.setStatusBar( self.statusBar )
 		self.onSetupMainWindow( window )
 

@@ -42,12 +42,12 @@ class TagMatchNode( object ):
 		ro = _wildcard2RO( self.pattern )
 		if self.matchAll:
 			for target in self.getEvaluateTargets( data ):
-				if not isinstance( target, (str, unicode) ): return False
+				if not isinstance( target, str ): return False
 				if not ro.match( target ): return False
 			return True
 		else:
 			for target in self.getEvaluateTargets( data ):
-				if not isinstance( target, (str, unicode) ): continue
+				if not isinstance( target, str ): continue
 				if ro.match( target ): return True
 			return False
 

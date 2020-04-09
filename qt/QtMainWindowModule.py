@@ -31,7 +31,7 @@ class SceneEditor(QtEditorModule):
         self.mainWindow.module = self
 
         self.mainToolBar = self.addToolBar('scene', self.mainWindow.requestToolBar('main'))
-        self.statusBar = QtGui.QStatusBar()
+        self.statusBar = QtWidgets.QStatusBar()
         self.mainWindow.setStatusBar(self.statusBar)
 
     def onLoad(self):

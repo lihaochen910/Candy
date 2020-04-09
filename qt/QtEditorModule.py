@@ -51,7 +51,7 @@ class QtEditorModule(EditorModule):
             contextWindow = context
             shortcutContext = Qt.WidgetWithChildrenShortcut
 
-        action = QtGui.QAction(contextWindow)
+        action = QtWidgets.QAction(contextWindow)
         action.setShortcut(QtGui.QKeySequence(keySeq))
         action.setShortcutContext(shortcutContext)
         contextWindow.addAction(action)
@@ -61,7 +61,7 @@ class QtEditorModule(EditorModule):
                 self.doCommand(target, **option)
 
             action.triggered.connect(onAction)
-        elif isinstance(target, QtGui.QAction):
+        elif isinstance(target, QtWidgets.QAction):
             def onAction():
                 target.trigger()
 

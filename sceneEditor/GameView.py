@@ -4,7 +4,7 @@ from core import signals, app
 
 from moai.MOAIRuntime import getAKU
 
-from PyQt5 import QtCore, QtGui, QtOpenGL
+from PyQt5 import QtCore, QtGui, QtOpenGL, QtWidgets
 from PyQt5.QtCore import Qt
 
 from sceneEditor.SceneEditor import SceneEditorModule
@@ -54,7 +54,7 @@ class GameView(SceneEditorModule):
 		# self.canvas.startRefreshTimer(self.nonActiveFPS)
 		self.paused = None
 
-		tool = self.window.addWidget(QtGui.QToolBar(self.window), expanding=False)
+		tool = self.window.addWidget(QtWidgets.QToolBar(self.window), expanding=False)
 		self.qtool = tool
 		self.toolbar = self.addToolBar('game_preview', tool)
 

@@ -239,14 +239,14 @@ class DetailInstance(object):
         self.header = container.addWidgetFromFile(
             app.getPath('sceneEditor/DetailPanel.ui'),
             expanding=False)
-        self.scroll = scroll = container.addWidget(QtGui.QScrollArea(container))
+        self.scroll = scroll = container.addWidget(QtWidgets.QScrollArea(container))
         self.body = body = QtWidgets.QWidget(container)
         self.header.hide()
         self.scroll.verticalScrollBar().setStyleSheet('width:4px')
         scroll.setWidgetResizable(True)
         body.mainLayout = layout = QtWidgets.QVBoxLayout(body)
         layout.setSpacing(0)
-        layout.setMargin(0)
+        layout.setContentsMargins(0,0,0,0)
         layout.addStretch()
         scroll.setWidget(body)
 

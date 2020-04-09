@@ -115,7 +115,7 @@ class AssetPreviewer(object):
 ##----------------------------------------------------------------##		
 class NullAssetPreviewer(AssetPreviewer):
 	def createWidget(self,container):
-		self.label = QtGui.QLabel(container)
+		self.label = QtWidgets.QLabel(container)
 		self.label.setAlignment(QtCore.Qt.AlignHCenter)
 		self.label.setText('NO PREVIEW')
 		self.label.setSizePolicy(

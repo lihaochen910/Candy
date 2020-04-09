@@ -9,7 +9,7 @@ def getSelectionManager( key ):
 
 class SelectionManager(object):	
 	def __init__( self, key ):
-		assert not _SelectionManagerRegistry.has_key( key ), 'duplicated Manager ' + key
+		assert not key in _SelectionManagerRegistry, 'duplicated Manager ' + key
 		_SelectionManagerRegistry[ key ] = self
 		self.currentSelection = []
 		self.history = []

@@ -95,22 +95,22 @@ class EditorModule( ResHolder ):
 		return self._manager.affirmModule(name)
 
 	def setConfig( self, name, value ):
-		assert(isinstance(name, (str,unicode)))
+		assert(isinstance(name, str))
 		fullname = self.getName()+'/'+name
 		self.getProject().setConfig( fullname, value )
 
 	def getConfig( self, name, defaultValue=None ):
-		assert( isinstance(name, (str,unicode)) )
+		assert( isinstance(name, str) )
 		fullname = self.getName()+'/'+name
 		return self.getProject().getConfig( fullname, defaultValue )
 
 	def setAppConfig( self, name, value ):
-		assert(isinstance(name, (str,unicode)))
+		assert(isinstance(name, str))
 		fullname = self.getName()+'/'+name
 		self.getApp().setConfig( fullname, value )
 
 	def getAppConfig( self, name, defaultValue=None ):
-		assert( isinstance(name, (str,unicode)) )
+		assert( isinstance(name, str) )
 		fullname = self.getName()+'/'+name
 		return self.getApp().getConfig( fullname, defaultValue )
 	

@@ -100,9 +100,9 @@ class MOAIRuntime( EditorModule ):
 
 		logging.info('loading project script lib')
 		self.setWorkingDirectory(self.getProject().getScriptLibPath())
-		aku.runScript(
-			self.getProject().getScriptLibPath('main.lua')
-		)
+		# aku.runScript(
+		# 	self.getProject().getScriptLibPath('main.lua')
+		# )
 
 		# init candy editor lua module
 		logging.info('loading candy editor lua module')
@@ -181,10 +181,12 @@ class MOAIRuntime( EditorModule ):
 		return _CANDY_EDITOR.getRenderContext(key)
 
 	def changeRenderContext(self, contextId, w, h ):
-		_CANDY_EDITOR.changeRenderContext( contextId or False, w or False, h or False )
+		print(_CANDY_EDITOR)
+		# _CANDY_EDITOR.changeRenderContext( contextId or False, w or False, h or False )
 
 	def createRenderContext( self, key, clearColor = (0,0,0,0) ):
-		_CANDY_EDITOR.createRenderContext( key, *clearColor )
+		print(_CANDY_EDITOR)
+		# _CANDY_EDITOR.createRenderContext( key, *clearColor )
 
 	#### Delegate Related
 	def loadLuaDelegate( self, scriptPath , owner = None, **option ):

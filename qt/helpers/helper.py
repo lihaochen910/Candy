@@ -1,6 +1,6 @@
 # from gii.core.tmpfile import TempDir
 
-from PyQt5 import QtGui
+from PyQt5 import QtGui, QtWidgets
 from PyQt5.QtCore import Qt, QPoint
 from PyQt5.QtGui import QColor
 
@@ -26,7 +26,8 @@ def addWidgetWithLayout(child, parent=None, **option):
     parent.setLayout(layout)
     layout.addWidget(child)
     layout.setSpacing(0)
-    layout.setMargin(0)
+    # layout.setMargin(0)
+    # layout.setContentsMargin(0)
     return child
 
 

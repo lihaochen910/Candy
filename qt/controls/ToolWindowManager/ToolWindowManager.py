@@ -92,7 +92,7 @@ class ToolWindowManager( QWidget ):
 		self.borderSensitivity = 12
 		testSplitter = QSplitter()
 		self.rubberBandLineWidth = testSplitter.handleWidth()
-		self.dragIndicator = QtGui.QLabel( None, Qt.ToolTip)
+		self.dragIndicator = QtWidgets.QLabel( None, Qt.ToolTip)
 		self.dragIndicator.setAttribute( Qt.WA_ShowWithoutActivating)
 		mainLayout = QtWidgets.QVBoxLayout( self )
 		mainLayout.setContentsMargins( 0, 0, 0, 0 )

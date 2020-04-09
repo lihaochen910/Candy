@@ -7,7 +7,7 @@ from PyQt5.QtWidgets import QDialog, QMessageBox, QFileDialog
 class StringDialog(QDialog):
 	def __init__(self, prompt, *args):
 		super(StringDialog, self).__init__(*args)
-		lineEdit=QtGui.QLineEdit(self)
+		lineEdit=QtWidgets.QLineEdit(self)
 		self.setWindowTitle(prompt)
 		btnOK=QtWidgets.QPushButton('OK')
 		btnCancel=QtWidgets.QPushButton('Cancel')
@@ -60,7 +60,7 @@ def alertMessage(title, msg, level='warning'):
 	res = f( None, title, msg	)
 
 def requestString( title, prompt, defaultValue = '' ):
-	text, ok = QtGui.QInputDialog.getText(None, title, prompt, QtGui.QLineEdit.Normal, defaultValue )
+	text, ok = QtGui.QInputDialog.getText(None, title, prompt, QtWidgets.QLineEdit.Normal, defaultValue )
 	# dialog=StringDialog(prompt)
 	# dialog.move(QtGui.QCursor.pos())
 	# if dialog.exec_():

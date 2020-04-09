@@ -144,7 +144,7 @@ class AssetFilterWidget( QtWidgets.QFrame ):
 		self.setMinimumSize( 50, 20 )
 		layout = FlowLayout( self )
 		layout.setSpacing( 2 )
-		layout.setMargin( 5 )
+		layout.setContentsMargins( 5,5,5,5 )
 
 		self.buttonAdd = QtWidgets.QToolButton( self )
 		self.buttonAdd.setFixedHeight( 20 )
@@ -155,7 +155,7 @@ class AssetFilterWidget( QtWidgets.QFrame ):
 
 		self.itemToWidget = {}
 
-		self.itemContextMenu = menu = QtGui.QMenu( 'Filter Item Context' )
+		self.itemContextMenu = menu = QtWidgets.QMenu( 'Filter Item Context' )
 		menu.addAction( 'Filter' ).setEnabled( False )
 		menu.addSeparator()
 

@@ -33,7 +33,7 @@ class Ui_ObjectContainer(object):
         self.buttonFold.setChecked(False)
         self.buttonFold.setObjectName(_fromUtf8("buttonFold"))
         self.horizontalLayout.addWidget(self.buttonFold)
-        self.labelName = QtGui.QLabel(self.ObjectHeader)
+        self.labelName = QtWidgets.QLabel(self.ObjectHeader)
         self.labelName.setObjectName(_fromUtf8("labelName"))
         self.horizontalLayout.addWidget(self.labelName)
         self.verticalLayout.addWidget(self.ObjectHeader)

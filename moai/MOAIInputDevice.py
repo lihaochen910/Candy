@@ -27,7 +27,7 @@ class MOAIInputDevice(object):
 	def addSensor(self, name, sensorType='touch'):
 		assert not self.registered, 'input device already registered !!'
 		assert sensorType in ( 'touch', 'pointer', 'button', 'keyboard', 'level', 'compass', 'joystick', 'wheel'), 'unsupported sensor type'
-		assert not self.sensors.has_key(name), 'duplicated sensor name'
+		assert not name in self.sensors, 'duplicated sensor name'
 
 		clas={
 			'touch'    : MOAITouchSensor,

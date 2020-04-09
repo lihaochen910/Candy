@@ -82,7 +82,7 @@ class GamePreview( SceneEditorModule ):
 		self.canvas.startRefreshTimer( self.nonActiveFPS )
 		self.paused = None
 		
-		tool = self.window.addWidget( QtGui.QToolBar( self.window ), expanding = False )
+		tool = self.window.addWidget( QtWidgets.QToolBar( self.window ), expanding = False )
 		self.qtool = tool
 		self.toolbar = self.addToolBar( 'game_preview', tool )
 
@@ -119,7 +119,7 @@ class GamePreview( SceneEditorModule ):
 				{'name': 'toggle_game_preview_window', 'label': 'Show Game Preview', 'shortcut': 'f4'},
 			], self)
 
-		# label = QtGui.QLabel()
+		# label = QtWidgets.QLabel()
 		# label.setMinimumSize( 300, 20 )
 		# label.setMaximumSize( 300, 20 )
 		# self.toolbar.addWidget( label )

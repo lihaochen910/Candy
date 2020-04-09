@@ -1,6 +1,6 @@
 import logging
 
-from PyQt5 import QtGui, QtCore
+from PyQt5 import QtGui, QtCore, QtWidgets
 from PyQt5.QtWidgets import QToolBar
 
 from core import signals, app
@@ -41,13 +41,13 @@ class ToolBarItem(object):
                 self.qtAction = m.qtAction
             else:
                 logging.error('not valid menu link:' + self.menuLink)
-                self.qtAction = QtGui.QAction(self.label, None)
+                self.qtAction = QtWidgets.QAction(self.label, None)
 
         else:
             self.itemType = option.get('type', False)
             self.onClick = option.get('on_click', None)
             self.signal = None
-            self.qtAction = QtGui.QAction(
+            self.qtAction = QtWidgets.QAction(
                 self.label, None,
                 checkable=self.itemType == 'check',
                 triggered=self.handleEvent,
@@ -112,7 +112,7 @@ class ToolBarNode(object):
     def affirmGroup(self, id):
         group = self.groups.get(id, None)
         if not group:
-            group = QtGui.QActionGroup(self.qtToolbar)
+            group = QtWidgets.QActionGroup(self.qtToolbar)
             self.groups[id] = group
         return group
 

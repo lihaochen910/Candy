@@ -15,7 +15,7 @@ class FlowLayout( QtWidgets.QLayout ):
 		super(FlowLayout, self).__init__(parent)
 
 		if parent is not None:
-			self.setMargin(margin)
+			self.setContentsMargins(margin,margin,margin,margin)
 
 		self.setSpacing(spacing)
 
@@ -81,7 +81,8 @@ class FlowLayout( QtWidgets.QLayout ):
 	def minimumSize(self):
 		w = self.geometry().width()
 		h = self.doLayout(QtCore.QRect(0, 0, w, 0), True)
-		return QtCore.QSize(w + 2 * self.margin(), h + 2 * self.margin())
+		margin = self.getContentsMargins()
+		return QtCore.QSize(w + 2 * margin[0], h + 2 * margin[1])
 	
 
 

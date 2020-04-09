@@ -190,7 +190,7 @@ class MainWindow(QMainWindow):
             self.centerTabWidget.removeTab ( idx )
 
     def requestToolBar(self, name, **options):
-        toolbar = QtGui.QToolBar ()
+        toolbar = QtWidgets.QToolBar ()
         toolbar.setFloatable ( options.get ( 'floatable', False ) )
         toolbar.setMovable ( options.get ( 'movable', True ) )
         toolbar.setObjectName ( 'toolbar-%s' % name )
@@ -225,7 +225,7 @@ class SubWindowMixin:
 
         self.mainLayout = QtWidgets.QVBoxLayout(self.container)
         self.mainLayout.setSpacing(0)
-        self.mainLayout.setMargin(0)
+        self.mainLayout.setContentsMargins(0,0,0,0)
         self.mainLayout.setObjectName('MainLayout')
 
     def createContainer(self):
@@ -327,7 +327,7 @@ class DocumentWindow(SubWindow):
         tabParent.setTabText(idx, title)
 
     def addToolBar(self):
-        return self.addWidget(QtGui.QToolBar(), expanding=False)
+        return self.addWidget(QtWidgets.QToolBar(), expanding=False)
 
 
 ##----------------------------------------------------------------##
@@ -400,7 +400,7 @@ class DockWindow(QDockWidget, SubWindowMixin):
             pass
 
     def addToolBar(self):
-        return self.addWidget(QtGui.QToolBar(), expanding=False)
+        return self.addWidget(QtWidgets.QToolBar(), expanding=False)
 
     def closeEvent(self, event):
         if self.onClose():

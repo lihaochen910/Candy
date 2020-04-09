@@ -427,8 +427,8 @@ class AssetBrowserInstance( object ):
 		self.statusBar      = AssetBrowserStatusBar()
 		self.navigator      = AssetBrowserNavigator()
 
-		folderToolbar  = QtGui.QToolBar()
-		contentToolbar = QtGui.QToolBar()
+		folderToolbar  = QtWidgets.QToolBar()
+		contentToolbar = QtWidgets.QToolBar()
 
 		self.detailList .owner = self
 		self.iconList   .owner = self
@@ -444,7 +444,7 @@ class AssetBrowserInstance( object ):
 
 		layoutLeft = QtWidgets.QVBoxLayout( ui.containerTree )
 		layoutLeft.setSpacing( 0 )
-		layoutLeft.setMargin( 0 )
+		layoutLeft.setContentsMargins( 0,0,0,0 )
 		
 		layoutLeft.addWidget( folderToolbar )
 		layoutLeft.addWidget( self.treeFolderFilter )
@@ -455,7 +455,7 @@ class AssetBrowserInstance( object ):
 		
 		layoutRight = QtWidgets.QVBoxLayout( ui.containerRight )
 		layoutRight.setSpacing( 0 )
-		layoutRight.setMargin( 0 )
+		layoutRight.setContentsMargins( 0,0,0,0 )
 
 		layoutRight.addWidget( contentToolbar )
 		layoutRight.addWidget( self.assetFilterWidget )
@@ -565,7 +565,7 @@ class AssetBrowserInstance( object ):
 
 		filterData = config.get( 'current_filter', None )
 		if filterData:
-			if isinstance( filterData, (str, unicode) ): #ref
+			if isinstance( filterData, str ): #ref
 				node = self.getFilterRootGroup().findChild( filterData )
 				self.assetFilter = node
 			else:
@@ -843,9 +843,10 @@ class AssetBrowserInstance( object ):
 			t2 = y.getType()
 			if t1 == 'folder' and t2 != 'folder': return -1
 			if t2 == 'folder' and t1 != 'folder': return 1
-			return cmp( x.getName(), y.getName() )
+			from functools import cmp_to_key
+			return cmp_to_key( x.getName(), y.getName() )
 
-		return sorted( assets, _sortFunc )
+		return sorted( assets, key=_sortFunc )
 
 	def getAssetThumbnailIcon( self, assetNode, size ):
 		thumbnailPath = assetNode.requestThumbnail( size )
