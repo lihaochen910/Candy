@@ -86,11 +86,13 @@ cdef class AKU:
         return self.lua
 
     def runScript(self, filename):
-        AKULoadFuncFromFile(filename)
+        AKULoadFuncFromFile(filename.encode('utf-8'))
         AKUCallFunc()
 
     def runString(self, script, chunkname = "chunk"):
-        AKULoadFuncFromString(script, strlen(script), chunkname)
+        bscript = script.encode('utf-8')
+        bchunkname = chunkname.encode('utf-8')
+        AKULoadFuncFromString(bscript, strlen(bscript), bchunkname)
         AKUCallFunc()
 
     def evalString(self, text):
@@ -130,7 +132,7 @@ cdef class AKU:
     def deleteContext(self):
         context = AKUGetContext()
         if context != 0:
-            self.lua.destroy()
+            # self.lua.destroy()
             self.lua = None
             AKUDeleteContext(context)
             self.finalize()
@@ -152,7 +154,7 @@ cdef class AKU:
         AKUSetOrientation(0)
 
     def setWorkingDirectory(self, path):
-        AKUSetWorkingDirectory(path)
+        AKUSetWorkingDirectory(path.encode('utf-8'))
 
     # Input device
     def reserveInputDevices(self, count):
@@ -165,10 +167,10 @@ cdef class AKU:
         AKUSetInputAutoTimestamp(autotimestamp)
 
     def setInputConfigurationName(self, name):
-        AKUSetInputConfigurationName(name)
+        AKUSetInputConfigurationName(name.encode('utf-8'))
 
     def setInputDevice(self, id, name):
-        AKUSetInputDevice(id, name)
+        AKUSetInputDevice(id, name.encode('utf-8'))
 
     def setInputDeviceHardwareInfo(self, id, hardwareInfo):
         AKUSetInputDeviceHardwareInfo(id, hardwareInfo)
@@ -177,34 +179,34 @@ cdef class AKU:
         AKUSetInputDeviceActive(id, active)
 
     def setInputDeviceButton(self, devId, sensorId, name):
-        AKUSetInputDeviceButton(devId, sensorId, name)
+        AKUSetInputDeviceButton(devId, sensorId, name.encode('utf-8'))
 
     def setInputDeviceCompass(self, devId, sensorId, name):
-        AKUSetInputDeviceCompass(devId, sensorId, name)
+        AKUSetInputDeviceCompass(devId, sensorId, name.encode('utf-8'))
 
     def setInputDeviceKeyboard(self, devId, sensorId, name):
-        AKUSetInputDeviceKeyboard(devId, sensorId, name)
+        AKUSetInputDeviceKeyboard(devId, sensorId, name.encode('utf-8'))
 
     def setInputDeviceJoystick(self, devId, sensorId, name):
-        AKUSetInputDeviceJoystick(devId, sensorId, name)
+        AKUSetInputDeviceJoystick(devId, sensorId, name.encode('utf-8'))
 
     def setInputDeviceLevel(self, devId, sensorId, name):
-        AKUSetInputDeviceLevel(devId, sensorId, name)
+        AKUSetInputDeviceLevel(devId, sensorId, name.encode('utf-8'))
 
     def setInputDeviceLocation(self, devId, sensorId, name):
-        AKUSetInputDeviceLocation(devId, sensorId, name)
+        AKUSetInputDeviceLocation(devId, sensorId, name.encode('utf-8'))
 
     def setInputDevicePointer(self, devId, sensorId, name):
-        AKUSetInputDevicePointer(devId, sensorId, name)
+        AKUSetInputDevicePointer(devId, sensorId, name.encode('utf-8'))
 
     def setInputDeviceTouch(self, devId, sensorId, name):
-        AKUSetInputDeviceTouch(devId, sensorId, name)
+        AKUSetInputDeviceTouch(devId, sensorId, name.encode('utf-8'))
 
     def setInputDeviceVector(self, devId, sensorId, name):
-        AKUSetInputDeviceVector(devId, sensorId, name)
+        AKUSetInputDeviceVector(devId, sensorId, name.encode('utf-8'))
 
     def setInputDeviceWheel(self, devId, sensorId, name):
-        AKUSetInputDeviceWheel(devId, sensorId, name)
+        AKUSetInputDeviceWheel(devId, sensorId, name.encode('utf-8'))
 
     def setInputTimebase(self, timebase):
         AKUSetInputTimebase(timebase)

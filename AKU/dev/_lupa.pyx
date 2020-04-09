@@ -202,6 +202,8 @@ cdef class LuaRuntime:
     cdef object _attribute_getter
     cdef object _attribute_setter
     cdef bint _unpack_returned_tuples
+    cdef bint _register_eval
+    cdef bint _register_builtins
 
     def __cinit__(self, encoding='UTF-8', source_encoding=None,
                   attribute_filter=None, attribute_handlers=None,
@@ -219,6 +221,8 @@ cdef class LuaRuntime:
             raise ValueError("attribute_filter must be callable")
         self._attribute_filter = attribute_filter
         self._unpack_returned_tuples = unpack_returned_tuples
+        self._register_eval = register_eval
+        self._register_builtins = register_builtins
 
         if attribute_handlers:
             raise_error = False

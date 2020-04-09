@@ -468,4 +468,4 @@ class SceneViewCanvas( MOAIEditCanvas ):
 		ev.acceptProposedAction()
 
 
-# SceneView().register()
+SceneView ().register ()

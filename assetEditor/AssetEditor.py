@@ -105,3 +105,6 @@ def assetFolderSearchEnumerator(typeId, context, option):
 		entry = (node, node.getNodePath(), node.getType(), iconName)
 		result.append(entry)
 	return result
+
+
+AssetEditor().register()

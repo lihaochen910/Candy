@@ -162,3 +162,5 @@ register( 'scene_tool.change' )
 register( 'scene_tool_category.update' )
 # register( 'external_player.start' )
 # register( 'external_player.stop' )
+
+SceneEditor ().register ()

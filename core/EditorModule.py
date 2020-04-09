@@ -35,7 +35,12 @@ class EditorModule( ResHolder ):
 		return '<module: %s>'%self.getName()
 
 	def getDependency(self):
-		return self._dependency or []
+		if hasattr( self, '_dependency' ):
+			return self._dependency
+		if hasattr( self, 'dependency' ):
+			return self.dependency
+		return []
+		# return self._dependency or self.dependency or []
 
 	def getBaseDependency( self ):
 		# return [ 'candy' ]
@@ -44,8 +49,13 @@ class EditorModule( ResHolder ):
 	def getActualDependency( self ):
 		return self.getDependency() + self.getBaseDependency()
 
-	def getName(self):		
-		return self._name or '???'
+	def getName(self):
+		if hasattr( self, '_name' ):
+			return self._name
+		if hasattr( self, 'name' ):
+			return self.name
+		return '???'
+		# return self._name or self.name or '???'
 
 	def getModulePath( self, path = None ):
 		modName = self.__class__.__module__		
@@ -288,6 +298,8 @@ class EditorModuleManager(object):
 		name = module.getName()
 		if self.getModule(name): raise Exception('Module name duplicated:%s' % name)
 
+		# print ( 'registerModule:', name )
+
 		self.modules[name] = module
 		self.moduleQueue.append(module)
 
@@ -355,7 +367,9 @@ class EditorModuleManager(object):
 						print ( m.getName(), m.getActualDependency() )
 					raise Exception('Modules may have cyclic Dependency')
 
-			self.sortedModuleQueue = sorted( self.moduleQueue, cmp = _sortModuleIndex )
+			from functools import cmp_to_key
+
+			self.sortedModuleQueue = sorted( self.moduleQueue, key = cmp_to_key( _sortModuleIndex )  )
 			for m in self.sortedModuleQueue:
 				if m.needUpdate():
 					# if not m.__class__.update == EditorModule.update:

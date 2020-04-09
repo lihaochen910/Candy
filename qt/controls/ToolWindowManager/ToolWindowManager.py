@@ -671,7 +671,7 @@ if __name__ == '__main__':
 	# 		open( '/Users/tommo/prj/gii/data/theme/' + styleSheetName ).read()
 	# 	)
 
-	class Test( QtGui.QMainWindow ):
+	class Test( QtWidgets.QMainWindow ):
 		def __init__(self, *args ):
 			super(Test, self).__init__( *args )
 			mgr = ToolWindowManager( self )

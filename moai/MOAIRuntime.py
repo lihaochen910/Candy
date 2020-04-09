@@ -85,7 +85,7 @@ class MOAIRuntime( EditorModule ):
 		_G['CANDY_PYTHON_BRIDGE']            = LuaBridge
 		_G['CANDY_DATA_PATH']                = self.getApp().getPath('resources')
 
-		_G['CANDY_LIB_LUA_PATH']              = self.getApp().getPath('lua')
+		_G['CANDY_LIB_LUA_PATH']             = self.getApp().getPath('lua')
 		_G['CANDY_PROJECT_ENV_LUA_PATH']     = self.getProject().getEnvLibPath( 'lua' )
 		_G['CANDY_PROJECT_ASSET_PATH']       = self.getProject().getAssetPath()
 		_G['CANDY_PROJECT_SCRIPT_LIB_PATH']  = self.getProject().getScriptLibPath()
@@ -264,7 +264,7 @@ class MOAIRuntime( EditorModule ):
 			return False
 		return True
 
-	def runScript(self,src):		
+	def runScript(self, src):
 		self.RunningScript = src
 		if not src: return
 		try:
@@ -274,7 +274,7 @@ class MOAIRuntime( EditorModule ):
 			return False
 		return True
 
-	def runString(self,string):		
+	def runString(self, string):
 		try:
 			getAKU().runString(string)
 		except MOAIException as e:

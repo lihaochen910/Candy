@@ -21,8 +21,8 @@ class QtEditorModule(EditorModule):
     def getModuleWindow(self):
         return None
 
-    def getDependency(self):
-        return self._dependency
+    # def getDependency(self):
+    #     return self._dependency
 
     def getBaseDependency(self):
         return ['qt']

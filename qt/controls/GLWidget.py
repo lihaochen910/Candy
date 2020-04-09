@@ -17,7 +17,7 @@ class GLWidget(QtOpenGL.QGLWidget):
             fmt.setSwapInterval(0)
             QtOpenGL.QGLFormat.setDefaultFormat(fmt)
 
-            hiddenWindow = QtOpenGL.QGLWidget(QtOpenGL.QGLContext(fmt, None))
+            hiddenWindow = QtOpenGL.QGLWidget(QtOpenGL.QGLContext(fmt))
             GLWidget.sharedWidget = hiddenWindow
             hiddenWindow.makeCurrent()
 

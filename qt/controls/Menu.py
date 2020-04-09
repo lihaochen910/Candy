@@ -1,6 +1,6 @@
 import logging
 
-from PyQt5 import QtGui
+from PyQt5 import QtGui, QtWidgets
 from PyQt5.QtWidgets import QMenu
 
 from core import signals, app
@@ -118,7 +118,7 @@ class MenuNode(object):
 
 			else:
 				
-				action = QtGui.QAction(child.label, None, 
+				action = QtWidgets.QAction(child.label, None,
 					shortcut = child.shortcut,
 					statusTip = child.help,
 					checkable = child.itemType=='check',

@@ -979,3 +979,6 @@ class AssetBrowserInstance( object ):
 			node.remove()
 		self.module.saveFilterConfig()
 		self.assetFilterWidget.rebuild()
+
+
+AssetBrowser().register()

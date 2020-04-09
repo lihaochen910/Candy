@@ -2,7 +2,7 @@ import logging
 from core import signals
 from qt.helpers import restrainWidgetToScreen
 
-from PyQt5 import QtCore, QtGui, uic
+from PyQt5 import QtCore, QtGui, uic, QtWidgets
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QMainWindow, QWidget, QDockWidget
 
@@ -32,7 +32,7 @@ class MainWindow(QMainWindow):
         self.defaultToolBarIconSize = 16
         self.setUnifiedTitleAndToolBarOnMac( False )
         self.setDockOptions(
-            QtGui.QMainWindow.AllowNestedDocks | QtGui.QMainWindow.AllowTabbedDocks )
+            QtWidgets.QMainWindow.AllowNestedDocks | QtWidgets.QMainWindow.AllowTabbedDocks )
         # self.setTabPosition( Qt.AllDockWidgetAreas, QtGui.QTabWidget.North)
         font = QtGui.QFont()
         font.setPointSize(11)

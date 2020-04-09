@@ -1,4 +1,4 @@
-from PyQt5 import QtCore, QtGui
+from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import QEventLoop, QEvent, QObject
 
 from core import *
@@ -75,7 +75,7 @@ class QtSupport( QtEditorModule ):
 		# self.mainWindow.hide()
 		self.mainWindow.module = self
 
-		self.sharedMenuBar = QtGui.QMenuBar( None )
+		self.sharedMenuBar = QtWidgets.QMenuBar( None )
 		self.mainWindow.setMenuWidget( self.sharedMenuBar )
 		
 		self.menu = self.addMenuBar( 'main', self.sharedMenuBar )
