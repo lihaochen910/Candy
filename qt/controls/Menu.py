@@ -1,7 +1,7 @@
 import logging
 
-from PyQt4 import QtGui
-from PyQt4.QtGui import QMenu
+from PyQt5 import QtGui
+from PyQt5.QtWidgets import QMenu
 
 from core import signals, app
 
@@ -10,7 +10,7 @@ class MenuNode(object):
 
 	"""docstring for MenuNode"""
 	def __init__(self, option, parent, menubar = None):
-		if isinstance(option ,(str,unicode)):
+		if isinstance(option ,str):
 			blobs = option.split('|')
 			_option={
 				'label':blobs[0]
@@ -189,7 +189,7 @@ class MenuNode(object):
 			self.qtaction.setChecked(v and True or False)
 	
 	def setSignal(self, signal):
-		if isinstance(signal, (str, unicode)):
+		if isinstance(signal, str):
 			signal = signals.get(signal)
 		self.signal = signal
 

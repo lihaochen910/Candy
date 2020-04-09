@@ -2,11 +2,11 @@
 
 """PyQt4 port of the layouts/flowlayout example from Qt v4.x"""
 
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtGui, QtWidgets
 
 
 # ------------------------------------------------------------------------
-class FlowLayout(QtGui.QLayout):
+class FlowLayout( QtWidgets.QLayout ):
 	"""
 	Standard PyQt examples FlowLayout modified to work with a scollable parent
 	"""
@@ -94,8 +94,8 @@ class FlowLayout(QtGui.QLayout):
 
 		for item in self.itemList:
 			wid = item.widget()
-			spaceX = self.spacing()# + wid.style().layoutSpacing(QtGui.QSizePolicy.PushButton, QtGui.QSizePolicy.PushButton, QtCore.Qt.Horizontal)
-			spaceY = self.spacing()# + wid.style().layoutSpacing(QtGui.QSizePolicy.PushButton, QtGui.QSizePolicy.PushButton, QtCore.Qt.Vertical)
+			spaceX = self.spacing()# + wid.style().layoutSpacing(QtWidgets.QSizePolicy.PushButton, QtWidgets.QSizePolicy.PushButton, QtCore.Qt.Horizontal)
+			spaceY = self.spacing()# + wid.style().layoutSpacing(QtWidgets.QSizePolicy.PushButton, QtWidgets.QSizePolicy.PushButton, QtCore.Qt.Vertical)
 			nextX = x + item.sizeHint().width() + spaceX
 			if nextX - spaceX > rect.right() and lineHeight > 0:
 				x = rect.x()
@@ -113,17 +113,17 @@ class FlowLayout(QtGui.QLayout):
 
 
 # ------------------------------------------------------------------------
-class ResizeScrollArea(QtGui.QScrollArea):
+class ResizeScrollArea( QtWidgets.QScrollArea ):
 	"""
 	A QScrollArea that propagates the resizing to any FlowLayout children.
 	"""
 	
 	def __init(self, parent=None):  
-		QtGui.QScrollArea.__init__(self, parent)
+		QtWidgets.QScrollArea.__init__(self, parent)
 
 
 	def resizeEvent(self, event):
-		wrapper = self.findChild(QtGui.QWidget)
+		wrapper = self.findChild(QtWidgets.QWidget)
 		flow = wrapper.findChild(FlowLayout)
 		
 		if wrapper and flow:            
@@ -138,7 +138,7 @@ class ResizeScrollArea(QtGui.QScrollArea):
 
 
 # ------------------------------------------------------------------------
-class ScrollingFlowWidget(QtGui.QWidget):
+class ScrollingFlowWidget(QtWidgets.QWidget):
 	"""
 	A resizable and scrollable widget that uses a flow layout.
 	Use its addWidget() method to flow children into it.
@@ -146,9 +146,9 @@ class ScrollingFlowWidget(QtGui.QWidget):
 	
 	def __init__(self,parent=None):
 		super(ScrollingFlowWidget,self).__init__(parent)
-		grid = QtGui.QGridLayout(self)
+		grid = QtWidgets.QGridLayout(self)
 		scroll = ResizeScrollArea()
-		self._wrapper = QtGui.QWidget(scroll)
+		self._wrapper = QtWidgets.QWidget(scroll)
 		self.flowLayout = FlowLayout(self._wrapper)
 		self._wrapper.setLayout(self.flowLayout)
 		scroll.setWidget(self._wrapper)
@@ -173,19 +173,19 @@ if __name__ == '__main__':
 			return QtCore.QSize(500,300)
 
 
-	class ExampleWindow(QtGui.QWidget):
+	class ExampleWindow(QtWidgets.QWidget):
 		def __init__(self):
 			super(ExampleWindow, self).__init__()
 
 			self.scroller = ExampleScroller(self)
-			self.setLayout( QtGui.QVBoxLayout(self) )
+			self.setLayout( QtWidgets.QVBoxLayout(self) )
 			self.layout().addWidget(self.scroller)
 
 			for w in range( random.randint(25,50)):
 				words = " ".join([ "".join([ chr(random.choice(range(ord('a'),ord('z'))))  
 							for x in range( random.randint(2,9) ) ])  
 								for n in range(random.randint(1,5)) ]).title()
-				widget = QtGui.QPushButton(words)
+				widget = QtWidgets.QPushButton(words)
 				widget.setFixedHeight( 20 )
 				widget.setCursor( QtCore.Qt.PointingHandCursor )
 				widget.setCheckable( True )
@@ -194,7 +194,7 @@ if __name__ == '__main__':
 			self.setWindowTitle("Scrolling Flow Layout")
 
 
-	app = QtGui.QApplication(sys.argv)
+	app = QtWidgets.QApplication(sys.argv)
 	mainWin = ExampleWindow()
 	mainWin.show()
 	sys.exit(app.exec_())

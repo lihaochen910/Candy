@@ -1,1 +1,1 @@
-import LayerEditor
+from . import LayerEditor

@@ -1,4 +1,4 @@
-from PyQt4 import QtGui
+from PyQt5 import QtGui
 ##----------------------------------------------------------------##
 from qt.controls.Window import MainWindow
 from qt.controls.Menu import MenuManager

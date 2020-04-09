@@ -46,7 +46,7 @@ class SceneEditor( TopEditorModule ):
 		self.mainToolBar = self.addToolBar( 'scene', self.mainWindow.requestToolBar( 'main' ) )		
 		window.setMenuWidget( self.getQtSupport().getSharedMenubar() )
 		window.setWindowIcon( self.getQtSupport().mainWindowIcon )
-		# from PyQt4.QtCore import Qt
+		# from PyQt5.QtCore import Qt
 		# window.setWindowFlags(Qt.FramelessWindowHint)
 		#menu
 		self.menu = self.addMenu( 'main/scene', dict( label = 'Scene' ) )

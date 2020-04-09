@@ -65,7 +65,7 @@ class CandyRuntime( EditorModule ):
 
 		self.initCandy()
 
-		print 'load CandyRuntime ok!'
+		print ( 'load CandyRuntime ok!' )
 
 	def affirmConfigFile( self ):
 		proj = self.getProject()
@@ -127,7 +127,7 @@ class CandyRuntime( EditorModule ):
 
 			# self.runtime.runString("_stat('CandyRuntime.initCandy() after getRenderContext()', MOAISim.getActionMgr():getRoot())")
 
-		except Exception, e:
+		except Exception as e:
 			raise e
 
 	def postInitCandy(self):
@@ -137,7 +137,7 @@ class CandyRuntime( EditorModule ):
 			# print ("postInitCandy() _CANDY ok!")
 
 			signals.emit( 'candy.init' )
-		except Exception, e:
+		except Exception as e:
 			raise e
 
 	def onProjectLoaded(self,prj):

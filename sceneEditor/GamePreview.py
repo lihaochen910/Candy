@@ -8,8 +8,8 @@ from moai.MOAICanvasBase import MOAICanvasBase
 
 # from gii.qt.dialogs          import ProcessDialog
 
-from PyQt4                   import QtCore, QtGui
-from PyQt4.QtCore            import Qt
+from PyQt5                   import QtCore, QtGui
+from PyQt5.QtCore            import Qt
 
 from sceneEditor.SceneEditor import SceneEditorModule
 # import ExternRun

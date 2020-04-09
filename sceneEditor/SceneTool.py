@@ -7,7 +7,7 @@ from core     import *
 # from gii.qt.controls.Menu import MenuManager
 from qt.helpers.IconCache                  import getIcon
 
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtGui, QtWidgets
 
 
 ##----------------------------------------------------------------##
@@ -54,7 +54,7 @@ class SceneTool():
 _SceneToolButtons = weakref.WeakKeyDictionary()
 
 ##----------------------------------------------------------------##
-class SceneToolButton( QtGui.QToolButton ):
+class SceneToolButton( QtWidgets.QToolButton ):
 	def __init__( self, toolId, **options ):
 		super( SceneToolButton, self ).__init__()
 		self.toolId = toolId

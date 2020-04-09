@@ -1,3 +1,3 @@
 # from TagMatch import TagMatch
-from TagMatchPlain import *
+from .TagMatchPlain import *
 

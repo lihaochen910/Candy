@@ -1,12 +1,12 @@
 from core.model import *
 
-from PropertyEditor import FieldEditor, FieldEditorFactory, registerSimpleFieldEditorFactory
+from .PropertyEditor import FieldEditor, FieldEditorFactory, registerSimpleFieldEditorFactory
 from qt.controls.SearchView import requestSearchView
 
-from PyQt4 import QtGui, QtCore
-from PyQt4.QtCore import Qt
+from PyQt5 import QtGui, QtCore, QtWidgets
+from PyQt5.QtCore import Qt
 
-class EnumFieldButton( QtGui.QToolButton ):
+class EnumFieldButton( QtWidgets.QToolButton ):
 	def sizeHint( self ):
 		return QtCore.QSize( 20, 20)
 
@@ -39,8 +39,8 @@ class EnumFieldEditor( FieldEditor ):
 	def initEditor( self, container ):
 		self.button = EnumFieldButton( container )
 		self.button.setSizePolicy(
-			QtGui.QSizePolicy.Expanding,
-			QtGui.QSizePolicy.Expanding
+			QtWidgets.QSizePolicy.Expanding,
+			QtWidgets.QSizePolicy.Expanding
 			)
 		self.button.setText( '[]' )
 		if self.getOption( 'readonly', False ):

@@ -1,14 +1,14 @@
 from core.model import *
 
-from PropertyEditor import FieldEditor, registerSimpleFieldEditorFactory
+from .PropertyEditor import FieldEditor, registerSimpleFieldEditorFactory
 from qt.controls.SearchView import requestSearchView
 from qt.helpers.IconCache  import getIcon
 
-from PyQt4 import QtGui, QtCore
-from PyQt4.QtCore import Qt
+from PyQt5 import QtGui, QtCore, QtWidgets
+from PyQt5.QtCore import Qt
 
 ##----------------------------------------------------------------##
-class ActionFieldButton( QtGui.QToolButton ):
+class ActionFieldButton( QtWidgets.QToolButton ):
 	def sizeHint( self ):
 		return QtCore.QSize( 20, 20)
 
@@ -30,20 +30,20 @@ class ActionFieldEditor( FieldEditor ):
 
 	def initLabel( self, label, container ):
 		self.label = label
-		self.labelWidget = QtGui.QLabel( container )
+		self.labelWidget = QtWidgets.QLabel( container )
 		self.labelWidget.setText( '' )
 		self.labelWidget.setMinimumSize( 50, 16 )
 		self.labelWidget.setSizePolicy(
-			QtGui.QSizePolicy.Expanding,
-			QtGui.QSizePolicy.Expanding
+			QtWidgets.QSizePolicy.Expanding,
+			QtWidgets.QSizePolicy.Expanding
 			)
 		return self.labelWidget
 
 	def initEditor( self, container ):
 		self.button = ActionFieldButton( container )
 		self.button.setSizePolicy(
-			QtGui.QSizePolicy.Expanding,
-			QtGui.QSizePolicy.Expanding
+			QtWidgets.QSizePolicy.Expanding,
+			QtWidgets.QSizePolicy.Expanding
 			)
 		self.button.setToolButtonStyle( Qt.ToolButtonTextBesideIcon )
 		self.button.setText( self.label )

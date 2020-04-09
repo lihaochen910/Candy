@@ -4,8 +4,8 @@ from core import signals, app
 
 from moai.MOAIRuntime import getAKU
 
-from PyQt4 import QtCore, QtGui, QtOpenGL
-from PyQt4.QtCore import Qt
+from PyQt5 import QtCore, QtGui, QtOpenGL
+from PyQt5.QtCore import Qt
 
 from sceneEditor.SceneEditor import SceneEditorModule
 
@@ -312,7 +312,7 @@ class GameViewCanvas(QtOpenGL.QGLWidget):
 
 	def __init__(self, parent=None, **option):
 		QtOpenGL.QGLWidget.__init__(self, parent)
-		self.setSizePolicy(QtGui.QSizePolicy.Ignored, QtGui.QSizePolicy.Ignored)
+		self.setSizePolicy(QtWidgets.QSizePolicy.Ignored, QtWidgets.QSizePolicy.Ignored)
 		self.setFocusPolicy(QtCore.Qt.ClickFocus)
 		self.setMouseTracking(True)
 

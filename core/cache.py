@@ -1,8 +1,8 @@
 import os
 import os.path
 import logging
-import jsonHelper
 import shutil
+from . import jsonHelper
 
 _CANDY_CACHE_PATH       =  'cache'
 _CANDY_CACHE_INDEX_PATH =  'cache_index.json'
@@ -150,12 +150,12 @@ class CacheManager(object):
 				if cacheFile.get( 'is_dir', False ):
 					try:
 						shutil.rmtree( path )
-					except Exception, e:
+					except Exception as e:
 						logging.error( 'failed removing cache directory:' + path )
 				else:
 					try:
 						os.remove( path )
-					except Exception, e:
+					except Exception as e:
 						logging.error( 'failed removing cache file:' + path )
 
 		for path in toRemove:

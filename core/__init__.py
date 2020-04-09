@@ -1,20 +1,20 @@
 ##----------------------------------------------------------------##
 import core.signals
 
-from project        import Project
-from asset          import AssetLibrary, AssetException, AssetNode, AssetManager, AssetCreator
-from cache          import CacheManager
+from .project        import Project
+from .asset          import AssetLibrary, AssetException, AssetNode, AssetManager, AssetCreator
+from .cache          import CacheManager
 
 ##----------------------------------------------------------------##
-from Command        import EditorCommand, EditorCommandStack, EditorCommandRegistry
-from Command        import RemoteCommand, RemoteCommand, RemoteCommandRegistry
-from EditorModule   import EditorModule
-from EditorApp      import app
+from .Command        import EditorCommand, EditorCommandStack, EditorCommandRegistry
+from .Command        import RemoteCommand, RemoteCommand, RemoteCommandRegistry
+from .EditorModule   import EditorModule
+from .EditorApp      import app
 
-from helpers import *
-from model import *
+from .helpers import *
+from .model import *
 
-import jsonHelper
+from . import jsonHelper
 
 CANDY_MIME_ENTITY_DATA = 'application/candy.entity-data'
 CANDY_MIME_ASSET_LIST  = 'application/candy.asset-list'

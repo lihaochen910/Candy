@@ -1,7 +1,7 @@
 import sys
 import logging
 import os
-import SocketServer
+import socketserver
 # import SimpleSocket
 import socket
 import threading
@@ -10,7 +10,7 @@ _CANDY_INSTANCE_PORT = 61957
 
 RemoteArgumentCallBack=None
 
-class ThreadedTCPRequestHandler(SocketServer.BaseRequestHandler):
+class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
     def handle(self):
         data = self.request.recv(1024)
         cur_thread = threading.currentThread()
@@ -23,7 +23,7 @@ class ThreadedTCPRequestHandler(SocketServer.BaseRequestHandler):
         result = '\n'.join( output )
         self.request.send( result )
 
-class ThreadedTCPServer(SocketServer.ThreadingMixIn, SocketServer.TCPServer):
+class ThreadedTCPServer(socketserver.ThreadingMixIn, socketserver.TCPServer):
     stopped = False
     allow_reuse_address = True
 

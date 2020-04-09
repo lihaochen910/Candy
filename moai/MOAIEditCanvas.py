@@ -1,16 +1,16 @@
 import os.path
 from time import time as getTime
 
-from PyQt4 import QtCore, QtGui, QtOpenGL
-from PyQt4.QtCore import Qt
+from PyQt5 import QtCore, QtGui, QtOpenGL
+from PyQt5.QtCore import Qt
 
 # from gii import *
 from core.EditorApp import app
 from core import signals
 
 from qt.controls.GLWidget import GLWidget
-from MOAIRuntime              import getAKU, MOAIRuntime, MOAILuaDelegate
-from MOAICanvasBase           import MOAICanvasBase
+from .MOAIRuntime              import getAKU, MOAIRuntime, MOAILuaDelegate
+from .MOAICanvasBase           import MOAICanvasBase
 
 
 # import ContextDetection

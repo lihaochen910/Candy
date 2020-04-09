@@ -2,19 +2,20 @@ import logging
 from core import signals
 from qt.helpers import restrainWidgetToScreen
 
-from PyQt4 import QtCore, QtGui, uic
-from PyQt4.QtCore import Qt
+from PyQt5 import QtCore, QtGui, uic
+from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import QMainWindow, QWidget, QDockWidget
 
 
-from ToolWindowManager import ToolWindowManager
+from .ToolWindowManager import ToolWindowManager
 
 def getWindowScreenId(window):
-    desktop = QtGui.QApplication.desktop()
+    desktop = QtWidgets.QApplication.desktop()
     return desktop.screenNumber(window)
 
 
 def moveWindowToCenter(window):
-    desktop = QtGui.QApplication.desktop()
+    desktop = QtWidgets.QApplication.desktop()
     geom = desktop.availableGeometry(window)
     x = (geom.width() - window.width()) / 2 + geom.x()
     y = (geom.height() - window.height()) / 2 + geom.y()
@@ -22,7 +23,7 @@ def moveWindowToCenter(window):
 
 
 ##----------------------------------------------------------------##
-class MainWindow(QtGui.QMainWindow):
+class MainWindow(QMainWindow):
     """docstring for MainWindow"""
 
     def __init__(self, parent):
@@ -222,13 +223,13 @@ class SubWindowMixin:
 
         self.container = self.createContainer()
 
-        self.mainLayout = QtGui.QVBoxLayout(self.container)
+        self.mainLayout = QtWidgets.QVBoxLayout(self.container)
         self.mainLayout.setSpacing(0)
         self.mainLayout.setMargin(0)
         self.mainLayout.setObjectName('MainLayout')
 
     def createContainer(self):
-        container = QtGui.QWidget(self)
+        container = QtWidgets.QWidget(self)
         self.setWidget(container)
         return container
 
@@ -236,13 +237,13 @@ class SubWindowMixin:
         # widget.setParent(self)
         if layoutOption.get('fixed', False):
             widget.setSizePolicy(
-                QtGui.QSizePolicy.Fixed,
-                QtGui.QSizePolicy.Fixed
+                QtWidgets.QSizePolicy.Fixed,
+                QtWidgets.QSizePolicy.Fixed
             )
         elif layoutOption.get('expanding', True):
             widget.setSizePolicy(
-                QtGui.QSizePolicy.Expanding,
-                QtGui.QSizePolicy.Expanding
+                QtWidgets.QSizePolicy.Expanding,
+                QtWidgets.QSizePolicy.Expanding
             )
         self.mainLayout.addWidget(widget)
         return widget
@@ -264,7 +265,7 @@ class SubWindowMixin:
 
 
 ##----------------------------------------------------------------##
-class SubWindow(QtGui.QMainWindow, SubWindowMixin):
+class SubWindow(QMainWindow, SubWindowMixin):
     def __init__(self, parent):
         super(SubWindow, self).__init__(parent)
         self.setupUi()
@@ -274,11 +275,11 @@ class SubWindow(QtGui.QMainWindow, SubWindowMixin):
     def hideTitleBar(self):
         pass
 
-    # emptyTitle=QtGui.QWidget()
+    # emptyTitle=QtWidgets.QWidget()
     # self.setTitleBarWidget(emptyTitle)
 
     def createContainer(self):
-        container = QtGui.QWidget(self)
+        container = QtWidgets.QWidget(self)
         self.setCentralWidget(container)
         return container
 
@@ -330,7 +331,7 @@ class DocumentWindow(SubWindow):
 
 
 ##----------------------------------------------------------------##
-class DockWindowTitleBar(QtGui.QWidget):
+class DockWindowTitleBar(QWidget):
     """docstring for DockWindowTitleBar"""
 
     def __init__(self, *args):
@@ -344,7 +345,7 @@ class DockWindowTitleBar(QtGui.QWidget):
 
 
 ##----------------------------------------------------------------##
-class DockWindow(QtGui.QDockWidget, SubWindowMixin):
+class DockWindow(QDockWidget, SubWindowMixin):
     """docstring for DockWindow"""
 
     def __init__(self, parent):
@@ -374,7 +375,7 @@ class DockWindow(QtGui.QDockWidget, SubWindowMixin):
             self.setWindowFlags(Qt.Window | Qt.WindowStaysOnTopHint)
 
     def hideTitleBar(self):
-        emptyTitle = QtGui.QWidget()
+        emptyTitle = QtWidgets.QWidget()
         self.setTitleBarWidget(emptyTitle)
 
     def startTimer(self, fps, trigger):

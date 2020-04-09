@@ -1,24 +1,24 @@
 import logging
 
-from PyQt4.QtNetwork import *
+from PyQt5.QtNetwork import *
 
 from core         import *
 from qt.dialogs.Dialogs   import requestString, alertMessage, requestConfirm
 from qt.helpers   import setClipboardText
 # from gii.SearchView   import requestSearchView, registerSearchEnumerator
 
-from AssetEditor      import AssetEditorModule, getAssetSelectionManager
+from .AssetEditor      import AssetEditorModule, getAssetSelectionManager
 from sceneEditor.SceneEditor  import SceneEditorModule
 
-from PyQt4            import QtCore, QtGui, uic
-from PyQt4.QtCore     import Qt
+from PyQt5            import QtCore, QtGui, uic
+from PyQt5.QtCore     import Qt
 
-from AssetBrowserWidgets import *
+from .AssetBrowserWidgets import *
 
 from util import TagMatch
 from qt.helpers import repolishWidget
 
-from AssetFilter import *
+from .AssetFilter import *
 
 ##----------------------------------------------------------------##
 def _getModulePath( path ):
@@ -215,7 +215,7 @@ class AssetBrowser( SceneEditorModule ):
 		try:
 			finalPath = creator.createAsset( name, contextNode, assetType )
 			self.newCreateNodePath=finalPath
-		except Exception,e:
+		except Exception as e:
 			logging.exception( e )
 			alertMessage( 'Asset Creation Error', repr(e) )
 
@@ -442,7 +442,7 @@ class AssetBrowserInstance( object ):
 		self.detailList.customContextMenuRequested.connect( self.onItemContextMenu )
 
 
-		layoutLeft = QtGui.QVBoxLayout( ui.containerTree )
+		layoutLeft = QtWidgets.QVBoxLayout( ui.containerTree )
 		layoutLeft.setSpacing( 0 )
 		layoutLeft.setMargin( 0 )
 		
@@ -453,7 +453,7 @@ class AssetBrowserInstance( object ):
 		layoutLeft.addWidget( self.treeFilterFilter )
 		layoutLeft.addWidget( self.treeFilter )
 		
-		layoutRight = QtGui.QVBoxLayout( ui.containerRight )
+		layoutRight = QtWidgets.QVBoxLayout( ui.containerRight )
 		layoutRight.setSpacing( 0 )
 		layoutRight.setMargin( 0 )
 

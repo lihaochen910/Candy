@@ -4,8 +4,8 @@ import sys
 import logging
 import time
 
-from PyQt4 import QtCore, QtGui, uic
-from PyQt4.QtCore import Qt, QEvent, QObject
+from PyQt5 import QtCore, QtGui, uic
+from PyQt5.QtCore import Qt, QEvent, QObject
 
 from core       import getAppPath
 from core       import signals
@@ -83,8 +83,8 @@ class Console( SceneEditorModule ):
 		pass
 
 ##----------------------------------------------------------------##
-# class ConsoleWindow( QtGui.QWidget, ui_console.Ui_ConsoleWindow ):
-class ConsoleWindow( QtGui.QWidget ):
+# class ConsoleWindow( QtWidgets.QWidget, ui_console.Ui_ConsoleWindow ):
+class ConsoleWindow( QtWidgets.QWidget ):
 	"""docstring for ConsoleWindow"""
 	COLOR_WHITE = QtGui.QColor(255, 255, 255)
 	COLOR_RED = QtGui.QColor(255, 0, 0)
@@ -105,11 +105,11 @@ class ConsoleWindow( QtGui.QWidget ):
 
 		self.luaLogTabLayout.setSpacing(2)
 
-		self.buttonExec = QtGui.QPushButton(self)
+		self.buttonExec = QtWidgets.QPushButton(self)
 		self.buttonExec.setObjectName("buttonExec")
 		self.buttonExec.setText('exec')
 		self.luaLogTabLayout.addWidget(self.buttonExec)
-		self.buttonClear = QtGui.QPushButton(self)
+		self.buttonClear = QtWidgets.QPushButton(self)
 		self.buttonClear.setObjectName("buttonClear")
 		self.buttonClear.setText('clr')
 		self.luaLogTabLayout.addWidget(self.buttonClear)

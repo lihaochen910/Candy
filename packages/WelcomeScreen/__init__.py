@@ -1,1 +1,1 @@
-import WelcomeScreen
+from . import WelcomeScreen

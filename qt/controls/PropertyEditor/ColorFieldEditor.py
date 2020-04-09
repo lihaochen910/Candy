@@ -1,8 +1,8 @@
-from PropertyEditor import FieldEditor,registerSimpleFieldEditorFactory
+from .PropertyEditor import FieldEditor,registerSimpleFieldEditorFactory
 
-from PyQt4 import QtGui, QtCore
-from PyQt4.QtCore import Qt
-from PyQt4.QtCore import QEventLoop, QEvent, QObject
+from PyQt5 import QtGui, QtCore, QtWidgets
+from PyQt5.QtCore import Qt
+from PyQt5.QtCore import QEventLoop, QEvent, QObject
 
 from qt.dialogs import requestColorDialog
 
@@ -22,15 +22,15 @@ def unpackQColor( c ):
 def QColorF( r, g, b, a =1 ):
 	return QtGui.QColor( r*255, g*255, b*255, a*255)
 
-class ColorBlock( QtGui.QToolButton ):
+class ColorBlock( QtWidgets.QToolButton ):
 	colorChanged = QtCore.pyqtSignal( QtGui.QColor )
 	def __init__(self, parent, color = None, **option ):
 		super(ColorBlock, self).__init__( parent )
 		self.setColor( color or QtGui.QColor( 1,1,1,1 ) )
 		self.clicked.connect( self.onClicked )
 		self.setSizePolicy(
-			QtGui.QSizePolicy.Expanding,
-			QtGui.QSizePolicy.Fixed
+			QtWidgets.QSizePolicy.Expanding,
+			QtWidgets.QSizePolicy.Fixed
 			)
 
 		self.title = option.get( 'title', 'Color' )

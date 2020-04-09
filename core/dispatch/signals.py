@@ -5,8 +5,8 @@ import threading
 #import logging
 #logger = logging.getLogger(__name__)
 
-import idle_queue
-from weak_ref import weak_ref
+from . import idle_queue
+from .weak_ref import weak_ref
 
 
 class Signal:

@@ -1,9 +1,9 @@
 # import GamePreview
-import SceneView
-import GameView
-from SceneEditor import SceneEditorModule
-from SceneTool import SceneTool, SceneToolMeta, SceneToolButton
+from . import SceneView
+from . import GameView
+from .SceneEditor import SceneEditorModule
+from .SceneTool import SceneTool, SceneToolMeta, SceneToolButton
 
-import SceneOutlinerEditor
-import LayerEditor
-import DetailPanel
+from . import SceneOutlinerEditor
+from . import LayerEditor
+from . import DetailPanel

@@ -1,28 +1,28 @@
 from core import *
 from core.model import *
-from PropertyEditor import FieldEditor, registerSimpleFieldEditorFactory
+from .PropertyEditor import FieldEditor, registerSimpleFieldEditorFactory
 from qt.helpers import addWidgetWithLayout, QColorF, unpackQColor
 from qt.controls.GenericTreeWidget import GenericTreeWidget
 from qt.helpers.IconCache  import getIcon
 
-from PyQt4 import QtGui, QtCore, uic
-from PyQt4.QtCore import Qt
-from PyQt4.QtCore import QEventLoop, QEvent, QObject
+from PyQt5 import QtGui, QtCore, uic, QtWidgets
+from PyQt5.QtCore import Qt
+from PyQt5.QtCore import QEventLoop, QEvent, QObject
 
 from qt.controls.SearchView import requestSearchView
 
-class SearchFieldButton( QtGui.QToolButton ):
+class SearchFieldButton( QtWidgets.QToolButton ):
 	def sizeHint( self ):
 		return QtCore.QSize( 20, 20)
 
 	
 		
 ##----------------------------------------------------------------##
-class SearchFieldWidget( QtGui.QWidget ):
+class SearchFieldWidget( QtWidgets.QWidget ):
 	def __init__(self, *args):
 		super(SearchFieldWidget, self).__init__( *args )
 		self.parentEditor = None
-		self.layout = layout = QtGui.QHBoxLayout( self )
+		self.layout = layout = QtWidgets.QHBoxLayout( self )
 		layout.setSpacing( 0 )
 		layout.setMargin( 0 )
 		self.buttonRef   = buttonRef   = SearchFieldButton( self )
@@ -31,16 +31,16 @@ class SearchFieldWidget( QtGui.QWidget ):
 		buttonRef.setObjectName( 'ButtonReferenceField' )
 		self.buttonRef.setToolButtonStyle( Qt.ToolButtonTextBesideIcon )
 		buttonRef.setSizePolicy(
-			QtGui.QSizePolicy.Expanding,
-			QtGui.QSizePolicy.Fixed
+			QtWidgets.QSizePolicy.Expanding,
+			QtWidgets.QSizePolicy.Fixed
 			)
 		buttonGoto.setSizePolicy(
-			QtGui.QSizePolicy.Fixed,
-			QtGui.QSizePolicy.Fixed
+			QtWidgets.QSizePolicy.Fixed,
+			QtWidgets.QSizePolicy.Fixed
 			)
 		buttonClear.setSizePolicy(
-			QtGui.QSizePolicy.Fixed,
-			QtGui.QSizePolicy.Fixed
+			QtWidgets.QSizePolicy.Fixed,
+			QtWidgets.QSizePolicy.Fixed
 			)
 		buttonRef.setText( '<None>' )
 		buttonRef.setStyleSheet ("text-align: left;"); 

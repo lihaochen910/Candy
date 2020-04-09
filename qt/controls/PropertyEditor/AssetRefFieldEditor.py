@@ -5,8 +5,8 @@ from qt.helpers import repolishWidget
 
 import json 
 
-from PropertyEditor import FieldEditor, registerSimpleFieldEditorFactory
-from SearchFieldEditor import SearchFieldEditorBase
+from .PropertyEditor import FieldEditor, registerSimpleFieldEditorFactory
+from .SearchFieldEditor import SearchFieldEditorBase
 
 import os.path
 

@@ -5,9 +5,9 @@ from qt.controls.GenericTreeWidget import GenericTreeWidget
 from qt.helpers    import addWidgetWithLayout, restrainWidgetToScreen
 from qt.helpers.IconCache  import getIcon
 
-from PyQt4 import QtGui, QtCore, uic
-from PyQt4.QtCore import Qt
-from PyQt4.QtCore import QEventLoop, QEvent, QObject
+from PyQt5 import QtGui, QtCore, uic, QtWidgets
+from PyQt5.QtCore import Qt
+from PyQt5.QtCore import QEventLoop, QEvent, QObject
 
 import re
 
@@ -48,7 +48,7 @@ def _sortName( e1, e2 ):
 	return cmp( e1.name, e2.name )
 
 ##----------------------------------------------------------------##
-class SearchViewWidget( QtGui.QWidget ):
+class SearchViewWidget( QtWidgets.QWidget ):
 	def __init__(self, *args ):
 		super( SearchViewWidget, self ).__init__( *args )
 		self.searchState = None
@@ -160,7 +160,7 @@ class SearchViewWidget( QtGui.QWidget ):
 		self.module.testSelection( obj )
 	
 	def setFocus( self ):
-		QtGui.QWidget.setFocus( self )
+		QtWidgets.QWidget.setFocus( self )
 		self.textTerms.setFocus()
 
 	def onTermsChanged( self, text ):
@@ -252,7 +252,7 @@ class SearchViewWidget( QtGui.QWidget ):
 				self.treeResult.refreshNodeContent( entry )
 
 ##----------------------------------------------------------------##
-class SearchViewTextTerm( QtGui.QLineEdit):
+class SearchViewTextTerm( QtWidgets.QLineEdit ):
 	def keyPressEvent( self, ev ):
 		key = ev.key()
 		if key in [ Qt.Key_Down, Qt.Key_Up, Qt.Key_PageDown, Qt.Key_PageUp ] :
@@ -324,7 +324,7 @@ class SearchViewTree(GenericTreeWidget):
 		self.browser.confirmSelection( node.obj )
 
 	def onClipboardCopy( self ):
-		clip = QtGui.QApplication.clipboard()
+		clip = QtWidgets.QApplication.clipboard()
 		out = None
 		for node in self.getSelection():
 			if out:
@@ -503,7 +503,7 @@ class SearchView( EditorModule ):
 		return [ SearchEntry( *r ) for r in allResult ]
 
 ##----------------------------------------------------------------##
-class SearchViewItem( QtGui.QTreeWidgetItem ):
+class SearchViewItem( QtWidgets.QTreeWidgetItem ):
 	def __lt__( self, other ):
 		node0 = self.node
 		node1 = hasattr(other, 'node') and other.node or None

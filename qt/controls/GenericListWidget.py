@@ -1,14 +1,14 @@
-from PyQt4 import QtCore, QtGui, uic
-from PyQt4.QtCore import Qt, QSize
-from PyQt4.QtGui import QApplication
+from PyQt5 import QtCore, QtGui, uic, QtWidgets
+from PyQt5.QtCore import Qt, QSize
+from PyQt5.QtWidgets import QApplication
 ##----------------------------------------------------------------##
-class no_editItemDelegate( QtGui.QStyledItemDelegate ):
+class no_editItemDelegate( QtWidgets.QStyledItemDelegate ):
 	def createEditor( *args ):
 		return None
 
 
 ##----------------------------------------------------------------##
-class GenericListWidget( QtGui.QListWidget ):
+class GenericListWidget( QtWidgets.QListWidget ):
 	def __init__( self, *args, **option ):
 		super( GenericListWidget, self ).__init__( *args )
 		
@@ -17,7 +17,7 @@ class GenericListWidget( QtGui.QListWidget ):
 		self.option = option
 
 		if option.get( 'mode', 'list' ) == 'icon':
-			self.setViewMode( QtGui.QListView.IconMode )
+			self.setViewMode( QtWidgets.QListView.IconMode )
 			
 		self.itemDoubleClicked    .connect( self.onDClicked )
 		self.itemClicked          .connect( self.onClicked )
@@ -25,23 +25,23 @@ class GenericListWidget( QtGui.QListWidget ):
 		self.itemActivated        .connect( self.onItemActivated )
 		self.itemChanged          .connect( self._onItemChanged )
 
-		self.setHorizontalScrollMode( QtGui.QAbstractItemView.ScrollPerPixel )
-		self.setVerticalScrollMode( QtGui.QAbstractItemView.ScrollPerPixel )
+		self.setHorizontalScrollMode( QtWidgets.QAbstractItemView.ScrollPerPixel )
+		self.setVerticalScrollMode( QtWidgets.QAbstractItemView.ScrollPerPixel )
 
 		if self.getOption( 'multiple_selection', False ):
-			self.setSelectionMode( QtGui.QAbstractItemView.ExtendedSelection )
+			self.setSelectionMode( QtWidgets.QAbstractItemView.ExtendedSelection )
 		else:
-			self.setSelectionMode( QtGui.QAbstractItemView.SingleSelection )
+			self.setSelectionMode( QtWidgets.QAbstractItemView.SingleSelection )
 
 		dragMode = self.getOption( 'drag_mode', None )
 		if dragMode == 'all':
-			self.setDragDropMode( QtGui.QAbstractItemView.DragDrop )
+			self.setDragDropMode( QtWidgets.QAbstractItemView.DragDrop )
 		elif dragMode == 'drag':
-			self.setDragDropMode( QtGui.QAbstractItemView.DragOnly )
+			self.setDragDropMode( QtWidgets.QAbstractItemView.DragOnly )
 		elif dragMode == 'drop':
-			self.setDragDropMode( QtGui.QAbstractItemView.DropOnly )
+			self.setDragDropMode( QtWidgets.QAbstractItemView.DropOnly )
 		elif dragMode == 'internal' or dragMode == True:
-			self.setDragDropMode( QtGui.QAbstractItemView.InternalMove )
+			self.setDragDropMode( QtWidgets.QAbstractItemView.InternalMove )
 			
 
 	def getOption( self, k, v ):
@@ -101,7 +101,7 @@ class GenericListWidget( QtGui.QListWidget ):
 		assert not node is None, 'attempt to insert null node '
 		item = self.nodeDict.get( node, None )
 		if item: return item
-		item = QtGui.QListWidgetItem( self )
+		item = QtWidgets.QListWidgetItem( self )
 		self.nodeDict[ node ] = item
 		item.node = node
 		self.updateItem( node )

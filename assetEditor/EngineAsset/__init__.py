@@ -1,1 +1,1 @@
-import SceneAsset
+from . import SceneAsset

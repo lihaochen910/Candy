@@ -1,10 +1,10 @@
 from core.model import *
 from qt.helpers import repolishWidget
 
-from PyQt4 import QtGui, QtCore
-from PyQt4.QtCore import Qt
+from PyQt5 import QtGui, QtCore, QtWidgets
+from PyQt5.QtCore import Qt
 
-from FieldEditorControls import *
+from .FieldEditorControls import *
 
 '''
 	planned control:
@@ -76,7 +76,7 @@ def buildFieldEditor( parentEditor, field ):
 	return None
 
 ##----------------------------------------------------------------##
-class PropertyEditor( QtGui.QFrame ):
+class PropertyEditor( QtWidgets.QFrame ):
 	propertyChanged = QtCore.pyqtSignal( object, str, object )
 	objectChanged   = QtCore.pyqtSignal( object )
 	contextMenuRequested = QtCore.pyqtSignal( object, str )
@@ -87,9 +87,9 @@ class PropertyEditor( QtGui.QFrame ):
 	def __init__( self, parent ):	
 		super( PropertyEditor, self ).__init__( parent )
 		if not PropertyEditor._fieldEditorCacheWidget:
-			PropertyEditor._fieldEditorCacheWidget = QtGui.QWidget()
+			PropertyEditor._fieldEditorCacheWidget = QtWidgets.QWidget()
 		self.setObjectName( 'PropertyEditor' )
-		layout = QtGui.QFormLayout( )
+		layout = QtWidgets.QFormLayout()
 		self.setLayout( layout )
 		self.layout = layout
 		self.layout.setHorizontalSpacing( 4 )
@@ -98,8 +98,8 @@ class PropertyEditor( QtGui.QFrame ):
 		self.layout.setLabelAlignment( Qt.AlignLeft )
 		self.layout.setFieldGrowthPolicy( QtGui.QFormLayout.ExpandingFieldsGrow )
 		self.setSizePolicy( 
-			QtGui.QSizePolicy.Expanding,
-			QtGui.QSizePolicy.Expanding
+			QtWidgets.QSizePolicy.Expanding,
+			QtWidgets.QSizePolicy.Expanding
 		)
 		self.editors    = {}
 		self.target     = None
@@ -127,10 +127,10 @@ class PropertyEditor( QtGui.QFrame ):
 		return self.editors.get( field, None )
 
 	def addSeparator( self ):
-		line = QtGui.QFrame( self )
+		line = QtWidgets.QFrame( self )
 		line.setSizePolicy(
-			QtGui.QSizePolicy.Expanding,
-			QtGui.QSizePolicy.Fixed
+			QtWidgets.QSizePolicy.Expanding,
+			QtWidgets.QSizePolicy.Fixed
 		)
 		# line.setStyleSheet('background:none; border:none; ')
 		line.setStyleSheet('background:none; border-top:1px solid #353535; margin: 2px 0 2px 0;')
@@ -312,7 +312,7 @@ class FieldEditor( object ):
 		return self.labelWidget
 
 	def initEditor( self, container ):
-		return QtGui.QWidget( container )
+		return QtWidgets.QWidget( container )
 
 	def refreshState( self ):
 		readonly = self.getOption( 'readonly', False ) or self.parent.isReadonly()

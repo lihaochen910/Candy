@@ -1,1 +1,1 @@
-from SearchView import SearchView, requestSearchView, registerSearchEnumerator
+from .SearchView import SearchView, requestSearchView, registerSearchEnumerator

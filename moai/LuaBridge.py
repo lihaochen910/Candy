@@ -7,7 +7,7 @@ from core   import *
 
 from core.selection   import getSelectionManager
 
-from MOAIRuntime import *
+from .MOAIRuntime import *
 from AKU        import _LuaTable, _LuaThread, _LuaObject, _LuaFunction
 from time       import time as getTime
 import uuid
@@ -20,7 +20,7 @@ def wrapLuaCaller(func):
 	def caller(*args):
 		try:
 			return func(*args)
-		except Exception, e:
+		except Exception as e:
 			logging.error( str(e) )
 		return None
 	return caller

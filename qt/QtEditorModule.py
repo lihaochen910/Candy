@@ -5,8 +5,8 @@ from core import EditorModule
 from qt.controls.Menu import MenuManager
 from qt.controls.ToolBar import ToolBarManager, ToolBarItem
 
-from PyQt4 import QtGui
-from PyQt4.QtCore import Qt
+from PyQt5 import QtGui
+from PyQt5.QtCore import Qt
 
 ##----------------------------------------------------------------##
 _QT_SETTING_FILE = 'qt.ini'
@@ -47,7 +47,7 @@ class QtEditorModule(EditorModule):
         elif context == 'app':
             contextWindow = self.getMainWindow()
             shortcutContext = Qt.ApplicationShortcut
-        elif isinstance(context, QtGui.QWidget):
+        elif isinstance(context, QtWidgets.QWidget):
             contextWindow = context
             shortcutContext = Qt.WidgetWithChildrenShortcut
 

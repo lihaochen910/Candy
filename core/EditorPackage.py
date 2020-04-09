@@ -48,7 +48,7 @@ class PackageManager( object ):
 			self.packages[ name ] = package
 			return package
 
-		except Exception, e:
+		except Exception as e:
 			logging.error( 'failed reading package settings:%s' % name )
 			return None
 		return data	
@@ -60,7 +60,7 @@ class PackageManager( object ):
 		if not os.path.exists( path ): return
 		logging.info( 'scanning package in:' + path )
 
-		for currentDir, dirs, files in os.walk( unicode(path) ):
+		for currentDir, dirs, files in os.walk( path ):
 			for dirname in dirs:
 				if dirname in self.excludedPackages: continue
 				fullpath = currentDir + '/' + dirname

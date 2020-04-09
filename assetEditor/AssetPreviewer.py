@@ -5,12 +5,12 @@ from core         import *
 from qt.dialogs.Dialogs   import requestString
 from qt.controls.AssetTreeView import AssetTreeView
 
-from AssetEditor      import AssetEditorModule
+from .AssetEditor      import AssetEditorModule
 from sceneEditor      import SceneEditorModule
 
 
-from PyQt4            import QtCore, QtGui, uic
-from PyQt4.QtCore     import Qt
+from PyQt5            import QtCore, QtGui, uic
+from PyQt5.QtCore     import Qt
 
 ##----------------------------------------------------------------##
 class ModAssetPreviewer( SceneEditorModule ):
@@ -35,8 +35,8 @@ class ModAssetPreviewer( SceneEditorModule ):
 
 		self.previewerContainer = QtGui.QStackedWidget()
 		self.previewerContainer.setSizePolicy(
-				QtGui.QSizePolicy.Expanding, 
-				QtGui.QSizePolicy.Expanding
+				QtWidgets.QSizePolicy.Expanding, 
+				QtWidgets.QSizePolicy.Expanding
 			)
 		self.previewerContainer.setMinimumSize(100,100)
 		self.container.addWidget( self.previewerContainer, expanding=False )
@@ -84,7 +84,7 @@ class ModAssetPreviewer( SceneEditorModule ):
 
 	def _loadPreviewer(self, previewer):
 		widget = previewer.createWidget(self.previewerContainer)
-		assert isinstance(widget,QtGui.QWidget), 'widget expected from previewer'
+		assert isinstance(widget,QtWidgets.QWidget), 'widget expected from previewer'
 		idx = self.previewerContainer.addWidget(widget)
 		previewer._stackedId=idx
 		previewer._widget=widget
@@ -119,8 +119,8 @@ class NullAssetPreviewer(AssetPreviewer):
 		self.label.setAlignment(QtCore.Qt.AlignHCenter)
 		self.label.setText('NO PREVIEW')
 		self.label.setSizePolicy(
-				QtGui.QSizePolicy.Expanding,
-				QtGui.QSizePolicy.Expanding
+				QtWidgets.QSizePolicy.Expanding,
+				QtWidgets.QSizePolicy.Expanding
 				)
 		return self.label
 

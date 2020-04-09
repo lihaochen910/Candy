@@ -1,25 +1,26 @@
 import re, fnmatch
 
-from PyQt4 import QtCore, QtGui, uic
-from PyQt4.QtCore import Qt, QSize
-from PyQt4.QtGui import QApplication, QStyle, QBrush, QColor, QPen, QIcon
+from PyQt5 import QtCore, QtGui, uic
+from PyQt5.QtCore import Qt, QSize
+from PyQt5.QtWidgets import QApplication, QStyle, QStyledItemDelegate, QTreeWidget, QWidget
+from PyQt5.QtGui import QBrush, QColor, QPen, QIcon
 
 # from gii.qt.helpers import repolishWidget
 ##----------------------------------------------------------------##
 
-class ReadonlyItemDelegate( QtGui.QStyledItemDelegate ):
+class ReadonlyItemDelegate( QStyledItemDelegate ):
 	def createEditor( *args ):
 		return None
 
 ##----------------------------------------------------------------##
-class GenericTreeWidget( QtGui.QTreeWidget ):
+class GenericTreeWidget( QTreeWidget ):
 	def __init__( self, *args, **option ):
 		super(GenericTreeWidget, self).__init__(*args)
 		# self.setAttribute( Qt.WA_OpaquePaintEvent, True )
 		# self.setAttribute(Qt.WA_MacShowFocusRect, False)
 		self.setUniformRowHeights( True )
-		self.setHorizontalScrollMode( QtGui.QAbstractItemView.ScrollPerPixel )
-		self.setVerticalScrollMode( QtGui.QAbstractItemView.ScrollPerItem )
+		self.setHorizontalScrollMode( QtWidgets.QAbstractItemView.ScrollPerPixel )
+		self.setVerticalScrollMode( QtWidgets.QAbstractItemView.ScrollPerItem )
 		self.nodeDict = {}
 		
 		self.readonlyItemDelegate = self.getReadonlyItemDelegate()
@@ -33,7 +34,7 @@ class GenericTreeWidget( QtGui.QTreeWidget ):
 
 		if not self.getOption( 'no_header', False ):
 			headerInfo = self.getHeaderInfo()
-			headerItem = QtGui.QTreeWidgetItem()
+			headerItem = QtWidgets.QTreeWidgetItem()
 			self.setHeaderItem(headerItem)
 
 		self.setItemDelegate( self.defaultItemDelegate )
@@ -42,19 +43,19 @@ class GenericTreeWidget( QtGui.QTreeWidget ):
 		self.setSortingEnabled( self.getOption('sorting', True) )
 	
 		if self.getOption( 'multiple_selection', False ):
-			self.setSelectionMode( QtGui.QAbstractItemView.ExtendedSelection )
+			self.setSelectionMode( QtWidgets.QAbstractItemView.ExtendedSelection )
 		else:
-			self.setSelectionMode( QtGui.QAbstractItemView.SingleSelection )
+			self.setSelectionMode( QtWidgets.QAbstractItemView.SingleSelection )
 
 		dragMode = self.getOption( 'drag_mode', None )
 		if dragMode == 'all':
-			self.setDragDropMode( QtGui.QAbstractItemView.DragDrop )
+			self.setDragDropMode( QtWidgets.QAbstractItemView.DragDrop )
 		elif dragMode == 'drag':
-			self.setDragDropMode( QtGui.QAbstractItemView.DragOnly )
+			self.setDragDropMode( QtWidgets.QAbstractItemView.DragOnly )
 		elif dragMode == 'drop':
-			self.setDragDropMode( QtGui.QAbstractItemView.DropOnly )
+			self.setDragDropMode( QtWidgets.QAbstractItemView.DropOnly )
 		elif dragMode == 'internal' or dragMode == True:
-			self.setDragDropMode( QtGui.QAbstractItemView.InternalMove )
+			self.setDragDropMode( QtWidgets.QAbstractItemView.InternalMove )
 			
 		self.setAlternatingRowColors( self.getOption('alternating_color', False) )
 		self.setExpandsOnDoubleClick( False )
@@ -75,7 +76,7 @@ class GenericTreeWidget( QtGui.QTreeWidget ):
 		return ReadonlyItemDelegate( self )
 
 	def getDefaultItemDelegate( self ):
-		return QtGui.QStyledItemDelegate( self )
+		return QtWidgets.QStyledItemDelegate( self )
 
 	def getOption( self, k, v ):
 		defOption = self.getDefaultOptions()
@@ -428,7 +429,7 @@ class GenericTreeWidget( QtGui.QTreeWidget ):
 		return {}
 
 	def createItem( self, node ):
-		item  = QtGui.QTreeWidgetItem()
+		item  = QtWidgets.QTreeWidgetItem()
 		return item
 
 	def updateItemContent( self, item, node, **option ):
@@ -444,11 +445,11 @@ class GenericTreeWidget( QtGui.QTreeWidget ):
 	def dropEvent( self, ev ):		
 		p = self.dropIndicatorPosition()
 		pos = False
-		if p == QtGui.QAbstractItemView.OnItem: #reparent
+		if p == QtWidgets.QAbstractItemView.OnItem: #reparent
 			pos = 'on'
-		elif p == QtGui.QAbstractItemView.AboveItem:
+		elif p == QtWidgets.QAbstractItemView.AboveItem:
 			pos = 'above'
-		elif p == QtGui.QAbstractItemView.BelowItem:
+		elif p == QtWidgets.QAbstractItemView.BelowItem:
 			pos = 'below'
 		else:
 			pos = 'viewport'
@@ -562,16 +563,16 @@ class GenericTreeWidget( QtGui.QTreeWidget ):
 		return super( GenericTreeWidget, self ).mousePressEvent( ev )
 
 	
-class GenericTreeFilter( QtGui.QWidget ):
+class GenericTreeFilter( QWidget ):
 	def __init__(self, *args ):
 		super(GenericTreeFilter, self).__init__( *args )
 		self.setObjectName( 'ItemFilter' )
-		self.setSizePolicy( QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Fixed )
+		self.setSizePolicy( QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed )
 		self.setMinimumSize( 100, 20 )
-		layout = QtGui.QHBoxLayout( self )
+		layout = QtWidgets.QHBoxLayout( self )
 		layout.setMargin( 0 )
 		layout.setSpacing( 0 )
-		self.buttonClear = QtGui.QToolButton( self )
+		self.buttonClear = QtWidgets.QToolButton( self )
 		self.buttonClear.setText( 'X' )
 		self.buttonClear.setObjectName( 'ClearButton' )
 		# self.buttonClear.setIconSize( QtCore.QSize( 12, 12 ) )
@@ -585,7 +586,7 @@ class GenericTreeFilter( QtGui.QWidget ):
 		layout.addWidget( self.buttonClear )
 		layout.addWidget( self.lineEdit )
 		self.lineEdit.setMinimumSize( 100, 20 )
-		self.lineEdit.setSizePolicy( QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Fixed )
+		self.lineEdit.setSizePolicy( QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed )
 
 		self.lineEdit.installEventFilter( self )
 		self.buttonClear.hide()

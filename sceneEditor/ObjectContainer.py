@@ -7,7 +7,7 @@
 #
 # WARNING! All changes made in this file will be lost!
 
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtGui
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -18,16 +18,16 @@ class Ui_ObjectContainer(object):
     def setupUi(self, ObjectContainer):
         ObjectContainer.setObjectName(_fromUtf8("ObjectContainer"))
         ObjectContainer.resize(317, 426)
-        self.verticalLayout = QtGui.QVBoxLayout(ObjectContainer)
+        self.verticalLayout = QtWidgets.QVBoxLayout(ObjectContainer)
         self.verticalLayout.setSpacing(0)
         self.verticalLayout.setContentsMargins(5, 5, 5, 0)
         self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
-        self.ObjectHeader = QtGui.QWidget(ObjectContainer)
+        self.ObjectHeader = QtWidgets.QWidget(ObjectContainer)
         self.ObjectHeader.setObjectName(_fromUtf8("ObjectHeader"))
-        self.horizontalLayout = QtGui.QHBoxLayout(self.ObjectHeader)
+        self.horizontalLayout = QtWidgets.QHBoxLayout(self.ObjectHeader)
         self.horizontalLayout.setMargin(0)
         self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))
-        self.buttonFold = QtGui.QToolButton(self.ObjectHeader)
+        self.buttonFold = QtWidgets.QToolButton(self.ObjectHeader)
         self.buttonFold.setMaximumSize(QtCore.QSize(20, 20))
         self.buttonFold.setCheckable(False)
         self.buttonFold.setChecked(False)
@@ -37,8 +37,8 @@ class Ui_ObjectContainer(object):
         self.labelName.setObjectName(_fromUtf8("labelName"))
         self.horizontalLayout.addWidget(self.labelName)
         self.verticalLayout.addWidget(self.ObjectHeader)
-        self.container = QtGui.QWidget(ObjectContainer)
-        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Expanding)
+        self.container = QtWidgets.QWidget(ObjectContainer)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.container.sizePolicy().hasHeightForWidth())
@@ -50,7 +50,7 @@ class Ui_ObjectContainer(object):
         QtCore.QMetaObject.connectSlotsByName(ObjectContainer)
 
     def retranslateUi(self, ObjectContainer):
-        ObjectContainer.setWindowTitle(QtGui.QApplication.translate("ObjectContainer", "Form", None, QtGui.QApplication.UnicodeUTF8))
-        self.buttonFold.setText(QtGui.QApplication.translate("ObjectContainer", "+", None, QtGui.QApplication.UnicodeUTF8))
-        self.labelName.setText(QtGui.QApplication.translate("ObjectContainer", "TextLabel", None, QtGui.QApplication.UnicodeUTF8))
+        ObjectContainer.setWindowTitle(QtWidgets.QApplication.translate("ObjectContainer", "Form", None, QtWidgets.QApplication.UnicodeUTF8))
+        self.buttonFold.setText(QtWidgets.QApplication.translate("ObjectContainer", "+", None, QtWidgets.QApplication.UnicodeUTF8))
+        self.labelName.setText(QtWidgets.QApplication.translate("ObjectContainer", "TextLabel", None, QtWidgets.QApplication.UnicodeUTF8))
 

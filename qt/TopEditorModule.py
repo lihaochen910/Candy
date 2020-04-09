@@ -4,7 +4,7 @@ from qt.controls.Window import MainWindow
 from qt.QtEditorModule  import QtEditorModule
 
 ##----------------------------------------------------------------##
-from PyQt4           import QtGui
+from PyQt5           import QtGui
 
 ##----------------------------------------------------------------##
 class TopEditorModule( QtEditorModule ):

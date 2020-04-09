@@ -1,13 +1,13 @@
 import qt
-from PyQt4.QtGui import *
-from PyQt4 import uic, QtCore
+from PyQt5.QtWidgets import *
+from PyQt5 import uic, QtCore
 from core.project import Project
 
 def openProject(parent):
 	path = QFileDialog.getExistingDirectory(parent, 'Select Project Folder', './')
 	result = Project.get().load(path)
 	if result:
-		print 'open Project OK!'
+		print ( 'open Project OK!' )
 		parent.close()
 	else:
 		from qt.dialogs.Dialogs import alertMessage
@@ -18,7 +18,7 @@ def createProject(parent):
 	array = directory.split("\\")
 	result = Project.get().init(directory, array[len(array) - 1])
 	if result:
-		print 'create OK!'
+		print ( 'create OK!' )
 		parent.close()
 	else:
 		from qt.dialogs.Dialogs import alertMessage

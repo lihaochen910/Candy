@@ -1,2 +1,2 @@
-from Dialogs import *
-from ColorPickerDialog import *
+from .Dialogs import *
+from .ColorPickerDialog import *

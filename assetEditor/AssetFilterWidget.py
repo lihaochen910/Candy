@@ -4,10 +4,10 @@ from qt.controls.ElidedLabel import ElidedLabel
 from qt.helpers.IconCache               import getIcon
 from qt.helpers    import addWidgetWithLayout, restrainWidgetToScreen
 
-from PyQt4 import QtGui, QtCore, uic
-from PyQt4.QtCore import Qt, QEvent, pyqtSignal
+from PyQt5 import QtGui, QtCore, uic, QtWidgets
+from PyQt5.QtCore import Qt, QEvent, pyqtSignal
 
-from AssetFilter import *
+from .AssetFilter import *
 
 ##----------------------------------------------------------------##
 def _getModulePath( path ):
@@ -17,7 +17,7 @@ def _getModulePath( path ):
 AssetFilterEdit,BaseClass = uic.loadUiType( _getModulePath('AssetFilterEdit.ui') )
 
 ##----------------------------------------------------------------##
-class AssetFilterEditWindow( QtGui.QFrame ):
+class AssetFilterEditWindow( QtWidgets.QFrame ):
 	changed   = pyqtSignal()
 	cancelled = pyqtSignal()
 	def __init__( self, *args ):
@@ -83,7 +83,7 @@ class AssetFilterEditWindow( QtGui.QFrame ):
 
 
 ##----------------------------------------------------------------##
-class AssetFilterItemWidget( QtGui.QToolButton ):
+class AssetFilterItemWidget( QtWidgets.QToolButton ):
 	def __init__( self, *args, **kwargs ):
 		super( AssetFilterItemWidget, self ).__init__( *args, **kwargs )
 		self.setObjectName( 'AssetFilterItemWidget' )
@@ -129,7 +129,7 @@ class AssetFilterItemWidget( QtGui.QToolButton ):
 		self.parent().onItemToggled( self )
 
 ##----------------------------------------------------------------##
-class AssetFilterWidget( QtGui.QFrame ):
+class AssetFilterWidget( QtWidgets.QFrame ):
 	filterChanged = pyqtSignal()
 	def __init__( self, *args, **kwargs ):
 		super( AssetFilterWidget, self ).__init__( *args, **kwargs )
@@ -146,7 +146,7 @@ class AssetFilterWidget( QtGui.QFrame ):
 		layout.setSpacing( 2 )
 		layout.setMargin( 5 )
 
-		self.buttonAdd = QtGui.QToolButton( self )
+		self.buttonAdd = QtWidgets.QToolButton( self )
 		self.buttonAdd.setFixedHeight( 20 )
 		self.buttonAdd.setText( 'Add' )
 		self.buttonAdd.setFocusPolicy( Qt.NoFocus )
@@ -277,7 +277,7 @@ class AssetFilterWidget( QtGui.QFrame ):
 ######TEST
 if __name__ == '__main__':
 	import sys
-	app = QtGui.QApplication( sys.argv )
+	app = QtWidgets.QApplication( sys.argv )
 	# styleSheetName = 'gii.qss'
 	# app.setStyleSheet(
 	# 		open( '/Users/tommo/prj/gii/data/theme/' + styleSheetName ).read()

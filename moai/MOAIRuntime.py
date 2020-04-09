@@ -4,9 +4,9 @@ from core.helpers import printTraceBack
 
 from AKU import getAKU, _LuaTable, _LuaThread, _LuaObject, _LuaFunction
 
-from LuaTableProxy import LuaTableProxy
+from .LuaTableProxy import LuaTableProxy
 
-from MOAIInputDevice import MOAIInputDevice
+from .MOAIInputDevice import MOAIInputDevice
 
 ##----------------------------------------------------------------##
 _G              = LuaTableProxy( None )
@@ -22,7 +22,7 @@ signals.register( 'moai.reset' )
 signals.register( 'moai.ready' )
 
 ##----------------------------------------------------------------##
-import LuaBridge
+from . import LuaBridge
 
 ##----------------------------------------------------------------##
 ## MOAIRuntime
@@ -201,7 +201,7 @@ class MOAIRuntime( EditorModule ):
 			if env:
 				assert isinstance( env, dict )
 			return _CANDY_EDITOR.loadLuaWithEnv( file, env, option.get( 'isdelegate', False ) )
-		except Exception, e:
+		except Exception as e:
 			logging.error( 'error loading lua:\n' + str(e) )
 
 	####  LuaModule Related
@@ -373,7 +373,7 @@ class MOAILuaDelegate(object):
 			if self.name:
 				env['_NAME'] = env.name
 			self.luaEnv = runtime.loadLuaWithEnv( scriptPath, env, isdelegate = True )
-		except Exception, e:
+		except Exception as e:
 			logging.exception( e )
 
 	def reload(self):
@@ -400,9 +400,9 @@ class MOAILuaDelegate(object):
 		if not m: return
 		try:
 			return m(*args)
-		except Exception, e:
+		except Exception as e:
 			# logging.exception( e )
-			print e
+			print ( e )
 	
 	def safeCallMethod( self, objId, methodName, *args ):
 		if not self.luaEnv: 
@@ -415,9 +415,9 @@ class MOAILuaDelegate(object):
 		if not method: return
 		try:
 			return method( obj, *args )
-		except Exception, e:
+		except Exception as e:
 			# logging.exception( e )
-			print e
+			print ( e )
 
 	def call(self, method, *args):
 		m = self.luaEnv[method]
@@ -451,5 +451,5 @@ class RemoteCommandEvalScript( RemoteCommand ):
 		if len( args ) >= 1:
 			s = ' '.join( args )
 			runtime = app.getModule( 'moai' )
-			print '> ' + s
+			print ( '> ' + s )
 			runtime.runString( s )

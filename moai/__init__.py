@@ -1,2 +1,2 @@
-import MOAIRuntime
-import CandyRuntime
+from . import MOAIRuntime
+from . import CandyRuntime

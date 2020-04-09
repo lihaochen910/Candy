@@ -1,14 +1,14 @@
-from PyQt4 import QtGui, QtCore
-from PyQt4.QtCore import Qt, pyqtSignal
+from PyQt5 import QtGui, QtCore, QtWidgets
+from PyQt5.QtCore import Qt, pyqtSignal
 
 ##----------------------------------------------------------------##
-class FieldEditorLabel( QtGui.QLabel ):
+class FieldEditorLabel( QtWidgets.QLabel ):
 	def __init__(self, *arg):
 		super(FieldEditorLabel, self).__init__( *arg )
 		self.setMinimumSize( 50, 16 )
 		self.setSizePolicy(
-			QtGui.QSizePolicy.Expanding,
-			QtGui.QSizePolicy.Expanding
+			QtWidgets.QSizePolicy.Expanding,
+			QtWidgets.QSizePolicy.Expanding
 			)
 		self.fieldEditor = None
 
@@ -22,7 +22,7 @@ class FieldEditorLabel( QtGui.QLabel ):
 				self.fieldEditor.notifyContextMenuRequested()
 
 ##----------------------------------------------------------------##
-class FieldEditorLineEdit(QtGui.QLineEdit):
+class FieldEditorLineEdit( QtWidgets.QLineEdit ):
 	def __init__(self, *arg):
 		super(FieldEditorLineEdit, self).__init__( *arg )
 		self.acceptPress = False
@@ -40,7 +40,7 @@ class FieldEditorLineEdit(QtGui.QLineEdit):
 		return super( FieldEditorLineEdit, self ).mousePressEvent( ev )
 	
 ##----------------------------------------------------------------##
-class FieldEditorSpinBox(QtGui.QSpinBox):
+class FieldEditorSpinBox( QtWidgets.QSpinBox ):
 	def __init__(self, *arg):
 		super(FieldEditorSpinBox, self).__init__( *arg )
 		self.setButtonSymbols( QtGui.QAbstractSpinBox.NoButtons )
@@ -63,7 +63,7 @@ class FieldEditorSpinBox(QtGui.QSpinBox):
 			ev.ignore()
 
 ##----------------------------------------------------------------##
-class FieldEditorDoubleSpinBox(QtGui.QDoubleSpinBox):
+class FieldEditorDoubleSpinBox( QtWidgets.QDoubleSpinBox ):
 	def __init__(self, *arg):
 		super(FieldEditorDoubleSpinBox, self).__init__( *arg )
 		self.setButtonSymbols( QtGui.QAbstractSpinBox.NoButtons )
@@ -118,7 +118,7 @@ class DraggableLabel( FieldEditorLabel ):
 			self.dragged.emit( delta )
 
 ##----------------------------------------------------------------##
-class FieldEditorSlider(QtGui.QSlider):
+class FieldEditorSlider( QtWidgets.QSlider ):
 	def focusInEvent( self, ev ):
 		super(FieldEditorSlider, self).focusInEvent( ev )
 		self.setFocusPolicy( Qt.WheelFocus )
@@ -134,12 +134,12 @@ class FieldEditorSlider(QtGui.QSlider):
 			ev.ignore()
 
 # ##----------------------------------------------------------------##
-class FieldEditorSliderBox(QtGui.QWidget):
+class FieldEditorSliderBox( QtWidgets.QWidget ):
 	valueChanged = QtCore.pyqtSignal( float )
 
 	def __init__( self, *args ):
 		super( FieldEditorSliderBox, self ).__init__( *args )
-		layout = QtGui.QHBoxLayout()
+		layout = QtWidgets.QHBoxLayout()
 		self.setLayout( layout )
 		self.text   = FieldEditorLineEdit( self )
 		self.text.setText( '0' )

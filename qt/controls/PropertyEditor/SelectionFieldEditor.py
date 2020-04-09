@@ -1,12 +1,12 @@
 from core.model import *
 
-from PropertyEditor import FieldEditor, FieldEditorFactory, registerFieldEditorFactory
+from .PropertyEditor import FieldEditor, FieldEditorFactory, registerFieldEditorFactory
 from qt.controls.SearchView import requestSearchView
 
-from PyQt4 import QtGui, QtCore
-from PyQt4.QtCore import Qt
+from PyQt5 import QtGui, QtCore
+from PyQt5.QtCore import Qt
 
-from EnumFieldEditor import EnumFieldEditor
+from .EnumFieldEditor import EnumFieldEditor
 
 ##----------------------------------------------------------------##
 class SelectionFieldEditor( EnumFieldEditor ):

@@ -54,7 +54,7 @@ class PackageManager(object):
 			self.packages[name] = package
 			return package
 
-		except Exception, e:
+		except Exception as e:
 			logging.error('failed reading package settings:%s' % name)
 			return None
 		return data

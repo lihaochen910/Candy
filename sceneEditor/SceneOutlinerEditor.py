@@ -11,14 +11,15 @@ from qt.controls.GenericTreeWidget import GenericTreeWidget, GenericTreeFilter
 from qt.helpers                    import makeBrush, makeFont
 
 from moai.MOAIRuntime import MOAILuaDelegate, _CANDY
-from SceneEditor      import SceneEditorModule
+from .SceneEditor      import SceneEditorModule
 
 from qt.controls.SearchView       import requestSearchView, registerSearchEnumerator
 
 ##----------------------------------------------------------------##
-from PyQt4           import QtCore, QtGui, uic
-from PyQt4.QtCore    import Qt, QObject
-from PyQt4.QtGui     import QApplication, QStyle, QBrush, QColor, QPen, QIcon, QPalette
+from PyQt5           import QtCore, QtGui, uic, QtWidgets
+from PyQt5.QtCore    import Qt, QObject
+from PyQt5.QtWidgets import QApplication, QStyle
+from PyQt5.QtGui     import QBrush, QColor, QPen, QIcon, QPalette
 
 ##----------------------------------------------------------------##
 from moai.CandyRuntime import _CANDY, isCandyInstance
@@ -782,7 +783,7 @@ class SceneOutlinerEditor( SceneEditorModule ):
 	def onCopyActor(self):
 		entityGroupData = self.delegate.callMethod( 'editor', 'makeSceneSelectionCopyData' )
 		if not entityGroupData: return False
-		clip = QtGui.QApplication.clipboard()
+		clip = QtWidgets.QApplication.clipboard()
 		mime = QtCore.QMimeData()
 		text = ''
 		for s in self.getSelection():
@@ -796,7 +797,7 @@ class SceneOutlinerEditor( SceneEditorModule ):
 		return True
 
 	def onPasteActor( self ):
-		clip = QtGui.QApplication.clipboard()
+		clip = QtWidgets.QApplication.clipboard()
 		mime = clip.mimeData()
 		if mime.hasFormat( CANDY_MIME_ACTOR_DATA ):
 			data = mime.data( CANDY_MIME_ACTOR_DATA )
@@ -808,7 +809,7 @@ class SceneOutlinerEditor( SceneEditorModule ):
 	def onCopyComponent( self ):
 		entityGroupData = self.delegate.callMethod( 'editor', 'makeActorCopyData' )
 		if not entityGroupData: return False
-		clip = QtGui.QApplication.clipboard()
+		clip = QtWidgets.QApplication.clipboard()
 		mime = QtCore.QMimeData()
 		text = ''
 		for s in self.getSelection():
@@ -822,7 +823,7 @@ class SceneOutlinerEditor( SceneEditorModule ):
 		return True
 
 	def onPasteComponent( self ):
-		clip = QtGui.QApplication.clipboard()
+		clip = QtWidgets.QApplication.clipboard()
 		mime = clip.mimeData()
 		if mime.hasFormat( CANDY_MIME_ACTOR_DATA ):
 			data = mime.data( CANDY_MIME_ACTOR_DATA )
@@ -840,7 +841,7 @@ def _sortEntity( a, b ):
 # _BrushEntityPrefab = QtGui.QBrush( QColorF( .5,.5,1 ) )
 
 
-class SceneGraphTreeItemDelegate(QtGui.QStyledItemDelegate):
+class SceneGraphTreeItemDelegate( QtWidgets.QStyledItemDelegate ):
 	_textBrush      = QBrush( QColor( '#dd5200' ) )
 	_textPen        = QPen( QColor( '#dddddd' ) )
 	_textPenGroup   = QPen( QColor( '#ada993' ) )
@@ -1028,11 +1029,11 @@ class SceneGraphTreeWidget( GenericTreeWidget ):
 	def dropEvent( self, ev ):		
 		p = self.dropIndicatorPosition()
 		pos = False
-		if p == QtGui.QAbstractItemView.OnItem: #reparent
+		if p == QtWidgets.QAbstractItemView.OnItem: #reparent
 			pos = 'on'
-		elif p == QtGui.QAbstractItemView.AboveItem:
+		elif p == QtWidgets.QAbstractItemView.AboveItem:
 			pos = 'above'
-		elif p == QtGui.QAbstractItemView.BelowItem:
+		elif p == QtWidgets.QAbstractItemView.BelowItem:
 			pos = 'below'
 		else:
 			pos = 'viewport'
@@ -1102,7 +1103,7 @@ class SceneGraphTreeWidget( GenericTreeWidget ):
 
 ##----------------------------------------------------------------##
 #TODO: allow sort by other column
-class SceneGraphTreeItem(QtGui.QTreeWidgetItem):
+class SceneGraphTreeItem( QtWidgets.QTreeWidgetItem ):
 	def __lt__(self, other):
 		node0 = self.node
 		node1 = hasattr(other, 'node') and other.node or None

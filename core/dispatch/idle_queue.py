@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 __author__ = 'Esteban Castro Borsani'
 
-import Queue
+import queue as Queue
 
 idle_loop = Queue.Queue()
 

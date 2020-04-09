@@ -1,4 +1,4 @@
-import signals
+from . import signals
 
 _SelectionManagerRegistry = {
 	

@@ -1,5 +1,5 @@
-from PyQt4            import QtCore, QtGui, uic
-from PyQt4.QtCore     import Qt
+from PyQt5            import QtCore, QtGui, uic, QtWidgets
+from PyQt5.QtCore     import Qt
 
 from core         import *
 from qt           import QtEditorModule
@@ -64,7 +64,7 @@ class AssetTreeView( GenericTreeWidget ):
 				item.setIcon(1, getIcon('deploy_dep'))
 
 	def onClipboardCopy( self ):
-		clip = QtGui.QApplication.clipboard()
+		clip = QtWidgets.QApplication.clipboard()
 		out = None
 		for node in self.getSelection():
 			if out:
@@ -87,7 +87,7 @@ class AssetTreeView( GenericTreeWidget ):
 	
 ##----------------------------------------------------------------##
 #TODO: allow sort by other column
-class AssetTreeItem(QtGui.QTreeWidgetItem):
+class AssetTreeItem(QtWidgets.QTreeWidgetItem):
 	def __lt__(self, other):
 		node0 = self.node
 		node1 = hasattr(other, 'node') and other.node or None

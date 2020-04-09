@@ -3,10 +3,10 @@ import sys
 import os.path
 import time
 
-from res import *
-from project import Project
+from .res import *
+from .project import Project
 
-import signals
+from . import signals
 
 
 ##----------------------------------------------------------------##
@@ -350,9 +350,9 @@ class EditorModuleManager(object):
 					break
 
 				if not progressing:
-					print 'These modules may have cyclic dependency'
+					print ( 'These modules may have cyclic dependency' )
 					for m in modulesToSort:
-						print m.getName(), m.getActualDependency()
+						print ( m.getName(), m.getActualDependency() )
 					raise Exception('Modules may have cyclic Dependency')
 
 			self.sortedModuleQueue = sorted( self.moduleQueue, cmp = _sortModuleIndex )

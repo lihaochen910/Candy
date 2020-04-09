@@ -1,10 +1,11 @@
 #C++ original by Pavel Strakhov ( https:#github.com/Riateche/toolwindowmanager )
 
-from ToolWindowManagerWrapper import ToolWindowManagerWrapper
-from ToolWindowManagerArea import ToolWindowManagerArea
-from PyQt4        import QtCore, QtGui, uic
-from PyQt4.QtGui  import QApplication, QCursor, QSplitter, QWidget
-from PyQt4.QtCore import qWarning, QPoint, QRect, QSize, pyqtSignal, Qt
+from .ToolWindowManagerWrapper import ToolWindowManagerWrapper
+from .ToolWindowManagerArea import ToolWindowManagerArea
+from PyQt5        import QtCore, QtGui, uic
+from PyQt5.QtWidgets import QApplication, QSplitter, QWidget
+from PyQt5.QtGui  import QCursor
+from PyQt5.QtCore import qWarning, QPoint, QRect, QSize, pyqtSignal, Qt
   
 
 def cast( obj, clas ):
@@ -56,7 +57,7 @@ class AreaReference( object ):
 		
 
 ##----------------------------------------------------------------##
-class ToolWindowManager( QtGui.QWidget ):
+class ToolWindowManager( QWidget ):
 	'''docstring for ToolWindowManager'''
 	#! The area tool windows has been added to most recently.
 	LastUsedArea = 1
@@ -93,7 +94,7 @@ class ToolWindowManager( QtGui.QWidget ):
 		self.rubberBandLineWidth = testSplitter.handleWidth()
 		self.dragIndicator = QtGui.QLabel( None, Qt.ToolTip)
 		self.dragIndicator.setAttribute( Qt.WA_ShowWithoutActivating)
-		mainLayout = QtGui.QVBoxLayout( self )
+		mainLayout = QtWidgets.QVBoxLayout( self )
 		mainLayout.setContentsMargins( 0, 0, 0, 0 )
 		
 		wrapper = ToolWindowManagerWrapper( self )
@@ -351,8 +352,8 @@ class ToolWindowManager( QtGui.QWidget ):
 				wrapper = findClosestParent( area, ToolWindowManagerWrapper )
 				if not wrapper:
 					qWarning( 'can not find wrapper' )
-					print findClosestParent( area, ToolWindowManagerWrapper )
-					print type( area.parentWidget() ) == ToolWindowManagerWrapper
+					print ( findClosestParent( area, ToolWindowManagerWrapper ) )
+					print ( type( area.parentWidget() ) == ToolWindowManagerWrapper )
 					return
 				if area.count() == 0 and wrapper.isWindow():
 					wrapper.hide()
@@ -664,7 +665,7 @@ class ToolWindowManager( QtGui.QWidget ):
 #TEST
 if __name__ == '__main__':
 	import sys
-	app = QtGui.QApplication( sys.argv )
+	app = QtWidgets.QApplication( sys.argv )
 	# styleSheetName = 'gii.qss'
 	# app.setStyleSheet(
 	# 		open( '/Users/tommo/prj/gii/data/theme/' + styleSheetName ).read()
@@ -676,22 +677,22 @@ if __name__ == '__main__':
 			mgr = ToolWindowManager( self )
 			self.setCentralWidget( mgr )
 
-			widget = QtGui.QPushButton( 'hello' )
+			widget = QtWidgets.QPushButton( 'hello' )
 			widget.setWindowTitle( 'hello' )
 			widget.setObjectName( 'hello' )
 			mgr.addToolWindow( widget, ToolWindowManager.EmptySpace )
 
-			widget = QtGui.QPushButton( 'world' )
+			widget = QtWidgets.QPushButton( 'world' )
 			widget.setWindowTitle( 'world' )
 			widget.setObjectName( 'world' )
 			mgr.addToolWindow( widget, ToolWindowManager.NewFloatingArea )
 
-			widget = QtGui.QPushButton( 'happy' )
+			widget = QtWidgets.QPushButton( 'happy' )
 			widget.setWindowTitle( 'happy' )
 			widget.setObjectName( 'happy' )
 			mgr.addToolWindow( widget, ToolWindowManager.EmptySpace )
 
-			widget = QtGui.QPushButton( 'goodness' )
+			widget = QtWidgets.QPushButton( 'goodness' )
 			widget.setWindowTitle( 'goodness' )
 			widget.setObjectName( 'goodness' )
 			mgr.addToolWindow( widget, ToolWindowManager.LastUsedArea )

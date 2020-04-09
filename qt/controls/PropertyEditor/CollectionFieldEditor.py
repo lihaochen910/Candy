@@ -1,13 +1,13 @@
 from core.model import *
 
-from PropertyEditor import FieldEditor, registerSimpleFieldEditorFactory
+from .PropertyEditor import FieldEditor, registerSimpleFieldEditorFactory
 from qt.controls.SearchView import requestSearchView
 
-from PyQt4 import QtGui, QtCore
-from PyQt4.QtCore import Qt
+from PyQt5 import QtGui, QtCore, QtWidgets
+from PyQt5.QtCore import Qt
 
 ##----------------------------------------------------------------##
-class CollectionFieldButton( QtGui.QToolButton ):
+class CollectionFieldButton( QtWidgets.QToolButton ):
 	def sizeHint( self ):
 		return QtCore.QSize( 20, 20)
 
@@ -38,8 +38,8 @@ class CollectionFieldEditor( FieldEditor ):
 	def initEditor( self, container ):
 		self.button = CollectionFieldButton( container )
 		self.button.setSizePolicy(
-			QtGui.QSizePolicy.Expanding,
-			QtGui.QSizePolicy.Expanding
+			QtWidgets.QSizePolicy.Expanding,
+			QtWidgets.QSizePolicy.Expanding
 			)
 		self.button.setText( '[]' )
 		if self.getOption( 'readonly', False ):

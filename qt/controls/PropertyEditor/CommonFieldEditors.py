@@ -1,10 +1,10 @@
 import logging
 
-from PropertyEditor import FieldEditor, registerSimpleFieldEditorFactory
-from FieldEditorControls import *
+from .PropertyEditor import FieldEditor, registerSimpleFieldEditorFactory
+from .FieldEditorControls import *
 
-from PyQt4 import QtGui, QtCore
-from PyQt4.QtCore import Qt
+from PyQt5 import QtGui, QtCore
+from PyQt5.QtCore import Qt
 
 import re
 
@@ -68,8 +68,8 @@ class NumberFieldEditor( FieldEditor ):
 		#common part
 		spineBox.setMinimumSize( 50, 16 )
 		spineBox.setSizePolicy(
-			QtGui.QSizePolicy.Expanding,
-			QtGui.QSizePolicy.Expanding
+			QtWidgets.QSizePolicy.Expanding,
+			QtWidgets.QSizePolicy.Expanding
 			)
 		#options
 		minValue = self.getOption( 'min', -16777215.0 )
@@ -118,7 +118,7 @@ class BoolFieldEditor( FieldEditor ):
 ##----------------------------------------------------------------##
 
 registerSimpleFieldEditorFactory( str,     StringFieldEditor )
-registerSimpleFieldEditorFactory( unicode, StringFieldEditor )
+# registerSimpleFieldEditorFactory( unicode, StringFieldEditor )
 registerSimpleFieldEditorFactory( int,     NumberFieldEditor )
 registerSimpleFieldEditorFactory( float,   NumberFieldEditor )
 registerSimpleFieldEditorFactory( bool,    BoolFieldEditor )

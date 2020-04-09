@@ -150,7 +150,7 @@ cdef extern from "lupa.h" nogil:
 
     # coroutine functions
     int  lua_yield (lua_State *L, int nresults)
-    int  lua_resume "__lupa_lua_resume" (lua_State *L, int narg)
+    int  lua_resume "__lupa_lua_resume" (lua_State *L, lua_State *from_, int narg)
     int  lua_status (lua_State *L)
 
     # garbage-collection function and options
@@ -281,7 +281,6 @@ cdef extern from "lauxlib.h" nogil:
         char *name
         lua_CFunction func
 
-    void luaL_openlib (lua_State *L, char *libname, luaL_Reg *l, int nup)
     void luaL_register (lua_State *L, char *libname, luaL_Reg *l)
     void luaL_setfuncs (lua_State *L, luaL_Reg *l, int nup)  # 5.2+
     int luaL_getmetafield (lua_State *L, int obj, char *e)
@@ -315,13 +314,10 @@ cdef extern from "lauxlib.h" nogil:
     int luaL_loadbuffer (lua_State *L, char *buff, size_t sz, char *name)
     int luaL_loadstring (lua_State *L, char *s)
 
-    lua_State* lua_open() # luaL_newstate()
     lua_State *luaL_newstate ()
 
 
     char *luaL_gsub (lua_State *L, char *s, char *p, char *r)
-
-    char *luaL_findtable (lua_State *L, int idx, char *fname, int szhint)
 
 
     # ===============================================================
@@ -421,5 +417,19 @@ cdef extern from "lualib.h":
     void luaL_openlibs(lua_State *L)
 
 
-cdef extern from "lupa_defs.h":
-    pass
+cdef extern from *:
+    # Compatibility definitions for Lupa.
+    """
+    #if LUA_VERSION_NUM >= 502
+    #define __lupa_lua_resume(L, from_, nargs)   lua_resume(L, from_, nargs)
+    #define lua_objlen(L, i)                     lua_rawlen(L, (i))
+
+    #else
+    #if LUA_VERSION_NUM >= 501
+    #define __lupa_lua_resume(L, from_, nargs)   lua_resume(L, nargs)
+
+    #else
+    #error Lupa requires at least Lua 5.1 or LuaJIT 2.x
+    #endif
+    #endif
+    """

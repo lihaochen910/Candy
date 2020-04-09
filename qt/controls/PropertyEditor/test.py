@@ -4,16 +4,16 @@ sip.setapi('QVariant', 2)
 
 from __init__ import *
 
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtGui
 
 def addWidgetWithLayout(child, parent = None, **option):
 	#add a widget to parent along with a new layout
 	direction = option.get('direction','vertical')
 	layout    = None
 	if   direction == 'vertical':
-		layout = QtGui.QVBoxLayout()
+		layout = QtWidgets.QVBoxLayout()
 	elif direction == 'horizontoal':
-		layout = QtGui.QHBoxLayout()
+		layout = QtWidgets.QHBoxLayout()
 	if not parent:
 		parent = child.parent()
 	parent.setLayout( layout )
@@ -22,7 +22,7 @@ def addWidgetWithLayout(child, parent = None, **option):
 	layout.setMargin( 0 )
 	return child
 
-class TestWindow(QtGui.QWidget):
+class TestWindow(QtWidgets.QWidget):
 	def __init__( self, parent = None ):
 		super( TestWindow, self ).__init__( parent )
 		self.setMinimumSize( 100, 100 )
@@ -37,7 +37,7 @@ class TestWindow(QtGui.QWidget):
 		self.editor._buildSubEditor( 'color', ColorFieldEditor ).set( (1,1,0,0.5) )
 
 
-app = QtGui.QApplication([])
+app = QtWidgets.QApplication([])
 
 # styleSheetName = 'xn.qss'
 # QtCore.QDir.setSearchPaths( 'theme', [ '/prj/moai/gii/data/theme' ] )

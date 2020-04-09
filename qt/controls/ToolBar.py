@@ -1,7 +1,7 @@
 import logging
 
-from PyQt4 import QtGui, QtCore
-from PyQt4.QtGui import QToolBar
+from PyQt5 import QtGui, QtCore
+from PyQt5.QtWidgets import QToolBar
 
 from core import signals, app
 from qt.controls.Menu import MenuManager
@@ -32,7 +32,7 @@ class ToolBarItem(object):
         menuLink = option.get('menu_link')
 
         if widget:
-            self.qtAction = QtGui.QWidgetAction(None)
+            self.qtAction = QtWidgets.QWidgetAction(None)
             self.qtAction.setDefaultWidget(widget)
 
         elif menuLink:

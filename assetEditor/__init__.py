@@ -1,8 +1,8 @@
-from AssetEditor     import AssetEditor, AssetEditorModule, getAssetSelectionManager
-from AssetBrowser    import AssetBrowser
-from AssetPreviewer  import AssetPreviewer
+from .AssetEditor     import AssetEditor, AssetEditorModule, getAssetSelectionManager
+from .AssetBrowser    import AssetBrowser
+from .AssetPreviewer  import AssetPreviewer
 
-import AssetSearchEnumerator
+from . import AssetSearchEnumerator
 
-import CommonAsset
-import EngineAsset
+from . import CommonAsset
+from . import EngineAsset

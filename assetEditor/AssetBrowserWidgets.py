@@ -1,21 +1,22 @@
 import json
 
-from PyQt4            import QtCore, QtGui, uic
-from PyQt4.QtCore     import Qt, QSize
+from PyQt5            import QtCore, QtGui, uic
+from PyQt5.QtCore     import Qt, QSize
 
-from PyQt4.QtGui      import QBrush, QStyle, QColor
+from PyQt5.QtWidgets  import QStyle
+from PyQt5.QtGui      import QBrush, QColor
 
 from core         import *
 from qt           import QtEditorModule
 
-from qt.helpers.IconCache                  import getIcon
+from qt.helpers.IconCache          import getIcon
 from qt.controls.GenericTreeWidget import GenericTreeWidget, GenericTreeFilter
 from qt.controls.GenericListWidget import GenericListWidget
 from qt.controls.ElidedLabel       import ElidedLabel
 from qt.dialogs.Dialogs            import requestString, alertMessage, requestConfirm
 
-from AssetEditor      import AssetEditorModule, getAssetSelectionManager
-from AssetFilterWidget import *
+from .AssetEditor      import AssetEditorModule, getAssetSelectionManager
+from .AssetFilterWidget import *
 
 
 CANDY_MIME_ASSET_LIST  = 'application/candy.asset-list'
@@ -31,7 +32,7 @@ class AssetFolderTreeFilter( GenericTreeFilter ):
 
 ##----------------------------------------------------------------##
 #TODO: allow sort by other column
-class AssetTreeItem(QtGui.QTreeWidgetItem):
+class AssetTreeItem( QtWidgets.QTreeWidgetItem ):
 	def __lt__(self, other):
 		node0 = self.node
 		node1 = hasattr(other, 'node') and other.node or None
@@ -96,7 +97,7 @@ class AssetFolderTreeView( GenericTreeWidget ):
 		item.setIcon(0, getIcon(iconName,'normal'))
 
 	def onClipboardCopy( self ):
-		clip = QtGui.QApplication.clipboard()
+		clip = QtWidgets.QApplication.clipboard()
 		out = None
 		for node in self.getSelection():
 			if out:
@@ -140,7 +141,7 @@ class AssetFolderTreeView( GenericTreeWidget ):
 
 ##----------------------------------------------------------------##
 
-class AssetListItemDelegate( QtGui.QStyledItemDelegate ):
+class AssetListItemDelegate( QtWidgets.QStyledItemDelegate ):
 	pass
 	# def initStyleOption(self, option, index):
 	# 	# let the base class initStyleOption fill option with the default values
@@ -161,8 +162,8 @@ class AssetBrowserIconListWidget( GenericListWidget ):
 		self.setWrapping( True )
 		self.setLayoutMode( QtGui.QListView.Batched )
 		self.setResizeMode( QtGui.QListView.Adjust  )
-		self.setHorizontalScrollMode( QtGui.QAbstractItemView.ScrollPerPixel )
-		self.setVerticalScrollMode( QtGui.QAbstractItemView.ScrollPerPixel )
+		self.setHorizontalScrollMode( QtWidgets.QAbstractItemView.ScrollPerPixel )
+		self.setVerticalScrollMode( QtWidgets.QAbstractItemView.ScrollPerPixel )
 		self.setMovement( QtGui.QListView.Snap )
 		self.setTextElideMode( Qt.ElideRight )
 		
@@ -224,7 +225,7 @@ class AssetBrowserIconListWidget( GenericListWidget ):
 		self.owner.onListRequestDelete()
 
 	def onClipboardCopy( self ):
-		clip = QtGui.QApplication.clipboard()
+		clip = QtWidgets.QApplication.clipboard()
 		out = None
 		for node in self.getSelection():
 			if out:
@@ -309,11 +310,11 @@ class AssetBrowserTagFilterWidget( AssetFilterWidget ):
 		
 
 ##----------------------------------------------------------------##
-class AssetBrowserStatusBar( QtGui.QFrame ):
+class AssetBrowserStatusBar( QtWidgets.QFrame ):
 	def __init__( self, *args, **kwargs ):
 		super( AssetBrowserStatusBar, self ).__init__( *args, **kwargs )
 		self.setObjectName( 'AssetBrowserStatusBar' )
-		layout = QtGui.QVBoxLayout( self )
+		layout = QtWidgets.QVBoxLayout( self )
 		layout.setSpacing( 1 )
 		layout.setMargin( 0 )
 
@@ -333,16 +334,16 @@ class AssetBrowserStatusBar( QtGui.QFrame ):
 		self.tagsBar.setText( text )
 
 ##----------------------------------------------------------------##
-class AssetBrowserStatusBarTag( QtGui.QFrame ):
+class AssetBrowserStatusBarTag( QtWidgets.QFrame ):
 	def __init__( self, *args, **kwargs ):
 		super( AssetBrowserStatusBarTag, self ).__init__( *args, **kwargs )
 		self.setObjectName( 'AssetBrowserStatusTagBar' )
-		layout = QtGui.QHBoxLayout( self )
+		layout = QtWidgets.QHBoxLayout( self )
 		layout.setSpacing( 2 )
 		layout.setMargin( 0 )
 		self.textTags = QtGui.QLabel( self )
-		self.textTags.setSizePolicy( QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Fixed )
-		self.buttonEdit = QtGui.QToolButton( self )
+		self.textTags.setSizePolicy( QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed )
+		self.buttonEdit = QtWidgets.QToolButton( self )
 		self.buttonEdit.setIconSize( QSize( 12,12 ) )
 		self.buttonEdit.setIcon( getIcon( 'tag-2' ) )
 		layout.addWidget( self.buttonEdit )
@@ -352,19 +353,19 @@ class AssetBrowserStatusBarTag( QtGui.QFrame ):
 		self.textTags.setText( text )
 
 ##----------------------------------------------------------------##
-class AssetBrowserNavigatorCrumbBar( QtGui.QWidget ):
+class AssetBrowserNavigatorCrumbBar( QtWidgets.QWidget ):
 	pass
 
 ##----------------------------------------------------------------##
-class AssetBrowserNavigator( QtGui.QWidget ):
+class AssetBrowserNavigator( QtWidgets.QWidget ):
 	def __init__( self, *args, **kwargs ):
 		super( AssetBrowserNavigator, self ).__init__( *args, **kwargs )
-		layout = QtGui.QHBoxLayout( self )
+		layout = QtWidgets.QHBoxLayout( self )
 		layout.setSpacing( 1 )
 		layout.setMargin( 0 )
-		self.buttonUpper    = QtGui.QToolButton()
-		self.buttonForward  = QtGui.QToolButton()
-		self.buttonBackward = QtGui.QToolButton()
+		self.buttonUpper    = QtWidgets.QToolButton()
+		self.buttonForward  = QtWidgets.QToolButton()
+		self.buttonBackward = QtWidgets.QToolButton()
 		self.buttonUpper.setIconSize( QSize( 16, 16 )  )
 		self.buttonForward.setIconSize( QSize( 16, 16 )  )
 		self.buttonBackward.setIconSize( QSize( 16, 16 )  )
@@ -381,7 +382,7 @@ class AssetBrowserNavigator( QtGui.QWidget ):
 
 		self.crumbBar = AssetBrowserNavigatorCrumbBar()
 		layout.addWidget( self.crumbBar )
-		self.crumbBar.setSizePolicy( QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding )
+		self.crumbBar.setSizePolicy( QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding )
 		self.setFixedHeight( 20 )
 
 	def onHistoryForward( self ):
@@ -400,7 +401,7 @@ class AssetFilterTreeFilter( GenericTreeFilter ):
 
 ##----------------------------------------------------------------##
 #TODO: allow sort by other column
-class AssetFilterTreeItem(QtGui.QTreeWidgetItem):
+class AssetFilterTreeItem(QtWidgets.QTreeWidgetItem):
 	def __lt__(self, other):
 		node0 = self.node
 		node1 = hasattr(other, 'node') and other.node or None

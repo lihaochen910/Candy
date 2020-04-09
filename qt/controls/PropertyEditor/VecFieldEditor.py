@@ -1,15 +1,15 @@
-from PropertyEditor import FieldEditor, registerSimpleFieldEditorFactory
-from FieldEditorControls import *
+from .PropertyEditor import FieldEditor, registerSimpleFieldEditorFactory
+from .FieldEditorControls import *
 
-from PyQt4 import QtGui, QtCore
-from PyQt4.QtCore import Qt
+from PyQt5 import QtGui, QtCore, QtWidgets
+from PyQt5.QtCore import Qt
 
 ##----------------------------------------------------------------##
-class VecEditorWidget( QtGui.QWidget ):
+class VecEditorWidget( QtWidgets.QWidget ):
 	def __init__( self, dim, parent ):
 		super(VecEditorWidget, self).__init__( parent )
 		self.dim = dim
-		self.layout = layout = QtGui.QHBoxLayout( self )
+		self.layout = layout = QtWidgets.QHBoxLayout( self )
 		layout.setSpacing(0)
 		layout.setMargin(0)		
 
@@ -17,8 +17,8 @@ class VecEditorWidget( QtGui.QWidget ):
 		for i in range( dim ):
 			field = FieldEditorDoubleSpinBox( self )
 			field.setSizePolicy(
-				QtGui.QSizePolicy.Expanding,
-				QtGui.QSizePolicy.Expanding
+				QtWidgets.QSizePolicy.Expanding,
+				QtWidgets.QSizePolicy.Expanding
 				)
 			layout.addWidget( field )
 			fields.append( field )

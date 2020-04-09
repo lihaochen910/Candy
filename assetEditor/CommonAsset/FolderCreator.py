@@ -19,7 +19,7 @@ class FolderCreator(AssetCreator):
 			fullpath = app.getAssetLibrary().getAbsPath( nodepath )
 			try:
 				os.mkdir( fullpath )
-			except Exception,e :
+			except Exception as e :
 				print( 'failed create folder', e )
 				return False
 			return nodepath

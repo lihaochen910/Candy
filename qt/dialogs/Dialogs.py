@@ -1,16 +1,16 @@
 import logging
 # from gii.core.tmpfile import TempDir
 
-from PyQt4 import QtGui, QtCore
-from PyQt4.QtGui import QMessageBox, QFileDialog
+from PyQt5 import QtGui, QtCore
+from PyQt5.QtWidgets import QDialog, QMessageBox, QFileDialog
 
-class StringDialog(QtGui.QDialog):
+class StringDialog(QDialog):
 	def __init__(self, prompt, *args):
 		super(StringDialog, self).__init__(*args)
 		lineEdit=QtGui.QLineEdit(self)
 		self.setWindowTitle(prompt)
-		btnOK=QtGui.QPushButton('OK')
-		btnCancel=QtGui.QPushButton('Cancel')
+		btnOK=QtWidgets.QPushButton('OK')
+		btnCancel=QtWidgets.QPushButton('Cancel')
 		
 		buttonBox=QtGui.QDialogButtonBox(QtCore.Qt.Horizontal)
 		buttonBox.addButton(btnOK, QtGui.QDialogButtonBox.AcceptRole)
@@ -18,7 +18,7 @@ class StringDialog(QtGui.QDialog):
 		buttonBox.accepted.connect(self.accept)
 		buttonBox.rejected.connect(self.reject)
 
-		box=QtGui.QVBoxLayout()
+		box=QtWidgets.QVBoxLayout()
 		self.setLayout(box)
 
 		box.addWidget(lineEdit)

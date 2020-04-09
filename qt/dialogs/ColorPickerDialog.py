@@ -5,10 +5,11 @@ from qt.controls.ColorPickerWidget import ColorPickerWidget
 from qt.helpers    import addWidgetWithLayout, restrainWidgetToScreen
 from qt.helpers.IconCache  import getIcon
 
-from PyQt4 import QtGui, QtCore, uic
-from PyQt4.QtCore import Qt
-from PyQt4.QtCore import QEventLoop, QEvent, QObject, QPoint
-from PyQt4.QtGui import QColor, QTransform, QStyle, qRgb
+from PyQt5 import QtGui, QtCore, uic
+from PyQt5.QtCore import Qt
+from PyQt5.QtCore import QEventLoop, QEvent, QObject, QPoint
+from PyQt5.QtGui import QColor, QTransform, qRgb
+from PyQt5.QtWidgets import QWidget, QStyle
 
 ##----------------------------------------------------------------##
 class WindowAutoHideEventFilter(QObject):

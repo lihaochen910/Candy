@@ -6,16 +6,16 @@ import platform
 import time
 
 
-import signals
-import jsonHelper
+from . import signals
+from . import jsonHelper
 
-from EditorModule   import EditorModuleManager
-from project        import Project
-from EditorPackage  import PackageManager
-from helpers 		import getMainModulePath
-from Command        import EditorCommandRegistry, RemoteCommandRegistry, RemoteCommand
+from .EditorModule   import EditorModuleManager
+from .project        import Project
+from .EditorPackage  import PackageManager
+from .helpers 		import getMainModulePath
+from .Command        import EditorCommandRegistry, RemoteCommandRegistry, RemoteCommand
 
-from InstanceHelper import checkSingleInstance, setRemoteArgumentCallback, sendRemoteMsg
+from .InstanceHelper import checkSingleInstance, setRemoteArgumentCallback, sendRemoteMsg
 
 
 _CANDY_BUILTIN_PACKAGES_PATH = 'packages'
@@ -131,7 +131,7 @@ class EditorApp(object):
 			while self.running:
 				self.doMainLoop()
 
-		except Exception, e:
+		except Exception as e:
 			#TODO: popup a alert window?
 			logging.exception( e )
 			hasError = True

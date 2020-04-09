@@ -3,9 +3,9 @@ import logging
 from PropertyEditor import FieldEditor, registerFieldEditorFactory, FieldEditorFactory
 from FieldEditorControls import *
 
-from PyQt4 import QtGui, QtCore, uic
-from PyQt4.QtCore import Qt
-from PyQt4.QtCore import QEventLoop, QEvent, QObject
+from PyQt5 import QtGui, QtCore, uic
+from PyQt5.QtCore import Qt
+from PyQt5.QtCore import QEventLoop, QEvent, QObject
 
 from qt.helpers.IconCache  import getIcon
 from qt.controls.CodeEditor import CodeEditor
@@ -29,7 +29,7 @@ class WindowAutoHideEventFilter(QObject):
 		return QObject.eventFilter( self, obj, event )
 		
 
-class CodeBoxEditorWidget( QtGui.QWidget ):
+class CodeBoxEditorWidget( QtWidgets.QWidget ):
 	def __init__( self, *args ):
 		super( CodeBoxEditorWidget, self ).__init__( *args )
 		self.setWindowFlags( Qt.Popup | Qt.Window )
@@ -43,7 +43,7 @@ class CodeBoxEditorWidget( QtGui.QWidget ):
 		self.ui.buttonOK.clicked.connect( self.apply )
 		self.ui.buttonCancel.clicked.connect( self.cancel )
 		self.codeBox = CodeEditor( self.ui.containerContent )
-		layout = QtGui.QVBoxLayout( self.ui.containerContent )
+		layout = QtWidgets.QVBoxLayout( self.ui.containerContent )
 		layout.addWidget( self.codeBox )
 		layout.setSpacing( 0 )
 		layout.setMargin( 0 )

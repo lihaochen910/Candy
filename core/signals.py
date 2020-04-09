@@ -1,5 +1,5 @@
-from dispatch import Signal
-from dispatch.idle_queue import idle_loop,idle_add
+from .dispatch import Signal
+from .dispatch.idle_queue import idle_loop,idle_add
 import logging
 
 SIGNALS={}

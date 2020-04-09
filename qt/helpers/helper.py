@@ -1,8 +1,8 @@
 # from gii.core.tmpfile import TempDir
 
-from PyQt4 import QtGui
-from PyQt4.QtCore import Qt, QPoint
-from PyQt4.QtGui import QColor
+from PyQt5 import QtGui
+from PyQt5.QtCore import Qt, QPoint
+from PyQt5.QtGui import QColor
 
 
 def unpackQColor(c):
@@ -18,9 +18,9 @@ def addWidgetWithLayout(child, parent=None, **option):
     direction = option.get('direction', 'vertical')
     layout = None
     if direction == 'vertical':
-        layout = QtGui.QVBoxLayout()
+        layout = QtWidgets.QVBoxLayout()
     elif direction == 'horizontoal':
-        layout = QtGui.QHBoxLayout()
+        layout = QtWidgets.QHBoxLayout()
     if not parent:
         parent = child.parent()
     parent.setLayout(layout)
@@ -31,17 +31,17 @@ def addWidgetWithLayout(child, parent=None, **option):
 
 
 def setClipboardText(text):
-    QtGui.QApplication.clipboard().setText(text)
+    QtWidgets.QApplication.clipboard().setText(text)
 
 
 def getClipboardText(default=None):
-    t = QtGui.QApplication.clipboard().text()
+    t = QtWidgets.QApplication.clipboard().text()
     if not t: return default
     return t
 
 
 def restrainWidgetToScreen(widget):
-    screenRect = QtGui.QApplication.desktop().availableGeometry(widget.mapToGlobal(QPoint(0, 0)));
+    screenRect = QtWidgets.QApplication.desktop().availableGeometry(widget.mapToGlobal(QPoint(0, 0)));
     widgetRect = widget.frameGeometry()
     pos = widget.pos()
 

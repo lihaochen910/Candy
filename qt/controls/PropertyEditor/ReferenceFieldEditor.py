@@ -1,8 +1,8 @@
 from core import *
 from core.model import *
 
-from PropertyEditor import FieldEditor, registerSimpleFieldEditorFactory
-from SearchFieldEditor import SearchFieldEditorBase
+from .PropertyEditor import FieldEditor, registerSimpleFieldEditorFactory
+from .SearchFieldEditor import SearchFieldEditorBase
 
 ##----------------------------------------------------------------##
 class ReferenceFieldEditor( SearchFieldEditorBase ):	

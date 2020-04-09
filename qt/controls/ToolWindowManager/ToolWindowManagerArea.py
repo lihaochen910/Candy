@@ -1,6 +1,7 @@
-from PyQt4        import QtCore, QtGui, uic
-from PyQt4.QtGui  import QApplication, QCursor, QTabWidget
-from PyQt4.QtCore import qWarning, QEvent, Qt
+from PyQt5        import QtCore, QtGui, uic
+from PyQt5.QtWidgets import QApplication, QTabWidget
+from PyQt5.QtGui  import QCursor
+from PyQt5.QtCore import qWarning, QEvent, Qt
 
 class ToolWindowManagerArea( QTabWidget ):
 	"""docstring for ToolWindowManagerArea"""

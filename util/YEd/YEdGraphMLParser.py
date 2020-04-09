@@ -232,17 +232,17 @@ class YEdGraphMLParser( object ):
 
 if __name__ == '__main__':
 	from gii.qt.controls.GraphicsView.GraphicsViewHelper import *
-	from PyQt4 import QtGui, QtCore, QtOpenGL, uic
+	from PyQt5 import QtGui, QtCore, QtOpenGL, uic
 	import sys
 
-	class TestFrame( QtGui.QFrame ):
+	class TestFrame( QtWidgets.QFrame ):
 		def __init__( self ):
 			super( TestFrame, self ).__init__()
 			parser = YedGraphMLParser()
 			g = parser.parse( 'pizza.graphml' )
 			print g
 
-	app = QtGui.QApplication( sys.argv )
+	app = QtWidgets.QApplication( sys.argv )
 	styleSheetName = 'gii.qss'
 	app.setStyleSheet(
 			open( '/Users/tommo/prj/gii/data/theme/' + styleSheetName ).read() 

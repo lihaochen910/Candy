@@ -11,8 +11,8 @@ from sceneEditor.SceneEditor      import SceneEditorModule, getSceneSelectionMan
 from qt.helpers   import addWidgetWithLayout, QColorF, unpackQColor
 
 ##----------------------------------------------------------------##
-from PyQt4           import QtCore, QtGui, uic
-from PyQt4.QtCore    import Qt
+from PyQt5           import QtCore, QtGui, uic
+from PyQt5.QtCore    import Qt
 
 def _fixDuplicatedName( names, name, id = None ):
 	if id:

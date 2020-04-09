@@ -1,10 +1,10 @@
-from PyQt4 import QtCore, QtGui
-from PyQt4.QtCore import QEventLoop, QEvent, QObject
+from PyQt5 import QtCore, QtGui
+from PyQt5.QtCore import QEventLoop, QEvent, QObject
 
 from core import *
 
 from qt.controls.Window    import MainWindow
-from QtEditorModule        import QtEditorModule
+from .QtEditorModule       import QtEditorModule
 from qt.dialogs            import *
 
 _QT_SETTING_FILE = 'qt.ini'
@@ -35,7 +35,7 @@ class QtSupport( QtEditorModule ):
 
 	def setupStyle( self ):
 		# setup styles
-		# QtGui.QApplication.setStyle(QtGui.QStyleFactory.create('Windows'))
+		# QtWidgets.QApplication.setStyle(QtGui.QStyleFactory.create('Windows'))
 		QtCore.QDir.setSearchPaths( 'theme', [ self.getApp().getPath( 'resources/theme' ) ] )
 		QtGui.QFontDatabase.addApplicationFont( self.getApp().getPath( 'resources/MyriadPro-Regular.ttf' ) )
 		try:
@@ -46,7 +46,7 @@ class QtSupport( QtEditorModule ):
 					open( self.getApp().getPath( 'resources/theme/' + styleSheetName ) ).read()
 				)
 			# self.qtApp.setFont(QtGui.QFont(self.getApp().getPath( 'resources/MyriadPro-Regular.ttf' )))
-		except Exception, e:
+		except Exception as e:
 			import logging
 			logging.info('style sheet not load', e)
 			self.qtApp.setStyleSheet('''
@@ -118,7 +118,7 @@ class QtSupport( QtEditorModule ):
 		self.qtApp.setActiveWindow(window)
 
 	def onLoad( self ):
-		self.qtApp   = QtGui.QApplication( [ '-graphicssystem', 'opengl' ] )
+		self.qtApp   = QtWidgets.QApplication( [ '-graphicssystem', 'opengl' ] )
 		self.qtSetting = QtCore.QSettings(
 					self.getProject().getConfigPath( _QT_SETTING_FILE ),
 					QtCore.QSettings.IniFormat
@@ -173,11 +173,11 @@ class QtSupport( QtEditorModule ):
 		elif name == 'refresh_theme':
 			self.setupStyle()
 		elif name == 'copy':
-			print 'copy'
+			print ( 'copy' )
 		elif name == 'paste':
-			print 'paste'
+			print ( 'paste' )
 		elif name == 'cut':
-			print 'cut'
+			print ( 'cut' )
 
 		elif name == 'undo':
 			stack = EditorCommandRegistry.get().getCommandStack( 'scene_editor' )

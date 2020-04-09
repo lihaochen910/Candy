@@ -3,11 +3,12 @@ import math
 
 from core import app
 
-from PyQt4 import QtGui, QtCore, QtOpenGL, uic
-from PyQt4.QtCore import Qt, QObject, QEvent, pyqtSignal
-from PyQt4.QtCore import QPoint, QRect, QSize
-from PyQt4.QtCore import QPointF, QRectF, QSizeF
-from PyQt4.QtGui import QColor, QTransform, QStyle, qRgb
+from PyQt5 import QtGui, QtCore, QtOpenGL, uic
+from PyQt5.QtCore import Qt, QObject, QEvent, pyqtSignal
+from PyQt5.QtCore import QPoint, QRect, QSize
+from PyQt5.QtCore import QPointF, QRectF, QSizeF
+from PyQt5.QtGui import QColor, QTransform, qRgb
+from PyQt5.QtWidgets import QWidget, QStyle
 
 
 ColorPickerForm, BaseClass = uic.loadUiType( app.getPath('qt/controls/ColorPickerWidget.ui') )
@@ -30,7 +31,7 @@ def generateHSVImage( w, h, hue, img = None ):
 	return img
 
 #####
-class ColorPreviewWidget( QtGui.QWidget ):
+class ColorPreviewWidget( QWidget ):
 	originalColorClicked = pyqtSignal()
 
 	def __init__( self, parent ):
@@ -75,7 +76,7 @@ class ColorPreviewWidget( QtGui.QWidget ):
 		painter.drawRect( x0, y0, w2+1, h2 + 1 )
 
 #####
-class ColorPlaneWidget( QtGui.QWidget ):
+class ColorPlaneWidget( QWidget ):
 	valueXChanged = pyqtSignal( float )
 	valueYChanged = pyqtSignal( float )
 	valueZChanged = pyqtSignal( float )
@@ -158,7 +159,7 @@ class ColorPlaneWidget( QtGui.QWidget ):
 		self.setValueXY( vx, vy )
 
 #####
-class AlphaSliderWidget( QtGui.QWidget ):
+class AlphaSliderWidget( QWidget ):
 	valueChanged = pyqtSignal( float )
 
 	def __init__( self, parent ):
@@ -213,7 +214,7 @@ class AlphaSliderWidget( QtGui.QWidget ):
 
 
 #####
-class HueSliderWidget( QtGui.QWidget ):
+class HueSliderWidget( QWidget ):
 	valueChanged = pyqtSignal( float )
 
 	def __init__( self, parent ):
@@ -267,7 +268,7 @@ class HueSliderWidget( QtGui.QWidget ):
 		self.setValue( k )
 
 
-class ScreenColorPicker( QtGui.QWidget ):
+class ScreenColorPicker( QWidget ):
 	def __init__( self, parent = None ):
 		super(ScreenColorPicker, self).__init__( parent )
 		self.setFixedSize( 5, 5 )
@@ -283,7 +284,7 @@ class ScreenColorPicker( QtGui.QWidget ):
 		self.timer.start()
 		self.setCursor( Qt.CrossCursor)
 
-		self.pixmap = QtGui.QPixmap.grabWindow( QtGui.QApplication.desktop().winId() )
+		self.pixmap = QtGui.QPixmap.grabWindow( QtWidgets.QApplication.desktop().winId() )
 		self.image  = self.pixmap.toImage()
 		self.owner = False
 
@@ -315,7 +316,7 @@ class ScreenColorPicker( QtGui.QWidget ):
 		
 
 #####
-class ColorPickerWidget( QtGui.QWidget ):
+class ColorPickerWidget( QWidget ):
 	def __init__( self, *args ):
 		super(ColorPickerWidget, self).__init__( *args )
 		self.updating = False
@@ -441,13 +442,13 @@ class ColorPickerWidget( QtGui.QWidget ):
 		pass
 
 	def onButtonCopyHEX( self ):
-		print 'copy hex'
+		print ( 'copy hex' )
 
 	def onButtonCopyRGBA( self ):
-		print 'copy rgba'
+		print ( 'copy rgba' )
 
 	def onButtonCopyHSV( self ):
-		print 'copy hsv'
+		print ( 'copy hsv' )
 
 	def onButtonScreenPick( self ):
 		self.screenPicker = ScreenColorPicker( None )
@@ -501,7 +502,7 @@ class ColorPickerWidget( QtGui.QWidget ):
 ######TEST
 if __name__ == '__main__':
 	import sys
-	app = QtGui.QApplication( sys.argv )
+	app = QtWidgets.QApplication( sys.argv )
 	styleSheetName = 'gii.qss'
 	app.setStyleSheet(
 			open( '/Users/tommo/prj/gii/data/theme/' + styleSheetName ).read() 

@@ -6,10 +6,10 @@ import os.path
 
 from abc import ABCMeta, abstractmethod
 
-import jsonHelper
-import signals
+from . import jsonHelper
+from . import signals
 
-from cache import CacheManager
+from .cache import CacheManager
 
 # from util import TagMatch
 
@@ -26,8 +26,8 @@ class AssetException(Exception):
 ##----------------------------------------------------------------##
 class AssetNode(object):
 	def __init__(self, nodePath, assetType='file', **kwargs):	
-		if isinstance( nodePath, str ):
-			nodePath = nodePath.decode('utf-8')
+		# if isinstance( nodePath, str ):
+		# 	nodePath = nodePath.decode('utf-8')
 		
 		self.nodePath   = nodePath
 		self.assetType  = assetType
@@ -383,7 +383,7 @@ class AssetNode(object):
 	def removeTag( self, tag ):
 		try:
 			self.tags.remove( tag )
-		except Exception, e:
+		except Exception as e:
 			return False
 		self.clearTagCache()
 		return True
@@ -1161,7 +1161,7 @@ class AssetLibrary(object):
 				item['deploy']      = node.deployState
 				item['cacheFiles']  = node.cacheFiles
 				item['properties']  = node.properties
-		 		item['modifyState'] = node.modifyState
+				item['modifyState'] = node.modifyState
 				#mark cache files
 				for name, cacheFile in node.cacheFiles.items():
 					CacheManager.get().touchCacheFile( cacheFile )

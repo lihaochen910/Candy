@@ -1,5 +1,5 @@
 import logging
-import signals
+from . import signals
 
 
 class EditorCommandMeta(type):
@@ -206,7 +206,7 @@ class RemoteCommandRegistry( object ):
 					args = []
 				try:
 					cmd.run( *args )
-				except Exception, e:
+				except Exception as e:
 					logging.exception( e )
 			else:
 				logging.warning( 'no remote command found:' + cmdName )

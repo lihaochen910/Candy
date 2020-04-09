@@ -196,8 +196,8 @@ if __name__ == '__main__':
 		{ "tag" : ['damhill', 'NPC'],       "type" : "texture" },
 	]
 	
-	print rule.nodes
-	print 'matching pattern:', pattern
+	print ( rule.nodes )
+	print ( 'matching pattern:', pattern )
 
 	for data in testDataSet:
-		print data, rule.evaluate( data )
+		print ( data, rule.evaluate( data ) )

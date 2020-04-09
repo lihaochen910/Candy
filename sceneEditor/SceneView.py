@@ -6,13 +6,13 @@ from qt.helpers   import addWidgetWithLayout, QColorF, unpackQColor
 from qt.dialogs   import requestString, alertMessage, requestColor
 
 # from SceneEditor  import SceneEditorModule
-from sceneEditor.SceneEditor import SceneEditorModule
-from SceneTool import SceneTool, SceneToolMeta, SceneToolButton
+from .SceneEditor import SceneEditorModule
+from .SceneTool import SceneTool, SceneToolMeta, SceneToolButton
 
 from moai.MOAIEditCanvas import  MOAIEditCanvas
 
-from PyQt4  import QtCore, QtGui, QtOpenGL
-from PyQt4.QtCore import Qt
+from PyQt5  import QtCore, QtGui, QtOpenGL
+from PyQt5.QtCore import Qt
 
 
 ##----------------------------------------------------------------##

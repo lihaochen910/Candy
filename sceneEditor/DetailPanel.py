@@ -4,10 +4,10 @@ from core import *
 from qt.controls.PropertyEditor import PropertyEditor
 from qt.controls.Menu import MenuManager
 
-from PyQt4 import QtCore, QtGui, uic, Qt
-from PyQt4.QtCore import Qt, QEventLoop, QEvent, QObject, pyqtSignal, pyqtSlot
+from PyQt5 import QtCore, QtGui, uic, Qt, QtWidgets
+from PyQt5.QtCore import Qt, QEventLoop, QEvent, QObject, pyqtSignal, pyqtSlot
 
-from SceneEditor import SceneEditorModule
+from .SceneEditor import SceneEditorModule
 from util.IDPool import IDPool
 
 from moai.LuaBridge import getSelection
@@ -25,7 +25,7 @@ ObjectContainerBase, BaseClass = uic.loadUiType(app.getPath('sceneEditor/ObjectC
 
 
 ##----------------------------------------------------------------##
-class ObjectContainer(QtGui.QWidget):
+class ObjectContainer(QtWidgets.QWidget):
     foldChanged = pyqtSignal(bool)
 
     def __init__(self, *args):
@@ -34,11 +34,11 @@ class ObjectContainer(QtGui.QWidget):
         self.ui.setupUi(self)
 
         self.setSizePolicy(
-            QtGui.QSizePolicy.Expanding,
-            QtGui.QSizePolicy.Fixed
+            QtWidgets.QSizePolicy.Expanding,
+            QtWidgets.QSizePolicy.Fixed
         )
         self.setAttribute(Qt.WA_NoSystemBackground, True)
-        self.mainLayout = QtGui.QVBoxLayout(self.getInnerContainer())
+        self.mainLayout = QtWidgets.QVBoxLayout(self.getInnerContainer())
         self.mainLayout.setSpacing(0)
         self.mainLayout.setMargin(0)
         self.contextObject = None
@@ -77,13 +77,13 @@ class ObjectContainer(QtGui.QWidget):
         # widget.setParent(self)
         if layoutOption.get('fixed', False):
             widget.setSizePolicy(
-                QtGui.QSizePolicy.Fixed,
-                QtGui.QSizePolicy.Fixed
+                QtWidgets.QSizePolicy.Fixed,
+                QtWidgets.QSizePolicy.Fixed
             )
         elif layoutOption.get('expanding', True):
             widget.setSizePolicy(
-                QtGui.QSizePolicy.Expanding,
-                QtGui.QSizePolicy.Expanding
+                QtWidgets.QSizePolicy.Expanding,
+                QtWidgets.QSizePolicy.Expanding
             )
         self.mainLayout.addWidget(widget)
         return widget
@@ -240,11 +240,11 @@ class DetailInstance(object):
             app.getPath('sceneEditor/DetailPanel.ui'),
             expanding=False)
         self.scroll = scroll = container.addWidget(QtGui.QScrollArea(container))
-        self.body = body = QtGui.QWidget(container)
+        self.body = body = QtWidgets.QWidget(container)
         self.header.hide()
         self.scroll.verticalScrollBar().setStyleSheet('width:4px')
         scroll.setWidgetResizable(True)
-        body.mainLayout = layout = QtGui.QVBoxLayout(body)
+        body.mainLayout = layout = QtWidgets.QVBoxLayout(body)
         layout.setSpacing(0)
         layout.setMargin(0)
         layout.addStretch()
@@ -441,7 +441,7 @@ class SceneDetailPanel(SceneEditorModule):
         signals.connect('component.added', self.onComponentAdded)
         signals.connect('component.removed', self.onComponentRemoved)
         signals.connect('actor.modified', self.onActorModified)
-        self.widgetCacheHolder = QtGui.QWidget()
+        self.widgetCacheHolder = QtWidgets.QWidget()
 
     def onStart(self):
         pass

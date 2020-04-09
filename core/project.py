@@ -8,11 +8,11 @@ import shutil
 import hashlib
 import time
 
-import signals
-import jsonHelper
+from . import signals
+from . import jsonHelper
 ##----------------------------------------------------------------##
-from cache   import CacheManager
-from asset   import AssetLibrary
+from .cache   import CacheManager
+from .asset   import AssetLibrary
 ##----------------------------------------------------------------##
 _CANDY_ENV_DIR            = 'env'
 _CANDY_GAME_DIR           = 'game'
@@ -56,7 +56,7 @@ def _affirmPath( path ):
 	if os.path.exists( path ): return
 	try:
 		os.mkdir( path )
-	except Exception, e:
+	except Exception as e:
 		pass
 
 ##----------------------------------------------------------------##
@@ -172,7 +172,7 @@ class Project(object):
 
 		try:
 			self.cacheManager.init( _CANDY_ENV_CONFIG_DIR, self.envConfigPath )
-		except OSError,e:
+		except OSError as e:
 			raise ProjectException('error creating cache folder:%s' % e)
 
 		self.assetLibrary.load( _CANDY_ASSET_DIR, self.assetPath, self.path, self.envConfigPath )
@@ -438,7 +438,7 @@ class DeployContext():
 			fp = open( srcFile, 'w' )
 			fp.write( data )
 			fp.close()
-		except Exception, e:
+		except Exception as e:
 			logging.exception( e )			
 		
 	def flushTask( self ):

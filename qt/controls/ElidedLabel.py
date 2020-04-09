@@ -1,7 +1,7 @@
-from PyQt4            import QtCore, QtGui, uic
-from PyQt4.QtCore     import Qt
+from PyQt5            import QtCore, QtGui, uic, QtWidgets
+from PyQt5.QtCore     import Qt
 
-class ElidedLabel( QtGui.QLabel ):
+class ElidedLabel( QtWidgets.QLabel ):
 	def __init__( self, *args, **kwargs ):
 		super( ElidedLabel, self ).__init__( *args, **kwargs )
 		self._elideMode = Qt.ElideLeft
@@ -19,4 +19,4 @@ class ElidedLabel( QtGui.QLabel ):
 		painter.drawText( self.rect(), self.alignment(), elided )
 
 	def minimumSizeHint( self ):
-		return QtGui.QWidget.minimumSizeHint( self )
+		return QtWidgets.QWidget.minimumSizeHint( self )

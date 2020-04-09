@@ -1,21 +1,21 @@
-from PyQt4        import QtCore, QtGui, uic
-from PyQt4.QtCore import qWarning, Qt
+from PyQt5        import QtCore, QtGui, uic, QtWidgets
+from PyQt5.QtCore import qWarning, Qt
 
-from ToolWindowManagerArea import ToolWindowManagerArea
+from .ToolWindowManagerArea import ToolWindowManagerArea
 
-class ToolWindowManagerWrapper( QtGui.QWidget ) :
+class ToolWindowManagerWrapper( QtWidgets.QWidget ) :
 	def __init__( self, manager ):
 		super( ToolWindowManagerWrapper, self ).__init__( manager )
 		self.manager = manager
 		self.setWindowFlags( self.windowFlags() | Qt.Tool )
 		self.setWindowTitle( '' )
 
-		mainLayout = QtGui.QVBoxLayout( self )
+		mainLayout = QtWidgets.QVBoxLayout( self )
 		mainLayout.setContentsMargins( 0, 0, 0, 0 )
 		self.manager.wrappers.append( self )
 
 	def closeEvent( self, event ):
-		from ToolWindowManager import ToolWindowManager
+		from .ToolWindowManager import ToolWindowManager
 		toolWindows = []
 		for widget in self.findChildren( ToolWindowManagerArea ):
 			toolWindows += widget.toolWindows()

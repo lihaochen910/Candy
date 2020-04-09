@@ -1,21 +1,21 @@
 ##----------------------------------------------------------------##
-from PropertyEditor     import \
+from .PropertyEditor     import \
 	PropertyEditor, FieldEditor, FieldEditorFactory, registerSimpleFieldEditorFactory, registerFieldEditorFactory
 
 ##----------------------------------------------------------------##
-from CommonFieldEditors import \
+from .CommonFieldEditors import \
 	StringFieldEditor, NumberFieldEditor, BoolFieldEditor
 
-from EnumFieldEditor      import EnumFieldEditor
-from ColorFieldEditor     import ColorFieldEditor
-from ReferenceFieldEditor import ReferenceFieldEditor
-from AssetRefFieldEditor  import AssetRefFieldEditor 
+from .EnumFieldEditor      import EnumFieldEditor
+from .ColorFieldEditor     import ColorFieldEditor
+from .ReferenceFieldEditor import ReferenceFieldEditor
+from .AssetRefFieldEditor  import AssetRefFieldEditor
 
-import LongTextFieldEditor
+from . import LongTextFieldEditor
 # import CodeBoxFieldEditor
-import ActionFieldEditor
-import VecFieldEditor
-import CollectionFieldEditor
-import SelectionFieldEditor
+from . import ActionFieldEditor
+from . import VecFieldEditor
+from . import CollectionFieldEditor
+from . import SelectionFieldEditor
 ##----------------------------------------------------------------##
 

@@ -259,4 +259,4 @@ if __name__ == '__main__':
 	item.setCiteria( 'good' )
 	f.addItem( item )
 	rootGroup.addChild( f )
-	print rootGroup.save()
+	print ( rootGroup.save() )

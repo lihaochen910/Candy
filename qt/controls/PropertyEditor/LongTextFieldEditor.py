@@ -2,25 +2,25 @@ import logging
 
 from core import app
 
-from PropertyEditor import FieldEditor, registerFieldEditorFactory, FieldEditorFactory
-from FieldEditorControls import *
+from .PropertyEditor import FieldEditor, registerFieldEditorFactory, FieldEditorFactory
+from .FieldEditorControls import *
 
-from PyQt4 import QtGui, QtCore, uic
-from PyQt4.QtCore import Qt
-from PyQt4.QtCore import QEventLoop, QEvent, QObject
+from PyQt5 import QtGui, QtCore, uic, QtWidgets
+from PyQt5.QtCore import Qt
+from PyQt5.QtCore import QEventLoop, QEvent, QObject
 
 from qt.helpers.IconCache  import getIcon
 
 LongTextForm,BaseClass = uic.loadUiType(app.getPath('qt/controls/PropertyEditor/LongTextEditor.ui'))
 
-class WindowAutoHideEventFilter(QObject):
+class WindowAutoHideEventFilter( QObject ):
 	def eventFilter(self, obj, event):
 		e = event.type()		
 		if e == QEvent.WindowDeactivate:
 			obj.hide()
 		return QObject.eventFilter( self, obj, event )
 
-class LongTextEditorWidget( QtGui.QWidget ):
+class LongTextEditorWidget( QtWidgets.QWidget ):
 	def __init__( self, *args ):
 		super( LongTextEditorWidget, self ).__init__( *args )
 		self.setWindowFlags( Qt.Popup )
@@ -89,14 +89,14 @@ def getLongTextEditorWidget():
 	return _LongTextEditorWidget
 
 ##----------------------------------------------------------------##
-class LongTextFieldButton( QtGui.QToolButton ):
+class LongTextFieldButton( QtWidgets.QToolButton ):
 	def sizeHint( self ):
 		return QtCore.QSize( 20, 20)
 
-class LongTextFieldWidget( QtGui.QWidget ):
+class LongTextFieldWidget( QtWidgets.QWidget ):
 	def __init__( self, *args ):
 		super( LongTextFieldWidget, self ).__init__( *args )
-		self.layout = layout = QtGui.QHBoxLayout( self )
+		self.layout = layout = QtWidgets.QHBoxLayout( self )
 		layout.setSpacing( 0 )
 		layout.setMargin( 0 )
 		self.lineText = FieldEditorLineEdit( self )
@@ -104,8 +104,8 @@ class LongTextFieldWidget( QtGui.QWidget ):
 		self.lineText.setReadOnly( True )
 		self.buttonEdit = LongTextFieldButton( self )
 		self.buttonEdit.setSizePolicy(
-			QtGui.QSizePolicy.Fixed,
-			QtGui.QSizePolicy.Fixed
+			QtWidgets.QSizePolicy.Fixed,
+			QtWidgets.QSizePolicy.Fixed
 			)
 		layout.addWidget( self.lineText  )
 		layout.addWidget( self.buttonEdit  )
