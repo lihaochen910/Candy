@@ -158,7 +158,7 @@ class CDockableContainer ( QWidget ):
 	def spawnWidgetInternalTarget ( self, name, objectName, target ):
 		return self.spawnWidgetInternal ( name, objectName, target.area, target.reference, target.index, target.geometry )
 
-	def spawnWidgetInternal ( self, name, forceObjectName, area, reference = QToolWindowAreaReference.Type.Combine,
+	def spawnWidgetInternal ( self, name, forceObjectName, area, reference = QToolWindowAreaReference.Combine,
 	                          index = -1, geometry = QRect () ):
 		w = self.spawn( name, forceObjectName )
 		if w:

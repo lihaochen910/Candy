@@ -47,7 +47,7 @@ class QNotifierSplitterHandle ( QSplitterHandle ):
 	def mouseMoveEvent ( self, e ):
 		e2 = QMouseEvent ( e.type (), e.localPos (), e.windowPos (), QCursor.pos (), e.button (), e.buttons (),
 		                   e.modifiers () )
-		return super ().eventFilter ( e )
+		return super ().eventFilter ( e2 )
 
 
 class QNotifierSplitter ( QSizePreservingSplitter ):

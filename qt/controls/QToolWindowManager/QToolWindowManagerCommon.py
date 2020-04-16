@@ -1,5 +1,8 @@
 from enum import Enum
 
+from PyQt5 import QtCore
+from PyQt5.QtGui import QCursor
+from PyQt5.QtWidgets import qApp
 
 QTWM_AREA_IMAGE_HANDLE = "areaUseImageHandle"
 QTWM_AREA_IMAGE_HANDLE_IMAGE = "areaImageHandle"
@@ -34,38 +37,17 @@ QTWM_DROPTARGET_SPLIT_RIGHT = "droptargetSplitRight"
 QTWM_DROPTARGET_COMBINE = "droptargetCombine"
 
 
-class QToolWindowManagerCommon:
-
-	@staticmethod
-	def registerMainWindow ( w ):
-		pass
-
-	@staticmethod
-	def getMainWindow ():
-		pass
-
-	@staticmethod
-	def windowBelow ( w ):
-		pass
-
-	@staticmethod
-	def getIcon ( config, key, fallback ):
-		pass
-
-	@staticmethod
-	def configHasValue ( config, key ):
-		pass
-
-
 class QTWMReleaseCachingPolicy ( Enum ):
 	rcpKeep = 0
 	rcpWidget = 1
 	rcpForget = 2
 	rcpDelete = 3
 
+
 class QTWMWrapperAreaType ( Enum ):
 	watTabs = 0
 	watRollups = 1
+
 
 class QTWMToolType ( Enum ):
 	ttStandard = 0
@@ -79,6 +61,7 @@ def findClosestParent ( widget, widgetType ):
 		widget = widget.parentWidget ()
 	return None
 
+
 def findFurthestParent ( widget, widgetType ):
 	result = None
 	while widget:
@@ -90,19 +73,29 @@ def findFurthestParent ( widget, widgetType ):
 
 mainWindow = None
 
+
 def registerMainWindow ( w ):
 	global mainWindow
 	mainWindow = w
 
+
 def getMainWindow ():
 	return mainWindow
 
+
 def windowBelow ( w ):
-	return None
+	while w and not w.isWindow ():
+		w = w.parentWidget ()
+	if not w:
+		return None
+	for topWindow in qApp.topLevelWidgets ():
+		if topWindow.isWindow () and topWindow.isVisible () and topWindow == w and not topWindow.windowState () != QtCore.Qt.WindowMinimized:
+			if topWindow.geometry ().contains ( QCursor.pos () ):
+				return topWindow
+
 
 def getIcon ( config, key, fallback ):
 	v = config.setdefault ( key, fallback )
 	if v == fallback:
 		return v
-	return v.value ()
-
+	return v

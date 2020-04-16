@@ -5,7 +5,7 @@ from core import EditorModule
 from qt.controls.Menu import MenuManager
 from qt.controls.ToolBar import ToolBarManager, ToolBarItem
 
-from PyQt5 import QtGui
+from PyQt5 import QtGui, QtWidgets
 from PyQt5.QtCore import Qt
 
 ##----------------------------------------------------------------##

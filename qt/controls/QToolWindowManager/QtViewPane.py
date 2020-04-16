@@ -5,6 +5,37 @@ from PyQt5 import QtCore
 from PyQt5.QtCore import QRect, QSize
 from PyQt5.QtWidgets import QMenu, QWidget
 
+from qt.controls.QToolWindowManager.IEditorClassFactory import *
+
+
+class IViewPaneClass ( IClassDesc ):
+	__metaclass__ = ABCMeta
+
+	def systemClassID( self ):
+		return ESystemClassID.ESYSTEM_CLASS_VIEWPANE
+
+	@abstractmethod
+	def getRuntimeClass( self ):
+		pass
+
+	@abstractmethod
+	def getPaneTitle ( self ):
+		pass
+
+	@abstractmethod
+	def singlePane ( self ):
+		pass
+
+	@abstractmethod
+	def needsMenuItem ( self ):
+		pass
+
+	def getMenuPath ( self ):
+		return ""
+
+	def createPane ( self ):
+		return None
+
 
 class EDockingDirection ( Enum ):
 	DOCK_DEFAULT = 0

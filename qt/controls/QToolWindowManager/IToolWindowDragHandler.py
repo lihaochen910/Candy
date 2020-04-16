@@ -24,23 +24,23 @@ class IToolWindowDragHandler ():
 
 		from . import QToolWindowAreaReference
 
-		if target.reference == QToolWindowAreaReference.Type.Top or \
-				target.reference == QToolWindowAreaReference.Type.HSplitTop:
+		if target.reference == QToolWindowAreaReference.Top or \
+				target.reference == QToolWindowAreaReference.HSplitTop:
 			s.setHeight(heightSplit.newSize)
 			return QRect ( QPoint ( 0,0 ), s )
-		elif target.reference == QToolWindowAreaReference.Type.Bottom or \
-				target.reference == QToolWindowAreaReference.Type.HSplitBottom:
+		elif target.reference == QToolWindowAreaReference.Bottom or \
+				target.reference == QToolWindowAreaReference.HSplitBottom:
 			s.setHeight ( heightSplit.newSize )
 			return QRect ( QPoint ( 0, heightSplit.oldSize ), s )
-		elif target.reference == QToolWindowAreaReference.Type.Left or \
-				target.reference == QToolWindowAreaReference.Type.VSplitLeft:
+		elif target.reference == QToolWindowAreaReference.Left or \
+				target.reference == QToolWindowAreaReference.VSplitLeft:
 			s.setHeight ( widthSplit.newSize )
 			return QRect ( QPoint ( 0, 0 ), s )
-		elif target.reference == QToolWindowAreaReference.Type.Right or \
-				target.reference == QToolWindowAreaReference.Type.VSplitRight:
+		elif target.reference == QToolWindowAreaReference.Right or \
+				target.reference == QToolWindowAreaReference.VSplitRight:
 			s.setHeight ( widthSplit.newSize )
 			return QRect ( QPoint ( widthSplit.oldSize, 0 ), s )
-		elif target.reference == QToolWindowAreaReference.Type.Combine:
+		elif target.reference == QToolWindowAreaReference.Combine:
 			if target.index == -1:
 				return QRect ( QPoint ( 0, 0 ), s )
 			else:

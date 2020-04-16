@@ -9,7 +9,7 @@ from .AssetEditor      import AssetEditorModule
 from sceneEditor      import SceneEditorModule
 
 
-from PyQt5            import QtCore, QtGui, uic
+from PyQt5            import QtCore, QtWidgets, uic
 from PyQt5.QtCore     import Qt
 
 ##----------------------------------------------------------------##
@@ -33,7 +33,7 @@ class ModAssetPreviewer( SceneEditorModule ):
 				minSize = (100,100)
 			)
 
-		self.previewerContainer = QtGui.QStackedWidget()
+		self.previewerContainer = QtWidgets.QStackedWidget()
 		self.previewerContainer.setSizePolicy(
 				QtWidgets.QSizePolicy.Expanding, 
 				QtWidgets.QSizePolicy.Expanding

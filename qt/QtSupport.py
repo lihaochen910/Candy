@@ -39,8 +39,8 @@ class QtSupport( QtEditorModule ):
 		QtCore.QDir.setSearchPaths( 'theme', [ self.getApp().getPath( 'resources/theme' ) ] )
 		QtGui.QFontDatabase.addApplicationFont( self.getApp().getPath( 'resources/MyriadPro-Regular.ttf' ) )
 		try:
-			# styleSheetName = 'dark.qss'
-			styleSheetName = 'QtDarkOrange.qss'
+			styleSheetName = 'CryEngineVStyleSheet.qss'
+			# styleSheetName = 'QtDarkOrange.qss'
 			# styleSheetName = 'gii.qss'
 			self.qtApp.setStyleSheet(
 					open( self.getApp().getPath( 'resources/theme/' + styleSheetName ) ).read()

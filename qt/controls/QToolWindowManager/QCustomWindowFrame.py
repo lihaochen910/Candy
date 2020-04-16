@@ -3,17 +3,14 @@ from PyQt5.QtCore import QMetaObject, QEvent, pyqtSignal
 from PyQt5.QtGui import QCursor
 from PyQt5.QtWidgets import QLabel, QFrame, QBoxLayout, QToolButton, QHBoxLayout, qApp, QSizePolicy, QWidget
 
+from qt.controls.QToolWindowManager.QToolWindowManagerCommon import getMainWindow
+
 
 class QCustomTitleBar ( QFrame ):
 
 	def __init__ ( self, parent ):
 		super ().__init__ ( parent )
 		self.dragging = False
-		self.caption = None
-		self.sysMenuButton = None
-		self.minimizeButton = None
-		self.maximizeButton = None
-		self.closeButton = None
 
 		if parent.metaObject ().indexOfSignal ( QMetaObject.normalizedSignature ( "contentsChanged" ) ) != -1:
 			parent.contentsChanged.connect ( self.onFrameContentsChanged )
@@ -21,6 +18,8 @@ class QCustomTitleBar ( QFrame ):
 		myLayout = QHBoxLayout ( self )
 		myLayout.setContentsMargins ( 0, 0, 0, 0 )
 		myLayout.setSpacing ( 0 )
+
+		self.setLayout ( myLayout )
 
 		self.caption = QLabel ( self )
 		self.caption.setAttribute ( QtCore.Qt.WA_TransparentForMouseEvents )
@@ -253,17 +252,17 @@ class QCustomWindowFrame ( QFrame ):
 
 		self.contentsChanged.emit ( self.contents )
 
-	def nativeEvent ( self, eventType, message, result ):
-		if not self.titleBar:
-			return False
-		return super ().nativeEvent ( eventType, message, result )
+	# def nativeEvent ( self, eventType, message, result ):
+	# 	if not self.titleBar:
+	# 		return False
+	# 	return super ().nativeEvent ( eventType, message, result )
 
 	def event ( self, e ):
 		if e.type () == QEvent.Show:
 			if self.contents.isVisibleTo ( self ):
 				self.contents.show ()
 		if e.type () == QEvent.Hide:
-			if self.contents.isVisibleTo ( self ) and not self.windowState ().testFlag ( QtCore.Qt.WindowMinimized ):
+			if self.contents.isVisibleTo ( self ) and not self.windowState () == QtCore.Qt.WindowMinimized:
 				self.contents.hide ()
 		return super ().event ( e )
 
@@ -274,7 +273,7 @@ class QCustomWindowFrame ( QFrame ):
 
 	def changeEvent ( self, e ):
 		if e.type () == QEvent.WindowStateChange or e.type () == QEvent.ActivationChange:
-			self.getMainWindow ().setWindowState ( QtCore.Qt.WindowNoState )
+			getMainWindow ().setWindowState ( QtCore.Qt.WindowNoState )
 
 		if self.titleBar:
 			self.titleBar.updateWindowStateButtons ()
@@ -300,7 +299,7 @@ class QCustomWindowFrame ( QFrame ):
 			e.ignore ()
 			return
 		if e.button () == QtCore.Qt.LeftButton:
-			self.titleBar ().dragging = False
+			self.titleBar.dragging = False
 
 		super ().mouseReleaseEvent ( e )
 

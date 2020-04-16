@@ -2,7 +2,7 @@
 
 from .ToolWindowManagerWrapper import ToolWindowManagerWrapper
 from .ToolWindowManagerArea import ToolWindowManagerArea
-from PyQt5        import QtCore, QtGui, uic
+from PyQt5        import QtCore, QtGui, uic, QtWidgets
 from PyQt5.QtWidgets import QApplication, QSplitter, QWidget
 from PyQt5.QtGui  import QCursor
 from PyQt5.QtCore import qWarning, QPoint, QRect, QSize, pyqtSignal, Qt

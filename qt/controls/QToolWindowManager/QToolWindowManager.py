@@ -7,60 +7,66 @@ from PyQt5.QtWidgets import QRubberBand, QVBoxLayout, QSplitter, QWidget, qApp
 
 from qt.controls.QToolWindowManager.QToolWindowManagerCommon import *
 from qt.controls.QToolWindowManager.QCustomWindowFrame import QCustomTitleBar
-from qt.controls.QToolWindowManager.QToolWindowArea import QToolWindowArea
+from qt.controls.QToolWindowManager.QToolWindowArea import QToolWindowArea, IToolWindowArea
 from qt.controls.QToolWindowManager.QToolWindowRollupBarArea import QToolWindowRollupBarArea
 from qt.controls.QToolWindowManager.QToolWindowWrapper import QToolWindowWrapper
 from qt.controls.QToolWindowManager.QToolWindowDragHandlerDropTargets import QToolWindowDragHandlerDropTargets
 
 
 class QToolWindowAreaReference:
-	class Type ( Enum ):
-		Top = 0
-		Bottom = 1
-		Left = 2
-		Right = 3
-		HSplitTop = 4
-		HSplitBottom = 5
-		VSplitLeft = 6
-		VSplitRight = 7
-		Combine = 8
-		Floating = 9
-		Drag = 10
-		Hidden = 11
+	Top = 0
+	Bottom = 1
+	Left = 2
+	Right = 3
+	HSplitTop = 4
+	HSplitBottom = 5
+	VSplitLeft = 6
+	VSplitRight = 7
+	Combine = 8
+	Floating = 9
+	Drag = 10
+	Hidden = 11
+
 
 	def __init__ ( self, eType ):
-		self.type = eType or QToolWindowAreaReference.Type.Combine
+		self.type = eType or QToolWindowAreaReference.Combine
 
 	def isOuter ( self ):
-		return self.type <= QToolWindowAreaReference.Type.Right
+		return self.type <= QToolWindowAreaReference.Right
 
 	def requiresSplit ( self ):
-		return self.type < QToolWindowAreaReference.Type.Combine
+		return self.type < QToolWindowAreaReference.Combine
 
 	def splitOrientation ( self ):
-		if self.type == QToolWindowAreaReference.Type.Top or \
-				self.type == QToolWindowAreaReference.Type.Bottom or \
-				self.type == QToolWindowAreaReference.Type.HSplitTop or \
-				self.type == QToolWindowAreaReference.Type.HSplitBottom:
+		if self.type == QToolWindowAreaReference.Top or \
+				self.type == QToolWindowAreaReference.Bottom or \
+				self.type == QToolWindowAreaReference.HSplitTop or \
+				self.type == QToolWindowAreaReference.HSplitBottom:
 			return QtCore.Qt.Vertical
-		if self.type == QToolWindowAreaReference.Type.Left or \
-				self.type == QToolWindowAreaReference.Type.Right or \
-				self.type == QToolWindowAreaReference.Type.VSplitLeft or \
-				self.type == QToolWindowAreaReference.Type.VSplitRight:
+		if self.type == QToolWindowAreaReference.Left or \
+				self.type == QToolWindowAreaReference.Right or \
+				self.type == QToolWindowAreaReference.VSplitLeft or \
+				self.type == QToolWindowAreaReference.VSplitRight:
 			return QtCore.Qt.Horizontal
-		if self.type == QToolWindowAreaReference.Type.Combine or \
-				self.type == QToolWindowAreaReference.Type.Floating or \
-				self.type == QToolWindowAreaReference.Type.Hidden:
+		if self.type == QToolWindowAreaReference.Combine or \
+				self.type == QToolWindowAreaReference.Floating or \
+				self.type == QToolWindowAreaReference.Hidden:
 			return 0
 
 
 class QToolWindowAreaTarget:
 
-	def __init__ ( self, area, reference, index = -1, geometry = QRect () ):
-		self.area = area
+	def __init__ ( self, reference, index = -1, geometry = QRect () ):
+		self.area = None
 		self.reference = reference
 		self.index = index
 		self.geometry = geometry
+
+	@staticmethod
+	def createByArea ( area, reference, index = -1, geometry = QRect () ):
+		target = QToolWindowAreaTarget ( reference, index, geometry )
+		target.area = area
+		return target
 
 
 class QToolWindowManagerClassFactory ( QtCore.QObject ):
@@ -90,7 +96,7 @@ class QToolWindowManagerClassFactory ( QtCore.QObject ):
 
 	def createSplitter ( self, manager ):
 		splitter = None
-		if manager.config.value ( QToolWindowManagerCommon.QTWM_PRESERVE_SPLITTER_SIZES,
+		if manager.config.setdefault ( QTWM_PRESERVE_SPLITTER_SIZES,
 		                          True ):
 			splitter = QSizePreservingSplitter ()
 		else:
@@ -196,7 +202,7 @@ class QToolWindowManager ( QWidget ):
 		self.draggedToolWindows = toolWindows
 
 		floatingGeometry = QRect ( QCursor.pos (), area.size () )
-		self.moveToolWindows ( toolWindows, area, QToolWindowAreaReference.Type.Drag, -1, floatingGeometry )
+		self.moveToolWindows ( toolWindows, area, QToolWindowAreaReference.Drag, -1, floatingGeometry )
 
 	def startDragWrapper ( self, wrapper ):
 		self.dragHandler.startDrag ()
@@ -211,7 +217,7 @@ class QToolWindowManager ( QWidget ):
 		self.insertToToolTypes ( toolWindow, toolType )
 		self.addToolWindow ( toolWindow, target.area, target.reference, target.index, target.geometry )
 
-	def addToolWindow ( self, toolWindow, area = None, reference = QToolWindowAreaReference.Type.Combine, index = -1,
+	def addToolWindow ( self, toolWindow, area = None, reference = QToolWindowAreaReference.Combine, index = -1,
 	                    geometry = QRect () ):
 		self.addToolWindows ( [ toolWindow ], area, reference, index, geometry )
 
@@ -220,7 +226,7 @@ class QToolWindowManager ( QWidget ):
 			self.insertToToolTypes ( toolWindow, toolType )
 		self.addToolWindows ( toolWindows, target.area, target.reference, target.index, target.geometry )
 
-	def addToolWindows ( self, toolWindows, area = None, reference = QToolWindowAreaReference.Type.Combine, index = -1,
+	def addToolWindows ( self, toolWindows, area = None, reference = QToolWindowAreaReference.Combine, index = -1,
 	                     geometry = QRect () ):
 		for toolWindow in toolWindows:
 			if self.ownsToolWindow ( toolWindow ):
@@ -235,7 +241,7 @@ class QToolWindowManager ( QWidget ):
 		self.insertToToolTypes ( toolWindow, toolType )
 		self.addToolWindow ( toolWindow, target.area, target.reference, target.index, target.geometry )
 
-	def moveToolWindow ( self, toolWindow, area = None, reference = QToolWindowAreaReference.Type.Combine, index = -1,
+	def moveToolWindow ( self, toolWindow, area = None, reference = QToolWindowAreaReference.Combine, index = -1,
 	                     geometry = QRect () ):
 		self.moveToolWindows ( [ toolWindow ], area, reference, index, geometry )
 
@@ -244,7 +250,7 @@ class QToolWindowManager ( QWidget ):
 			self.insertToToolTypes ( toolWindow, toolType )
 		self.addToolWindows ( toolWindows, target.area, target.reference, target.index, target.geometry )
 
-	def moveToolWindows ( self, toolWindows, area = None, reference = QToolWindowAreaReference.Type.Combine, index = -1,
+	def moveToolWindows ( self, toolWindows, area = None, reference = QToolWindowAreaReference.Combine, index = -1,
 	                      geometry = QRect () ):
 		if area == None:
 			if self.lastArea:
@@ -256,7 +262,7 @@ class QToolWindowManager ( QWidget ):
 				self.mainWrapper.setContents ( self.lastArea.getWidget () )
 
 		dragOffset = QPoint ()
-		if area and reference == QToolWindowAreaReference.Type.Drag:
+		if area and reference == QToolWindowAreaReference.Drag:
 			widgetPos = area.mapToGlobal ( area.rect ().topLeft () )
 			dragOffset = widgetPos - QCursor.pos ()
 
@@ -269,18 +275,18 @@ class QToolWindowManager ( QWidget ):
 				currentAreaIsSimple = False
 			self.releaseToolWindow ( toolWindow, False )
 
-		if reference == QToolWindowAreaReference.Type.Top or \
-				reference == QToolWindowAreaReference.Type.Bottom or \
-				reference == QToolWindowAreaReference.Type.Left or \
-				reference == QToolWindowAreaReference.Type.Right:
+		if reference == QToolWindowAreaReference.Top or \
+				reference == QToolWindowAreaReference.Bottom or \
+				reference == QToolWindowAreaReference.Left or \
+				reference == QToolWindowAreaReference.Right:
 			area = self.splitArea ( self.getFurthestParentArea ( area.getWidget () ).getWidget (), reference )
-		elif reference == QToolWindowAreaReference.Type.HSplitTop or \
-				reference == QToolWindowAreaReference.Type.HSplitBottom or \
-				reference == QToolWindowAreaReference.Type.VSplitLeft or \
-				reference == QToolWindowAreaReference.Type.VSplitRight:
+		elif reference == QToolWindowAreaReference.HSplitTop or \
+				reference == QToolWindowAreaReference.HSplitBottom or \
+				reference == QToolWindowAreaReference.VSplitLeft or \
+				reference == QToolWindowAreaReference.VSplitRight:
 			area = self.splitArea ( area.getWidget (), reference )
-		elif reference == QToolWindowAreaReference.Type.Floating or \
-				reference == QToolWindowAreaReference.Type.Drag:
+		elif reference == QToolWindowAreaReference.Floating or \
+				reference == QToolWindowAreaReference.Drag:
 			areaType = QTWMWrapperAreaType.watTabs
 			if len ( toolWindows ) > 1:
 				if currentAreaIsSimple:
@@ -303,7 +309,7 @@ class QToolWindowManager ( QWidget ):
 				wrapper.getWidget ().setGeometry ( QRect ( QPoint ( 0, 0 ), toolWindows[ 0 ].sizeHint () ) )
 				wrapper.getWidget ().move ( QCursor.pos () )
 
-		if reference != QToolWindowAreaReference.Type.Hidden:
+		if reference != QToolWindowAreaReference.Hidden:
 			area.addToolWindows ( toolWindows, index )
 			self.lastArea = area
 
@@ -312,7 +318,7 @@ class QToolWindowManager ( QWidget ):
 			self.toolWindowVisibilityChanged.emit ( toolWindow, toolWindow.parent () != None )
 		self.notifyLayoutChange ()
 
-		if reference != QToolWindowAreaReference.Type.Drag and wrapper:
+		if reference != QToolWindowAreaReference.Drag and wrapper:
 			self.draggedWrapper = wrapper
 			wrapper.startDrag ()
 
@@ -331,7 +337,7 @@ class QToolWindowManager ( QWidget ):
 		if allowClose:
 			releasePolicy = self.config.get ( QTWM_RELEASE_POLICY ) or QTWMReleaseCachingPolicy.rcpWidget
 			if releasePolicy == QTWMReleaseCachingPolicy.rcpKeep:
-				self.moveToolWindow ( toolWindow, None, QToolWindowAreaReference.Type.Hidden )
+				self.moveToolWindow ( toolWindow, None, QToolWindowAreaReference.Hidden )
 				if self.config.get ( QTWM_ALWAYS_CLOSE_WIDGETS ) or True and not self.tryCloseToolWindow ( toolWindow ):
 					return False
 			if releasePolicy == QTWMReleaseCachingPolicy.rcpWidget:
@@ -339,11 +345,11 @@ class QToolWindowManager ( QWidget ):
 					if self.config.get ( QTWM_ALWAYS_CLOSE_WIDGETS ) or True and not self.tryCloseToolWindow (
 							toolWindow ):
 						return False
-					self.moveToolWindow ( toolWindow, None, QToolWindowAreaReference.Type.Hidden )
+					self.moveToolWindow ( toolWindow, None, QToolWindowAreaReference.Hidden )
 			if releasePolicy == QTWMReleaseCachingPolicy.rcpForget or releasePolicy == QTWMReleaseCachingPolicy.rcpDelete:
 				if not self.tryCloseToolWindow ( toolWindow ):
 					return False
-				self.moveToolWindow ( toolWindow, None, QToolWindowAreaReference.Type.Hidden )
+				self.moveToolWindow ( toolWindow, None, QToolWindowAreaReference.Hidden )
 				self.toolWindows.remove ( toolWindow )
 
 				if releasePolicy == QTWMReleaseCachingPolicy.rcpDelete:
@@ -439,7 +445,7 @@ class QToolWindowManager ( QWidget ):
 		self.mainWrapper.getWidget ().hide ()
 		for wrapper in self.wrappers:
 			wrapper.getWidget ().hide ()
-		self.moveToolWindowTarget ( self.toolWindows, None, QToolWindowAreaReference.Type.Hidden )
+		self.moveToolWindowTarget ( self.toolWindows, None, QToolWindowAreaReference.Hidden )
 		self.simplifyLayout ( True )
 		self.mainWrapper.setContents ( None )
 		self.restoreWrapperState ( data[ "mainWrapper" ], stateFormat, self.mainWrapper )
@@ -465,9 +471,8 @@ class QToolWindowManager ( QWidget ):
 
 		hoveredWindow = windowBelow ( self.draggedWrapper.getWidget () )
 		if hoveredWindow:
-			# TODO:
 			handlerWidget = hoveredWindow.childAt ( hoveredWindow.mapFromGlobal ( QCursor.pos () ) )
-			if self.dragHandler.isHandlerWidget ( handlerWidget ):
+			if handlerWidget and self.dragHandler.isHandlerWidget ( handlerWidget ):
 				area = self.getClosestParentArea ( handlerWidget )
 				if area and self.lastArea != area:
 					self.dragHandler.switchedArea ( self.lastArea, area )
@@ -479,7 +484,7 @@ class QToolWindowManager ( QWidget ):
 			return
 
 		target = self.dragHandler.getTargetFromPosition ( self.lastArea )
-		if self.lastArea and target.reference != QToolWindowAreaReference.Type.Floating:
+		if self.lastArea and target.reference != QToolWindowAreaReference.Floating:
 			if target.reference.isOuter ():
 				previewArea = findClosestParent ( self.lastArea.getWidget (), QToolWindowWrapper )
 				previewAreaContents = previewArea.getContents ()
@@ -510,7 +515,7 @@ class QToolWindowManager ( QWidget ):
 		self.preview.hide ()
 
 		contents = wrapper.getContents ()
-		toolWindows = None
+		toolWindows = []
 		contentsWidgets = contents.findChildren ()
 		contentsWidgets.append ( contents )
 
@@ -519,38 +524,38 @@ class QToolWindowManager ( QWidget ):
 			if area and self.ownsArea ( area ):
 				toolWindows.append ( area.toolWindows )
 
-		if target.reference != QToolWindowAreaReference.Type.Floating:
+		if target.reference != QToolWindowAreaReference.Floating:
 			contents = wrapper.getContents ()
 			wrapper.setContents ( None )
 
-			if target.reference == QToolWindowAreaReference.Type.Top or \
-					target.reference == QToolWindowAreaReference.Type.Bottom or \
-					target.reference == QToolWindowAreaReference.Type.Left or \
-					target.reference == QToolWindowAreaReference.Type.Right:
+			if target.reference == QToolWindowAreaReference.Top or \
+					target.reference == QToolWindowAreaReference.Bottom or \
+					target.reference == QToolWindowAreaReference.Left or \
+					target.reference == QToolWindowAreaReference.Right:
 				self.splitArea ( self.getFurthestParentArea ( target.area.getWidget () ).getWidget (), target.reference,
 				                 contents )
-			elif target.reference == QToolWindowAreaReference.Type.HSplitTop or \
-					target.reference == QToolWindowAreaReference.Type.HSplitBottom or \
-					target.reference == QToolWindowAreaReference.Type.VSplitLeft or \
-					target.reference == QToolWindowAreaReference.Type.VSplitRight:
+			elif target.reference == QToolWindowAreaReference.HSplitTop or \
+					target.reference == QToolWindowAreaReference.HSplitBottom or \
+					target.reference == QToolWindowAreaReference.VSplitLeft or \
+					target.reference == QToolWindowAreaReference.VSplitRight:
 				self.splitArea ( target.area.getWidget (), target.reference, contents )
-			elif target.reference == QToolWindowAreaReference.Type.Combine:
+			elif target.reference == QToolWindowAreaReference.Combine:
 				self.moveToolWindows ( toolWindows, target )
 
 			wrapper.getWidget ().close ()
 			self.simplifyLayout ()
 
-		if target.reference != QToolWindowAreaReference.Type.Combine:
+		if target.reference != QToolWindowAreaReference.Combine:
 			for w in toolWindows:
 				self.toolWindowVisibilityChanged.emit ( w, True )
 
-		if target.reference != QToolWindowAreaReference.Type.Floating:
+		if target.reference != QToolWindowAreaReference.Floating:
 			self.notifyLayoutChange ()
 
 		self.updateTrackingTooltip.emit ( "", QPoint () )
 
 	def finishWrapperResize ( self ):
-		toolWindows = None
+		toolWindows = []
 		contents = self.resizedWrapper.getContents ()
 		contentsWidgets = contents.findChildren ()
 		contentsWidgets.append ( contents )
@@ -789,8 +794,8 @@ class QToolWindowManager ( QWidget ):
 	def targetFromPath ( self, toolPath ):
 		for w in self.areas:
 			if w.count () < 0 and self.getToolPath ( w.widget ( 0 ) ) == toolPath:
-				return QToolWindowAreaTarget ( w, QToolWindowAreaReference.Type.Combine )
-		return QToolWindowAreaTarget ( QToolWindowAreaReference.Type.Floating )
+				return QToolWindowAreaTarget.createByArea ( w, QToolWindowAreaReference.Combine )
+		return QToolWindowAreaTarget ( QToolWindowAreaReference.Floating )
 
 	def eventFilter ( self, o, e ):
 		"""Summary line.
@@ -801,8 +806,8 @@ class QToolWindowManager ( QWidget ):
 	    """
 		if o == qApp:
 			if e.type () == Qt.QEvent.ApplicationActivate and (
-					self.config.get ( QTWM_WRAPPERS_ARE_CHILDREN ) or False) and (
-					self.config.get ( QTWM_BRING_ALL_TO_FRONT ) or True):
+					self.config.setdefault ( QTWM_WRAPPERS_ARE_CHILDREN, False )) and (
+					self.config.setdefault ( QTWM_BRING_ALL_TO_FRONT, True )):
 				self.bringAllToFront ()
 			return False
 
@@ -906,22 +911,22 @@ class QToolWindowManager ( QWidget ):
 
 		contentsWidgets = residingWidget.findChildren ()
 		for w in contentsWidgets:
-			qApp ().sendEvent ( w, QtCore.QEvent.ParentChange )
+			qApp.sendEvent ( w, QtCore.QEvent.ParentChange )
 
 		return residingWidget
 
 	def getClosestParentArea ( self, widget ):
-		area = findClosestParent ( widget, QToolWindowArea )
+		area = findClosestParent ( widget, IToolWindowArea )
 		while area and not self.ownsArea ( area ):
-			area = findClosestParent ( area.getWidget ().parentWidget (), QToolWindowArea )
+			area = findClosestParent ( area.getWidget ().parentWidget (), IToolWindowArea )
 
 		return area
 
 	def getFurthestParentArea ( self, widget ):
-		area = findClosestParent ( widget, QToolWindowArea )
+		area = findClosestParent ( widget, IToolWindowArea )
 		previousArea = area
 		while area and self.ownsArea ( area ):
-			area = findClosestParent ( area.getWidget ().parentWidget (), QToolWindowArea )
+			area = findClosestParent ( area.getWidget ().parentWidget (), IToolWindowArea )
 
 			if not area:
 				return previousArea
@@ -1055,7 +1060,7 @@ class QToolWindowManager ( QWidget ):
 class QSizePreservingSplitter ( QSplitter ):
 
 	def __init__ ( self, parent = None ):
-		super ( parent )
+		super().__init__ ( parent )
 
 	def childEvent ( self, c ):
 		"""Summary line.
@@ -1072,9 +1077,9 @@ class QSizePreservingSplitter ( QSplitter ):
 				else:
 					l[ i - 1 ] = l[ i - 1 ] + s
 				l.remove ( l[ i ] )
-				super ( c )
+				super().childEvent ( c )
 				self.setSizes ( l )
 			else:
-				super ( c )
+				super().childEvent ( c )
 		else:
-			super ( c )
+			super().childEvent ( c )

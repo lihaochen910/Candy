@@ -1,13 +1,17 @@
 from PyQt5 import QtCore
-from PyQt5.QtCore import QEvent, QTimer, QPoint
+from PyQt5.QtCore import QEvent, QTimer, QPoint, QRect, QMetaObject
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QMainWindow, qApp, QTabWidget, QApplication
+from PyQt5.QtWidgets import QMainWindow, qApp, QTabWidget, QApplication, QWidget, QMenuBar
 
+from qt.controls.QToolWindowManager.QToolTabManager import CTabPaneManager
 from qt.controls.QToolWindowManager.QToolWindowManager import QToolWindowManager, QToolWindowManagerClassFactory
 from qt.controls.QToolWindowManager.QToolWindowManagerCommon import *
 from qt.controls.QToolWindowManager.QToolWindowRollupBarArea import QToolWindowRollupBarArea
 from qt.controls.QToolWindowManager.QTrackingTooltip import QTrackingTooltip
 from qt.controls.QToolWindowManager.SandboxWindowing import *
+
+s_pToolTabManager = None  # CTabPaneManager
+s_pWidgetGlobalActionRegistry = None  # CWidgetsGlobalActionRegistry
 
 
 class CToolWindowManagerClassFactory ( QToolWindowManagerClassFactory ):
@@ -35,7 +39,11 @@ class CEditorMainWindow ( QMainWindow ):
 
 		CEditorMainWindow._instance = self
 
+		self.setupUI ()
+
 		# TODO: 初始化CEditorMainWindow图标以及菜单选项
+		global s_pToolTabManager
+		s_pToolTabManager = CTabPaneManager ( self )
 
 		self.setAttribute ( QtCore.Qt.WA_DeleteOnClose, True )
 
@@ -64,10 +72,10 @@ class CEditorMainWindow ( QMainWindow ):
 		toolConfig[ QTWM_RETITLE_WRAPPER ] = True
 		toolConfig[ QTWM_SINGLE_TAB_FRAME ] = True
 		toolConfig[ QTWM_BRING_ALL_TO_FRONT ] = True
-		# toolConfig[ SANDBOX_WRAPPER_MINIMIZE_ICON ] = QIcon ( "icons:Window/Window_Minimize.ico" )
-		# toolConfig[ SANDBOX_WRAPPER_MAXIMIZE_ICON ] = QIcon ( "icons:Window/Window_Maximize.ico" )
-		# toolConfig[ SANDBOX_WRAPPER_RESTORE_ICON ] = QIcon ( "icons:Window/Window_Restore.ico" )
-		# toolConfig[ SANDBOX_WRAPPER_CLOSE_ICON ] = QIcon ( "icons:Window/Window_Close.ico" )
+		toolConfig[ SANDBOX_WRAPPER_MINIMIZE_ICON ] = QIcon ( "icons:Window/Window_Minimize.ico" )
+		toolConfig[ SANDBOX_WRAPPER_MAXIMIZE_ICON ] = QIcon ( "icons:window_maximize.ico" )
+		toolConfig[ SANDBOX_WRAPPER_RESTORE_ICON ] = QIcon ( "icons:Window/Window_Restore.ico" )
+		toolConfig[ SANDBOX_WRAPPER_CLOSE_ICON ] = QIcon ( "icons:Window/Window_Close.ico" )
 		toolConfig[ QTWM_TAB_CLOSE_ICON ] = QIcon ( "icons:Window/Window_Close.ico" )
 		toolConfig[ QTWM_SINGLE_TAB_FRAME_CLOSE_ICON ] = QIcon ( "icons:Window/Window_Close.ico" )
 
@@ -75,12 +83,13 @@ class CEditorMainWindow ( QMainWindow ):
 		self.toolManager = QToolWindowManager ( self, toolConfig, classFactory )
 
 		# TODO: save editor config
-		from .CDockableContainer import s_dockingFactory
-		s_dockingFactory = classFactory
+		# from .CDockableContainer import s_dockingFactory
+		# s_dockingFactory = classFactory
 
 		registerMainWindow ( self )
 		self.toolManager.updateTrackingTooltip.connect ( lambda str, p: QTrackingTooltip.showTextTooltip ( str, p ) )
-		# self.toolManager.toolWindowVisibilityChanged.connect( lambda str, p: QTrackingTooltip.showTextTooltip(str, p))
+		self.toolManager.toolWindowVisibilityChanged.connect (
+			lambda str, p: QTrackingTooltip.showTextTooltip ( str, p ) )
 		# self.layoutChangedConnection = self.toolManager.layoutChanged.connect()
 
 		mainDockArea = self.toolManager
@@ -91,11 +100,33 @@ class CEditorMainWindow ( QMainWindow ):
 		self.setWindowIcon ( QIcon ( "icons:editor_icon.ico" ) )
 		qApp.setWindowIcon ( self.windowIcon () )
 
-		w = QSandboxWindow.wrapWidget ( self, self.toolManager )
-		w.setObjectName ( "mainWindow" )
-		w.show ()
+		mainWindow = QSandboxWindow.wrapWidget ( self, self.toolManager )
+		mainWindow.setObjectName ( "mainWindow" )
+		mainWindow.show ()
+
+		self.mainWindow = mainWindow
 
 		self.setFocusPolicy ( QtCore.Qt.StrongFocus )
+
+	def __del__ ( self ):
+		print ( "CEditorMainWindow.__del__" )
+
+	def setupUI ( self ):
+		if not self.objectName ():
+			self.setObjectName ( "MainWindow" )
+		self.resize ( 1172, 817 )
+
+		centralwidget = QWidget ( self )
+		self.setCentralWidget ( centralwidget )
+
+		menubar = QMenuBar ( self )
+		menubar.setObjectName ( "menubar" )
+		menubar.setGeometry ( QRect ( 0, 0, 1172, 21 ) )
+		self.setMenuBar ( menubar )
+
+		# TODO: CMenu
+
+		QMetaObject.connectSlotsByName ( self )
 
 	def postLoad ( self ):
 		pass
@@ -145,7 +176,7 @@ class CEditorMainWindow ( QMainWindow ):
 		pass
 
 	def beforeClose ( self ):
-		pass
+		return True
 
 	def closeEvent ( self, e ):
 		print ( "sandbox_close" )

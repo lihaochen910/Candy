@@ -19,10 +19,10 @@ class QToolWindowDragHandlerNinePatch ( IToolWindowDragHandler ):
 		pass
 
 	def getTargetFromPosition ( self, area ):
-		result = QToolWindowAreaTarget()
+		result = QToolWindowAreaTarget ( QToolWindowAreaReference.Floating )
 		result.area = area
 		result.index = -1
-		result.reference = QToolWindowAreaReference.Type.Floating
+		result.reference = QToolWindowAreaReference.Floating
 		if not area:
 			return result
 
@@ -32,17 +32,17 @@ class QToolWindowDragHandlerNinePatch ( IToolWindowDragHandler ):
 		tabPos = area.mapCombineDropAreaFromGlobal(QCursor.pos())
 
 		if area.combineAreaRect().contains(tabPos):
-			result.reference = QToolWindowAreaReference.Type.Combine
+			result.reference = QToolWindowAreaReference.Combine
 			result.index = area.subWidgetAt ( tabPos )
 		else:
 			if pos.x () < centerRect.x ():
-				result.reference = QToolWindowAreaReference.Type.VSplitLeft
+				result.reference = QToolWindowAreaReference.VSplitLeft
 			elif pos.x () > centerRect.x () + centerRect.width():
-				result.reference = QToolWindowAreaReference.Type.VSplitRight
+				result.reference = QToolWindowAreaReference.VSplitRight
 			elif pos.y () < centerRect.y ():
-				result.reference = QToolWindowAreaReference.Type.HSplitTop
+				result.reference = QToolWindowAreaReference.HSplitTop
 			elif pos.y () > centerRect.y () + centerRect.height():
-				result.reference = QToolWindowAreaReference.Type.HSplitBottom
+				result.reference = QToolWindowAreaReference.HSplitBottom
 
 		return result
 
@@ -63,7 +63,7 @@ class QToolWindowDragHandlerNinePatch ( IToolWindowDragHandler ):
 		tabEndRect = area.combineSubWidgetRect ( area.count () - 1 )
 		tabEndRect.setX ( tabEndRect.x () + tabEndRect.width () )
 		target = self.getTargetFromPosition ( area )
-		if target.reference == QToolWindowAreaReference.Type.Combine:
+		if target.reference == QToolWindowAreaReference.Combine:
 			if target.index == -1:
 				return tabSeparatorRect ( tabEndRect, splitterWidth )
 			else:
