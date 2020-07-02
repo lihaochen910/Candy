@@ -1,4 +1,4 @@
-from PyQt5        import QtCore, QtGui, uic
+from PyQt5        import QtGui
 from PyQt5.QtWidgets import QApplication, QTabWidget
 from PyQt5.QtGui  import QCursor
 from PyQt5.QtCore import qWarning, QEvent, Qt
@@ -72,7 +72,7 @@ class ToolWindowManagerArea( QTabWidget ):
 						return False
 					self.tabDragCanStart = False
 					#stop internal tab drag in QTabBar
-					releaseEvent = QtGui.QMouseEvent( 
+					releaseEvent = QtGui.QMouseEvent(
 							QEvent.MouseButtonRelease,
 							event.pos(), Qt.LeftButton, Qt.LeftButton, Qt.NoModifier
 						)
@@ -85,7 +85,7 @@ class ToolWindowManagerArea( QTabWidget ):
 		return QTabWidget.eventFilter( self, obj, event )
 
 	def saveState( self ):
-		result = {}		
+		result = {}
 		objectNames = []
 		for i in range( self.count() ):
 			name = self.widget( i ).objectName()

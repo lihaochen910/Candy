@@ -1,9 +1,9 @@
 #C++ original by Pavel Strakhov ( https:#github.com/Riateche/toolwindowmanager )
 
-from .ToolWindowManagerWrapper import ToolWindowManagerWrapper
-from .ToolWindowManagerArea import ToolWindowManagerArea
-from PyQt5        import QtCore, QtGui, uic, QtWidgets
-from PyQt5.QtWidgets import QApplication, QSplitter, QWidget
+from qt.controls.ToolWindowManager.ToolWindowManagerWrapper import ToolWindowManagerWrapper
+from qt.controls.ToolWindowManager.ToolWindowManagerArea import ToolWindowManagerArea
+from PyQt5        import QtCore, QtGui, QtWidgets
+from PyQt5.QtWidgets import QApplication, QSplitter, QWidget, QRubberBand, QTabBar
 from PyQt5.QtGui  import QCursor
 from PyQt5.QtCore import qWarning, QPoint, QRect, QSize, pyqtSignal, Qt
   
@@ -111,8 +111,8 @@ class ToolWindowManager( QWidget ):
 		color.setAlpha(80)
 		palette.setBrush( QtGui.QPalette.Highlight, QtGui.QBrush( color ) )
 		
-		self.rectRubberBand = QtGui.QRubberBand( QtGui.QRubberBand.Rectangle, self )
-		self.lineRubberBand = QtGui.QRubberBand( QtGui.QRubberBand.Line, self )
+		self.rectRubberBand = QRubberBand( QRubberBand.Rectangle, self )
+		self.lineRubberBand = QRubberBand( QRubberBand.Line, self )
 		self.rectRubberBand.setPalette( palette )
 		self.lineRubberBand.setPalette( palette )
 		self.toolWindowList = []
@@ -242,7 +242,7 @@ class ToolWindowManager( QWidget ):
 			self.toolWindowVisibilityChanged.emit( toolWindow, toolWindow.parent() != None )
 
 	def removeToolWindow( self, toolWindow ):
-		if not self.toolWindowList.contains(toolWindow):
+		if toolWindow not in self.toolWindowList:
 			qWarning( 'unknown tool window' )
 			return
 		self.moveToolWindow( toolWindow, ToolWindowManager.NoArea )
@@ -264,7 +264,7 @@ class ToolWindowManager( QWidget ):
 		result = {}
 		result[ 'toolWindowManagerStateFormat' ] = 1
 		mainWrapper = self.findChild( ToolWindowManagerWrapper )
-		if not mainWrapper:
+		if mainWrapper == None:
 			qWarning( 'can not find main wrapper' )
 			return {}
 
@@ -273,7 +273,7 @@ class ToolWindowManager( QWidget ):
 		for wrapper in self.wrappers:
 			if not wrapper.isWindow(): continue
 			floatingWindowsData.append( wrapper.saveState() )
-		result['floatingWindows'] = floatingWindowsData
+		result[ 'floatingWindows' ] = floatingWindowsData
 		return result
 
 	def restoreState( self, data ):
@@ -439,14 +439,14 @@ class ToolWindowManager( QWidget ):
 		return splitter
 
 	def generateDragPixmap( self, toolWindows ):
-		widget = QtGui.QTabBar()
+		widget = QTabBar()
 		widget.setDocumentMode(True)
 		for toolWindow in toolWindows:
 			widget.addTab(toolWindow.windowIcon(), toolWindow.windowTitle())
 		#if QT_VERSION >= 0x050000 # Qt5
-			# return widget.grab()
+			return widget.grab()
 		#else #Qt4
-		return QtGui.QPixmap.grabWidget( widget )
+		# return QtGui.QPixmap.grabWidget( widget )
 		#endif
 
 	def showNextDropSuggestion( self ):
@@ -465,10 +465,10 @@ class ToolWindowManager( QWidget ):
 			else:
 				widget = suggestion.widget
 			
-			if widget.topLevelWidget() == self.topLevelWidget():
+			if widget.window() == self.window():
 				placeHolderParent = self
 			else:
-				placeHolderParent = widget.topLevelWidget()
+				placeHolderParent = widget.window()
 
 			placeHolderGeometry = widget.rect()
 			placeHolderGeometry.moveTopLeft(
@@ -482,10 +482,10 @@ class ToolWindowManager( QWidget ):
 		elif suggestion.type in (
 			ToolWindowManager.LeftOf , ToolWindowManager.RightOf,
 			ToolWindowManager.TopOf , ToolWindowManager.BottomOf ):
-			if suggestion.widget.topLevelWidget() == self.topLevelWidget():
+			if suggestion.widget.window() == self.window():
 				placeHolderParent = self
 			else:
-				placeHolderParent = suggestion.widget.topLevelWidget()
+				placeHolderParent = suggestion.widget.window()
 
 			placeHolderGeometry = self.sidePlaceHolderRect( suggestion.widget, suggestion.type )
 			placeHolderGeometry.moveTopLeft(
@@ -508,7 +508,7 @@ class ToolWindowManager( QWidget ):
 			candidates.append( splitter )
 
 		for area in self.areas:
-			if area.topLevelWidget() == wrapper.topLevelWidget():
+			if area.window() == wrapper.window():
 				candidates.append( area )
 
 		for widget in candidates:
@@ -666,10 +666,10 @@ class ToolWindowManager( QWidget ):
 if __name__ == '__main__':
 	import sys
 	app = QtWidgets.QApplication( sys.argv )
-	# styleSheetName = 'gii.qss'
-	# app.setStyleSheet(
-	# 		open( '/Users/tommo/prj/gii/data/theme/' + styleSheetName ).read()
-	# 	)
+	styleSheetName = 'QtDarkOrange.qss'
+	app.setStyleSheet(
+			open( '/Users/Kanbaru/GitWorkspace/CandyEditor/resources/theme/' + styleSheetName ).read()
+	)
 
 	class Test( QtWidgets.QMainWindow ):
 		def __init__(self, *args ):

@@ -1,9 +1,10 @@
-from PyQt5        import QtCore, QtGui, uic, QtWidgets
+from PyQt5        import QtWidgets
 from PyQt5.QtCore import qWarning, Qt
+from PyQt5.QtWidgets import QWidget, QSplitter
 
 from .ToolWindowManagerArea import ToolWindowManagerArea
 
-class ToolWindowManagerWrapper( QtWidgets.QWidget ) :
+class ToolWindowManagerWrapper( QWidget ) :
 	def __init__( self, manager ):
 		super( ToolWindowManagerWrapper, self ).__init__( manager )
 		self.manager = manager
@@ -31,8 +32,8 @@ class ToolWindowManagerWrapper( QtWidgets.QWidget ) :
 			qWarning('empty top level wrapper')
 			return result
 
-		result[ 'geometry' ] = str( self.saveGeometry() )
-		splitter = self.findChild( QtGui.QSplitter )
+		# result[ 'geometry' ] = str( self.saveGeometry() )
+		splitter = self.findChild( QSplitter )
 		if splitter:
 			result[ 'splitter' ] = self.manager.saveSplitterState( splitter )
 		else:
@@ -45,16 +46,16 @@ class ToolWindowManagerWrapper( QtWidgets.QWidget ) :
 		return result
 
 	def restoreState( self, data ):
-		if data.has_key( 'geometry' ):
+		if 'geometry' in data:
 			self.restoreGeometry( data['geometry'] )
 		if self.layout().count() > 0:
 			qWarning('wrapper is not empty')
 			return
-		if data.has_key( 'splitter' ):
+		if 'splitter' in data:
 			self.layout().addWidget(
 				self.manager.restoreSplitterState(data['splitter'].toMap())
 				)
-		elif data.has_key( 'area' ):
+		elif 'area' in data:
 			area = self.manager.createArea()
 			area.restoreState( data['area'] )
 			self.layout().addWidget( area )
