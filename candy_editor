@@ -1,0 +1,4 @@
+#!/bin/bash
+
+d=`dirname $0`
+${d}/CandyEditor.app/Contents/MacOS/python ${d}/candy_editor_bin.py $@
