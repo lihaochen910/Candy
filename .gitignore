@@ -4,7 +4,9 @@ __pycache__/
 *$py.class
 
 # C extensions
-AKU/dev/*.a
+!lib/3rdparty/windows/AKU.pyd
+lib/candy_editor/AKU/dev/*.a
+lib/candy_editor/AKU/dev/*.lib
 #*.so
 
 # Distribution / packaging
@@ -15,7 +17,6 @@ dist/
 downloads/
 eggs/
 .eggs/
-lib/
 lib64/
 parts/
 sdist/

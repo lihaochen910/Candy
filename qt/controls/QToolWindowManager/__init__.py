@@ -1,2 +1,0 @@
-from qt.controls.QToolWindowManager.CEditorMainWindow import CEditorMainWindow
-from qt.controls.QToolWindowManager.QToolWindowManager import *

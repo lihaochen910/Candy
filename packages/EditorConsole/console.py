@@ -4,16 +4,17 @@ import sys
 import logging
 import time
 
-from PyQt5 import QtCore, QtGui, uic
+from PyQt5 import QtGui, uic
 from PyQt5.QtCore import Qt, QEvent, QObject
+from PyQt5.QtWidgets import QPushButton, QWidget
 
-from core       import getAppPath
-from core       import signals
-from sceneEditor import SceneEditorModule
+from candy_editor.core import getAppPath
+from candy_editor.core import signals
+from candy_editor.SceneEditor import SceneEditorModule
 
 # import ui_console
 
-signals.register('console.exec')
+signals.register( 'console.exec' )
 
 ##----------------------------------------------------------------##
 class StdoutCapture():
@@ -53,13 +54,13 @@ class Console( SceneEditorModule ):
 	# dependency = 'debug_view'
 
 	def write(self,text):
-		self.panel.appendText(text)		
+		self.panel.appendText(text)
 
 	def onLoad(self):
-		self.container = self.requestDockWindow('Console',
+		self.container = self.requestToolWindow('Console',
 				title   = 'Console',
 				minSize = (100,100),
-				dock    = 'bottom'
+				area    = 'bottom'
 			)
 		self.panel = self.container.addWidget(
 				ConsoleWindow()
@@ -84,7 +85,7 @@ class Console( SceneEditorModule ):
 
 ##----------------------------------------------------------------##
 # class ConsoleWindow( QtWidgets.QWidget, ui_console.Ui_ConsoleWindow ):
-class ConsoleWindow( QtWidgets.QWidget ):
+class ConsoleWindow( QWidget ):
 	"""docstring for ConsoleWindow"""
 	COLOR_WHITE = QtGui.QColor(255, 255, 255)
 	COLOR_RED = QtGui.QColor(255, 0, 0)
@@ -105,17 +106,17 @@ class ConsoleWindow( QtWidgets.QWidget ):
 
 		self.luaLogTabLayout.setSpacing(2)
 
-		self.buttonExec = QtWidgets.QPushButton(self)
+		self.buttonExec = QPushButton(self)
 		self.buttonExec.setObjectName("buttonExec")
 		self.buttonExec.setText('exec')
 		self.luaLogTabLayout.addWidget(self.buttonExec)
-		self.buttonClear = QtWidgets.QPushButton(self)
+		self.buttonClear = QPushButton(self)
 		self.buttonClear.setObjectName("buttonClear")
 		self.buttonClear.setText('clr')
 		self.luaLogTabLayout.addWidget(self.buttonClear)
 
 		self.buttonExec.clicked.connect(self.execCommand)
-		self.buttonClear.clicked.connect(self.clearText)		
+		self.buttonClear.clicked.connect(self.clearText)
 		
 		self.luaConsoleInput.installEventFilter(self)
 		self.luaConsoleInput.setFocusPolicy(Qt.StrongFocus)
@@ -179,7 +180,7 @@ class ConsoleWindow( QtWidgets.QWidget ):
 		self.appendText(text)
 		self.appendText("\n")
 
-		signals.emit('console.exec', text.encode('utf-8'))
+		signals.emit( 'console.exec', text.encode( 'utf-8' ) )
 
 	def prevHistory(self):
 		count=len(self.history)

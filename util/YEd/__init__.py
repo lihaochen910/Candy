@@ -1,1 +1,0 @@
-from YEdGraphMLParser import *

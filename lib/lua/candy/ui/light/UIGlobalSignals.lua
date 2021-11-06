@@ -1,0 +1,4 @@
+
+registerGlobalSignals ( {
+	"ui.viewmapping.change"
+} )

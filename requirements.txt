@@ -1,0 +1,14 @@
+altgraph==0.17
+click==7.1.2
+colorama==0.4.3
+Cython==0.29.21
+django-commands==0.7
+lupa==1.9
+macholib==1.14
+modulegraph==0.18
+py2app==0.21
+PyQt5==5.15.5
+PyQt5-sip==12.9.0
+python-Levenshtein==0.12.0
+watchdog==2.0.2
+Pillow==8.4.0

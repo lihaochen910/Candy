@@ -1,3 +1,0 @@
-import assetEditor.CommonAsset.FolderCreator
-import assetEditor.CommonAsset.ImageAsset
-import assetEditor.CommonAsset.TextAsset

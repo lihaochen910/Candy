@@ -1,0 +1,36 @@
+CTabPaneManager:
+
+
+QToolWindowManager:
+    MainWrapper
+
+
+CEditorMainFrame ( QMainWindow ):
+
+    central: QToolWindowManager
+
+
+QCustomWindowFrame ( QFrame ):
+    QCustomTitleBar ( QFrame )
+
+
+QToolWindowWrapper ( QWidget, IToolWindowWrapper )
+QToolWindowCustomWrapper ( QCustomWindowFrame, IToolWindowWrapper )
+QSandboxWrapper ( QToolWindowCustomWrapper )
+
+
+QToolsMenuToolWindowArea ( QToolWindowArea ( QTabWidget ) ):
+
+    tabFrame:
+        QToolsMenuWindowSingleTabAreaFrame ( QToolWindowSingleTabAreaFrame ( QFrame ) ):
+            caption: QLabel
+            contents: QWidget
+
+    tabs:
+        QTabPane ( ( QBaseTabPane ( QFrame ) ) ):
+            QWidget
+
+
+Wrapper:
+    Area:
+        ...
