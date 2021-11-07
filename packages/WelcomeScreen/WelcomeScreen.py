@@ -1,7 +1,8 @@
-import qt
 from PyQt5.QtWidgets import *
+from PyQt5.QtGui import QPixmap
 from PyQt5 import uic, QtCore
-from core.project import Project
+from candy_editor import qt
+from candy_editor.core.project import Project
 
 def openProject(parent):
 	path = QFileDialog.getExistingDirectory(parent, 'Select Project Folder', './')
@@ -10,7 +11,7 @@ def openProject(parent):
 		print ( 'open Project OK!' )
 		parent.close()
 	else:
-		from qt.dialogs.Dialogs import alertMessage
+		from candy_editor.qt.dialogs.Dialogs import alertMessage
 		alertMessage("Error", path + "\nisn't a valid Candy Project.")
 
 def createProject(parent):
@@ -21,7 +22,7 @@ def createProject(parent):
 		print ( 'create OK!' )
 		parent.close()
 	else:
-		from qt.dialogs.Dialogs import alertMessage
+		from candy_editor.qt.dialogs.Dialogs import alertMessage
 		alertMessage("Error", "Project.init() return False")
 
 def launch():
